@@ -548,6 +548,23 @@ a { color: inherit; text-decoration: none; }
   margin-top: 4px;
 }
 
+/* Aviso pós-botão (27/08/2026, feedback da namorada por áudio): o botão só
+   ABRE o WhatsApp com a mensagem pronta — quem não sabia disso preenchia o
+   formulário, via o WhatsApp abrir e não entendia que ainda precisava
+   apertar enviar lá dentro, então a mensagem nunca chegava pra ela. Cor
+   escura (não --muted, que é clara — pensada pro fundo escuro do site,
+   ilegível aqui dentro do form-card creme). */
+.form-note {
+  text-align: center;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: rgba(29, 22, 22, 0.6);
+  margin: 10px 0 0;
+}
+.form-note strong {
+  color: var(--ink);
+}
+
 /* Redes */
 .social-row {
   display: flex;
