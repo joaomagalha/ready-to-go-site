@@ -180,14 +180,18 @@ a { color: inherit; text-decoration: none; }
    27/08/2026: feedback em áudio da promoter — os "blobinhos de luz" do
    vídeo estavam ficando escuros demais pra notar o movimento; clareado
    sobretudo no topo (onde não tem texto por cima), radial perto do texto
-   mantido quase igual pra não perder contraste de leitura. */
+   mantido quase igual pra não perder contraste de leitura.
+   27/08/2026 (2ª rodada): ainda achou escuro, clareado de novo — o
+   `.brand-mark`/`.brand-sub` têm text-shadow próprio (aguentam o corte),
+   só o `.hero-tagline` (cor `--muted`, sem text-shadow) depende do
+   radial pra ficar legível, por isso ele caiu pouco. */
 .hero-overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
   background:
-    radial-gradient(120% 75% at 50% 100%, rgba(29, 22, 22, 0.88) 0%, transparent 65%),
-    linear-gradient(180deg, rgba(29, 22, 22, 0.28) 0%, rgba(29, 22, 22, 0.42) 45%, var(--ink) 88%);
+    radial-gradient(120% 75% at 50% 100%, rgba(29, 22, 22, 0.8) 0%, transparent 65%),
+    linear-gradient(180deg, rgba(29, 22, 22, 0.12) 0%, rgba(29, 22, 22, 0.22) 45%, var(--ink) 88%);
 }
 
 .hero > .brand-mark,
