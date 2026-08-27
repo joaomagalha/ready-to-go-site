@@ -111,6 +111,93 @@ body {
   .reveal { transition: none; opacity: 1; transform: none; filter: none; }
 }
 
+/* ============ TELA DE CARREGAMENTO ============
+   27/08/2026: globo de espelho (mesma arte do favicon) girando enquanto o
+   site carrega, primeira impressão antes mesmo do hero. `assets/js/
+   loader.js` controla: some no `window.load` (respeitando um mínimo de
+   tempo pra não "piscar") ou num teto fixo, o que vier primeiro, e não
+   aparece de novo na mesma aba (sessionStorage) pra não incomodar quem já
+   entrou. A classe `no-loader` (adicionada ANTES do loader ser pintado,
+   por um script síncrono logo no início do body) evita até o flash de tela
+   preta em navegações repetidas. `loader-globo.jpg` já vem com o fundo
+   pintado na cor --ink (composto no Python, não é PNG+transparência) —
+   mais leve que PNG e sem precisar bater a cor de fundo em CSS. */
+html.no-loader .page-loader { display: none; }
+
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  background: var(--ink);
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+.page-loader.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.page-loader__ring {
+  position: relative;
+  width: 132px;
+  height: 132px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Glow pulsante atrás do globo — reforça a sensação de luz/movimento
+   mesmo no instante em que a imagem ainda não girou nada. */
+.page-loader__ring::before {
+  content: '';
+  position: absolute;
+  inset: -30px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+  animation: loader-pulse 1.8s ease-in-out infinite;
+}
+.page-loader__globe {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 40px rgba(216, 64, 64, 0.35), 0 8px 24px rgba(0, 0, 0, 0.6);
+  animation: loader-spin 2.4s linear infinite;
+}
+.page-loader__label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0;
+  animation: loader-label-in 0.6s ease 0.3s forwards;
+}
+
+@keyframes loader-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes loader-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(0.92); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+@keyframes loader-label-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-loader__globe { animation: none; }
+  .page-loader__ring::before { animation: none; }
+  .page-loader__label { animation: none; opacity: 1; }
+  .page-loader { transition: none; }
+}
+
 a { color: inherit; text-decoration: none; }
 
 .wrap {
