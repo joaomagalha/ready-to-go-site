@@ -453,8 +453,16 @@ a { color: inherit; text-decoration: none; }
 .back-link a:hover,
 .back-link a:focus-visible { color: var(--accent-text); outline: none; }
 
+/* height:auto (27/08/2026) — a <img> ganhou os atributos width/height no
+   HTML pra evitar layout pulando enquanto carrega, mas sem essa regra o
+   navegador usa o `height` do HTML como altura fixa em pixel (1920 ou
+   1280), ignorando a largura real do card — a foto esticava/distorcia.
+   Com height:auto a proporção volta a ser calculada a partir da largura,
+   os atributos HTML só servem pra reservar o espaço certo antes de a
+   imagem carregar. */
 .event-cover {
   width: 100%;
+  height: auto;
   border-radius: 20px;
   border: 1px solid rgba(255,255,255,0.1);
   display: block;
