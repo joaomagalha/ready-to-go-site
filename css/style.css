@@ -134,7 +134,17 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
   max-width: 480px;
   margin: 0 auto;
+  /* 27/08/2026: `vh` sozinho é o bug clássico do Safari mobile — no celular
+     ele calcula 100vh contando a barra de endereço/toolbar recolhida
+     (viewport "grande"), mas ao entrar no site a toolbar está expandida
+     (viewport visível menor), então o hero fica mais alto que a tela de
+     verdade e empurra o card de "Próximas Festas" pra fora da área
+     visível — some só até rolar (o que recolhe a toolbar e "corrige" a
+     conta). `svh` usa a menor viewport possível (toolbar sempre expandida)
+     como base, então já cabe certo desde o primeiro frame. `vh` continua
+     de fallback pra navegador antigo sem suporte a `svh`. */
   min-height: 62vh;
+  min-height: 62svh;
   display: flex;
   flex-direction: column;
   align-items: center;
