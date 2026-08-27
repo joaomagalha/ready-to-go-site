@@ -63,13 +63,12 @@
   --ink-2: #2E1616;
   --paper: #EEEEEE;
   --muted: #868282;
-  /* --cream (27/08/2026): João não gostou do form-card vermelho escuro,
-     pediu um fundo creme. Não é a paleta original — é uma cor de superfície
-     nova, só pro cartão do formulário (o resto do site continua na paleta
-     vermelho/preto). Escolhido #EFE6D8 porque é literalmente o --paper que
-     este projeto usava antes da troca pra vermelho/preto (25/08) — um tom
-     já testado, quente, que existe no histórico do próprio projeto. */
-  --cream: #EFE6D8;
+  /* --surface-light (27/08/2026): fundo claro do form-card. Era vermelho
+     escuro (--ink-2), depois virou creme #EFE6D8 (pedido do João), mas ele
+     achou que o creme dava uma vibe vintage sem sentido pro site — trocado
+     pra branco puro. Continua não sendo cor da paleta oficial (vermelho/
+     preto/branco/creme), é só a superfície clara do formulário. */
+  --surface-light: #FFFFFF;
   --space-section: 44px;
 }
 
@@ -508,11 +507,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* Formulário — Lista de Desconto. Fundo trocado de --ink-2 (vermelho
-   escuro) pra --cream (27/08/2026, pedido do João) — como o cartão agora é
-   claro, todo o texto/borda interna que dependia do fundo escuro precisou
-   inverter junto (labels, input, placeholder), só dentro do .form-card. */
+   escuro) pra branco (27/08/2026, pedido do João — o creme intermediário
+   dava uma vibe vintage sem sentido) — como o cartão é claro, todo o
+   texto/borda interna que dependia do fundo escuro precisou inverter
+   junto (labels, input, placeholder), só dentro do .form-card. */
 .form-card {
-  background: var(--cream);
+  background: var(--surface-light);
   border: 1px solid rgba(29, 22, 22, 0.1);
   border-radius: 20px;
   padding: 22px;
