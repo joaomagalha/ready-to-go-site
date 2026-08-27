@@ -1,0 +1,565 @@
+/* Fontes self-hosted (mesmos arquivos usados no site do Márcio Ishizuka —
+   copiados, não linkados, pra este projeto ficar independente). Só os
+   subsets latin/latin-ext, que é o que o português precisa. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('../assets/fonts/inter-normal-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('../assets/fonts/inter-normal-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Space Grotesk — fonte de destaque (brand, títulos, nome dos eventos),
+   inspirada no design system que o João mandou de referência. Variável
+   (um arquivo cobre todo o eixo de peso 300-700), self-hosted pelo mesmo
+   motivo do Inter acima. */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('../assets/fonts/space-grotesk-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('../assets/fonts/space-grotesk-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+  /* Paleta definida pela namorada (25/08/2026): #1D1616, #8E1616, #D84040,
+     #EEEEEE. --ink-2 e --muted são tons intermediários derivados dela pra
+     dar contraste em card/texto secundário, não fazem parte da paleta
+     original. 26/08/2026: accent trocado do vermelho mais claro (#D84040)
+     pro mais escuro (#8E1616) — ela achou o claro forte demais nos botões.
+
+     --accent-text (27/08/2026, auditoria de UI/UX): #8E1616 tem contraste
+     ~2:1 contra o fundo --ink — falha WCAG feio quando usado como COR DE
+     TEXTO (brand-sub, section-title, meta dos cards). #D84040 (já é cor da
+     paleta, só não estava mais em uso desde a troca do botão) sobe pra
+     ~4:1, mantendo a mesma identidade vermelha. Regra: --accent pra
+     preenchimento/fundo (pill, botão — onde o texto por cima é --paper,
+     contraste alto), --accent-text pra texto solto direto sobre o fundo
+     escuro do site. */
+  --accent: #8E1616;
+  --accent-soft: rgba(142, 22, 22, 0.14);
+  --accent-text: #D84040;
+  --ink: #1D1616;
+  --ink-2: #2E1616;
+  --paper: #EEEEEE;
+  --muted: #868282;
+  /* --cream (27/08/2026): João não gostou do form-card vermelho escuro,
+     pediu um fundo creme. Não é a paleta original — é uma cor de superfície
+     nova, só pro cartão do formulário (o resto do site continua na paleta
+     vermelho/preto). Escolhido #EFE6D8 porque é literalmente o --paper que
+     este projeto usava antes da troca pra vermelho/preto (25/08) — um tom
+     já testado, quente, que existe no histórico do próprio projeto. */
+  --cream: #EFE6D8;
+  --space-section: 44px;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0) 0 0 / 22px 22px,
+    var(--ink);
+  color: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Entrada suave (fade + blur + sobe), inspirada no design system de
+   referência — some até o elemento entrar na tela, o JS
+   (assets/js/reveal.js) liga a classe .is-in via IntersectionObserver.
+   Transição em vez de keyframe: mais previsível (não depende de a aba
+   estar em foco/visível pra "tocar" a animação). */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  filter: blur(6px);
+  transition: opacity 0.7s cubic-bezier(0.2, 0.65, 0.3, 1),
+              transform 0.7s cubic-bezier(0.2, 0.65, 0.3, 1),
+              filter 0.7s cubic-bezier(0.2, 0.65, 0.3, 1);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transition: none; opacity: 1; transform: none; filter: none; }
+}
+
+a { color: inherit; text-decoration: none; }
+
+.wrap {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 20px calc(48px + env(safe-area-inset-bottom, 0px));
+}
+
+/* ============ HERO ============ */
+/* max-width igual ao .wrap (480px) — sem isso, o CSS esticava a imagem
+   pra cobrir a largura toda da viewport em telas de desktop, e como a
+   foto fonte é só 640px de largura, ficava borrada/pixelizada. A própria
+   referência que a promoter mandou (linktr.ee/AsBatePontos) faz a mesma
+   coisa: no desktop o cartão real não passa de ~580px, o resto da tela é
+   só fundo — não é um layout responsivo de verdade, é uma versão mobile
+   fixa centralizada. Aqui simplificamos pra não estourar a largura da
+   fonte da imagem. */
+.hero {
+  position: relative;
+  overflow: hidden;
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 62vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
+  /* env() some pra 0 em qualquer aparelho sem notch/ilha — só existe pra
+     não deixar o texto do hero colado atrás da barra de status em iPhone
+     com tela full-bleed (o hero é a única seção que encosta no topo). */
+  padding: calc(32px + env(safe-area-inset-top, 0px)) 20px 40px;
+  background: var(--ink);
+}
+
+/* Vídeo dos globos de espelho girando, em loop, atrás do conteúdo do hero
+   (26/08/2026 — antes era uma foto estática no `background` do .hero).
+   `object-fit:cover` + `object-position` centralizam igual a foto fazia. */
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  z-index: 0;
+}
+
+/* Scrim do hero (27/08/2026, reforçado na auditoria): antes era calibrado
+   pra UMA foto estática — dava pra escolher exatamente onde a imagem era
+   mais escura e encostar o texto ali. Com vídeo em loop o brilho muda
+   quadro a quadro (os globos giram, os pontos de luz se movem), então o
+   texto não pode depender de "a imagem sempre for escura nesse pixel" —
+   precisa de um piso de contraste garantido. Duas camadas: um vinheta
+   radial concentrada atrás do bloco de texto (funciona em qualquer frame
+   do vídeo) + o gradiente vertical de antes, só que mais forte/mais cedo. */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(120% 75% at 50% 100%, rgba(29, 22, 22, 0.92) 0%, transparent 65%),
+    linear-gradient(180deg, rgba(29, 22, 22, 0.5) 0%, rgba(29, 22, 22, 0.62) 45%, var(--ink) 88%);
+}
+
+.hero > .brand-mark,
+.hero > .brand-sub,
+.hero > .hero-tagline {
+  position: relative;
+  z-index: 2;
+}
+
+.brand-mark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  /* clamp em vez de tamanho fixo: em telas bem estreitas (~320px) o texto
+     "READY 2 GO" em caixa alta + bold quase encosta nas bordas do .wrap;
+     o clamp dá uma margem de segurança sem mudar o tamanho em nenhuma
+     tela normal (o card do site já trava em 480px de qualquer forma). */
+  font-size: clamp(2.1rem, 9vw, 2.6rem);
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0 0 6px;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.75), 0 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+.brand-sub {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+  font-weight: 500;
+  margin: 0 0 18px;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+
+.hero-tagline {
+  font-size: 0.95rem;
+  color: var(--muted);
+  max-width: 320px;
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* ============ BOTÕES ============ */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 18px 20px;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: transform 0.15s ease, filter 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+.btn:active { transform: scale(0.97); }
+/* Anel de foco compartilhado pelos dois botões — antes não existia
+   nenhum, então navegar por teclado caía no outline azul padrão do
+   navegador, destoando do resto da interface. */
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(216, 64, 64, 0.35);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--paper);
+}
+.btn-primary:hover { filter: brightness(1.08); }
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: var(--paper);
+}
+/* Antes só a borda mudava no hover (e pro --accent escuro, que quase não
+   aparece sobre o botão translúcido). Adicionado leve reforço no fundo
+   também, pra combinar com o feedback do botão primário (que clareia). */
+.btn-secondary:hover {
+  border-color: var(--accent-text);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: -28px;
+  position: relative;
+  z-index: 2;
+}
+
+.cta-note {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin: 10px 0 0;
+  letter-spacing: 0.04em;
+}
+
+/* ============ SEÇÕES ============ */
+.section {
+  margin-top: var(--space-section);
+}
+
+.section-title {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--accent-text);
+  font-weight: 500;
+  margin: 0 0 14px;
+  text-align: center;
+}
+
+/* Próximas festas — cards em formato cartaz (imagem grande domina o
+   card), pensado pra chamar mais atenção que a versão anterior (linha
+   fina com thumbnail pequeno). Cada um leva pra eventos/{slug}.html. */
+.event-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.event-poster {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+/* Só o "levantar" + sombra mais funda no hover/focus — João não gostou da
+   borda vermelha que entrava junto (removida). :focus-visible replica o
+   hover pra quem navega por teclado — o card é um link, sem isso ficaria
+   sem nenhum retorno visual de foco. */
+.event-poster:hover,
+.event-poster:active,
+.event-poster:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+  outline: none;
+}
+
+.event-poster img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.event-poster:hover img { transform: scale(1.05); }
+
+/* Scrim ajustado (27/08/2026, auditoria) pra garantir leitura do
+   título/meta em qualquer foto de evento, incluindo flyer com fundo claro
+   (ex. Save The Date) — antes só escurecia de verdade a partir de 72% pra
+   baixo, deixando o título passando por uma faixa ainda clara da imagem.
+   Começa a escurecer mais cedo (28%) com curva em 3 paradas em vez de 2,
+   pra ficar gradual (sem parecer uma "faixa preta" colada embaixo). */
+.event-poster__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  background: linear-gradient(180deg,
+    rgba(29, 22, 22, 0) 28%,
+    rgba(29, 22, 22, 0.32) 52%,
+    rgba(29, 22, 22, 0.72) 78%,
+    rgba(29, 22, 22, 0.96) 100%);
+}
+
+/* Selo maior e com ícone (27/08/2026, pedido do João: "mais bonito e um
+   pouco maior, pra deixar claro que é pra entrar na lista de desconto") —
+   antes era pequeno (0.62rem/6px) e só texto, fácil de ler como decoração
+   em vez de call-to-action. Ícone de etiqueta reforça "desconto" mesmo
+   pra quem só bate o olho rápido no card. */
+.event-poster__eyebrow {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--accent);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: auto;
+  /* sombra própria: o selo fica sobre a parte da foto que não tem scrim
+     nenhum (topo, fora do gradiente acima), então não pode depender dele */
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+.event-poster__eyebrow svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.event-poster__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.7rem;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0 0 4px;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.event-poster__meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--accent-text);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+  margin: 0 0 14px;
+}
+
+.event-poster__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--paper);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+}
+.event-poster__cta svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.25s ease;
+}
+.event-poster:hover .event-poster__cta svg { transform: translateX(3px); }
+
+/* Página de evento individual (eventos/{slug}.html) */
+.back-link {
+  padding-top: 24px;
+  margin: 0 0 16px;
+}
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+.back-link a:hover,
+.back-link a:focus-visible { color: var(--accent-text); outline: none; }
+
+.event-cover {
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: block;
+}
+
+.event-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.9rem;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-align: center;
+  margin: 0 0 4px;
+}
+
+.event-rule {
+  text-align: center;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+/* Clima da casa — grid de fotos */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.gallery img {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+.gallery a.wide {
+  grid-column: span 2;
+}
+.gallery a.wide img {
+  height: 110px;
+}
+
+/* Formulário — Lista de Desconto. Fundo trocado de --ink-2 (vermelho
+   escuro) pra --cream (27/08/2026, pedido do João) — como o cartão agora é
+   claro, todo o texto/borda interna que dependia do fundo escuro precisou
+   inverter junto (labels, input, placeholder), só dentro do .form-card. */
+.form-card {
+  background: var(--cream);
+  border: 1px solid rgba(29, 22, 22, 0.1);
+  border-radius: 20px;
+  padding: 22px;
+}
+
+.field {
+  margin-bottom: 14px;
+}
+.field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(29, 22, 22, 0.65);
+  margin-bottom: 6px;
+}
+.field input {
+  width: 100%;
+  background: rgba(29, 22, 22, 0.05);
+  border: 1px solid rgba(29, 22, 22, 0.15);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+/* Anel de foco: borda + glow com --accent-text, o mesmo vermelho calibrado
+   pra contraste que já é usado em todo o site — funciona tanto sobre fundo
+   escuro quanto sobre o creme novo do form-card. */
+.field input:focus {
+  outline: none;
+  border-color: var(--accent-text);
+  box-shadow: 0 0 0 3px rgba(216, 64, 64, 0.22);
+}
+.field input::placeholder {
+  color: rgba(29, 22, 22, 0.4);
+}
+
+.form-card .btn {
+  margin-top: 4px;
+}
+
+/* Redes */
+.social-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+}
+.social-row .btn { flex: 1; }
+
+/* Rodapé */
+footer {
+  text-align: center;
+  margin-top: 48px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  flex-shrink: 0;
+}
