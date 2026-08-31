@@ -1,16 +1,17 @@
 // Ciclo de vida das festas no site, 100% no cliente (sem backend, sem
 // rebuild). Cada festa carrega duas marcações:
-//   data-event-date="AAAA-MM-DD"      -> dia da festa
+//   data-event-date="AAAA-MM-DD"      -> dia da festa (usado pra ordenar e
+//                                        como fallback do horário de fecho)
 //   data-list-close="AAAA-MM-DDTHH:mm" -> quando a lista fecha (opcional;
-//                                         sem isso, fecha às 23:59 do dia)
+//                                        sem isso, fecha às 23:59 do dia)
 // No index: ficam no <a class="event-poster">. Na página do evento: ficam
 // no <form id="lista-form">.
 //
-// Duas fases:
-//   1. passou o horário limite da lista  -> card fica cinza, sem clique, e
-//      desce pro fim da lista; a página do evento troca o form por um aviso.
-//   2. passou o dia da festa (dia seguinte, 00:00) -> o card some do DOM;
-//      a página do evento mostra "essa festa já rolou".
+// Duas fases, contadas a partir do FECHO DA LISTA:
+//   1. lista fechou -> no index o card fica cinza, sem clique, e desce pro
+//      fim da lista. Quem abrir o link direto da página da festa é mandado
+//      de volta pra home.
+//   2. 24h depois da lista fechar -> o card some do index de vez.
 //
 // Sem JS nada disso acontece (todos os cards e o form continuam visíveis) —
 // é conveniência de exibição, não trava de segurança. A promoter confirma
@@ -18,9 +19,6 @@
 
 (function () {
   'use strict';
-
-  // Mesmo grupo usado nos botões "Entrar no Grupo" do index.
-  var GRUPO_URL = 'https://chat.whatsapp.com/BZMm1JILP1AH6zoZYNUq5I?mode=gi_t';
 
   // "AAAA-MM-DD" -> Date no fuso local (new Date("2026-08-28") seria UTC).
   function parseLocalDate(str) {
@@ -38,26 +36,22 @@
     return new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]);
   }
 
+  var UM_DIA_MS = 24 * 60 * 60 * 1000;
+
   // Estado de uma festa: 'open' | 'closed' | 'gone'
   function stateFor(eventDateStr, listCloseStr, now) {
-    var eventDate = parseLocalDate(eventDateStr);
-    if (!eventDate) return 'open'; // sem data não dá pra julgar — mantém
-
-    // fechamento da lista: explícito, ou 23:59:59 do dia da festa
+    // fechamento da lista: explícito (data-list-close), ou 23:59:59 do
+    // dia da festa (data-event-date) se não houver horário.
     var closeAt = parseLocalDateTime(listCloseStr);
     if (!closeAt) {
+      var eventDate = parseLocalDate(eventDateStr);
+      if (!eventDate) return 'open'; // sem nenhuma data não dá pra julgar
       closeAt = new Date(eventDate.getTime());
       closeAt.setHours(23, 59, 59, 999);
     }
 
-    // "sumiu de vez" = já passou o dia da festa (dia seguinte, 00:00) E a
-    // lista já fechou. O "E a lista já fechou" cobre horário limite depois da
-    // meia-noite (ex. lista até 1h da manhã de sábado numa festa de sexta) —
-    // sem isso o card sumiria antes de a lista fechar de verdade.
-    var dayAfter = new Date(eventDate.getTime());
-    dayAfter.setDate(dayAfter.getDate() + 1);
-    dayAfter.setHours(0, 0, 0, 0);
-    if (now >= dayAfter && now >= closeAt) return 'gone';
+    // some de vez 24h DEPOIS de a lista fechar (pedido do João, 31/08).
+    if (now.getTime() >= closeAt.getTime() + UM_DIA_MS) return 'gone';
 
     if (now >= closeAt) return 'closed';
 
@@ -144,37 +138,16 @@
     }
   }
 
-  // ---------- PÁGINA DO EVENTO: formulário da lista ----------
+  // ---------- PÁGINA DO EVENTO ----------
+  // Se a lista dessa festa já fechou (ou já sumiu), a página não serve pra
+  // mais nada — manda de volta pra home. `.replace()` não deixa a página
+  // morta no histórico (o botão voltar não volta pra cá). O loader de tela
+  // cheia ainda está por cima quando isto roda, então não pisca conteúdo.
   var form = document.getElementById('lista-form');
   if (form) {
     var stForm = stateFor(form.dataset.eventDate, form.dataset.listClose, now);
-
     if (stForm === 'closed' || stForm === 'gone') {
-      form.dataset.listClosed = '1';
-      form.hidden = true;
-
-      var cover = document.querySelector('.event-cover');
-      if (cover) cover.classList.add('is-dimmed');
-
-      var gone = stForm === 'gone';
-      var box = document.createElement('div');
-      box.className = 'list-closed';
-      box.innerHTML =
-        '<p class="list-closed__title">' +
-          (gone ? 'Essa festa já rolou' : 'Lista encerrada') +
-        '</p>' +
-        '<p class="list-closed__text">' +
-          (gone
-            ? 'A próxima cai no grupo primeiro.'
-            : 'A lista dessa festa já fechou.') +
-        '</p>' +
-        '<a class="btn btn-primary" href="' + GRUPO_URL + '" target="_blank" rel="noopener">' +
-          '<svg class="icon" aria-hidden="true"><use href="#i-whatsapp"></use></svg>' +
-          'Entrar no Grupo' +
-        '</a>' +
-        '<p class="list-closed__back"><a href="../index.html">Ver as próximas festas</a></p>';
-
-      form.parentNode.insertBefore(box, form);
+      window.location.replace('../index.html');
     }
   }
 })();
