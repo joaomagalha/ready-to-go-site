@@ -671,9 +671,9 @@ a { color: inherit; text-decoration: none; }
 /* ============ ESTADOS DE TEMPO DOS EVENTOS ============
    assets/js/event-schedule.js aplica estas classes a partir da data da
    festa (data-event-date) e do horário limite da lista (data-list-close):
-   - passou o horário limite  -> .is-closed no card do index (cinza, ainda
-     clicável, vai pro fim da lista) e .is-dimmed no flyer da página do
-     evento, com o bloco .list-closed no lugar do formulário;
+   - passou o horário limite  -> .is-closed no card do index (cinza, SEM
+     clique — flyer desativado, vai pro fim da lista) e .is-dimmed no flyer
+     da página do evento, com o bloco .list-closed no lugar do formulário;
    - passou o dia da festa     -> o card é removido do DOM e a página do
      evento mostra "essa festa já rolou".
    Tudo via JS — sem JS nada some (é exibição, não trava de segurança). */
@@ -681,6 +681,8 @@ a { color: inherit; text-decoration: none; }
   filter: grayscale(1);
   opacity: 0.6;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  cursor: default;
 }
 /* "Lista encerrada" (texto que o JS põe no lugar do "Garantir Meu Desconto")
    não leva dim nenhum — é a explicação do porquê o card está cinza, tem que

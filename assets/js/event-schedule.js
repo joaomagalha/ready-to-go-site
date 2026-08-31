@@ -88,10 +88,13 @@
       }
 
       if (st === 'closed') {
-        // Fica cinza e desce pro fim, mas continua clicável de propósito:
-        // leva pra página da festa, que mostra o flyer + "lista encerrada" +
-        // botão do grupo. Página útil, não card morto.
+        // Lista fechada: o card fica cinza, desce pro fim da lista e vira só
+        // um flyer DESATIVADO — não é mais clicável, não leva pra página do
+        // evento (decisão do João + namorada, 31/08). Some de vez quando a
+        // festa passa (ver o ramo 'gone' acima).
         card.classList.add('is-closed');
+        card.removeAttribute('href');
+        card.setAttribute('aria-disabled', 'true');
         var cta = card.querySelector('.event-poster__cta');
         if (cta) {
           // troca o texto "Garantir Meu Desconto" por "Lista encerrada"
