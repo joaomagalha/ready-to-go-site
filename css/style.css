@@ -668,6 +668,83 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink);
 }
 
+/* ============ ESTADOS DE TEMPO DOS EVENTOS ============
+   assets/js/event-schedule.js aplica estas classes a partir da data da
+   festa (data-event-date) e do horário limite da lista (data-list-close):
+   - passou o horário limite  -> .is-closed no card do index (cinza, ainda
+     clicável, vai pro fim da lista) e .is-dimmed no flyer da página do
+     evento, com o bloco .list-closed no lugar do formulário;
+   - passou o dia da festa     -> o card é removido do DOM e a página do
+     evento mostra "essa festa já rolou".
+   Tudo via JS — sem JS nada some (é exibição, não trava de segurança). */
+.event-poster.is-closed {
+  filter: grayscale(1);
+  opacity: 0.6;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+/* "Lista encerrada" (texto que o JS põe no lugar do "Garantir Meu Desconto")
+   não leva dim nenhum — é a explicação do porquê o card está cinza, tem que
+   ser o texto mais legível dele, não o mais fraco. Só a seta some. */
+.event-poster.is-closed .event-poster__cta svg { display: none; }
+
+/* Flyer da festa que já passou: preto e branco já comunica "acabou". A
+   opacidade fica leve (0.7) pra funcionar tanto em flyer claro quanto
+   escuro — a 0.5 o flyer escuro quase sumia. */
+.event-cover.is-dimmed {
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+
+/* Estado vazio: sem card nenhum, o título "Próximas Festas" é escondido pelo
+   JS e sobra só esta frase. Inter (não mono) porque é frase corrida, igual
+   .hero-tagline e .cta-note — mono no site é só pra rótulo/kicker. O .section
+   já traz margin-top (--space-section), então o padding aqui é pequeno. */
+.event-empty {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  padding: 8px 12px;
+  margin: 0;
+}
+
+.list-closed {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 24px;
+  text-align: center;
+}
+.list-closed__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #fff;
+  margin: 0 0 8px;
+}
+/* Frase corrida em Inter (herdado do body), mesmo tratamento do .event-empty
+   — os dois estados "sem lista" falam com a mesma voz. */
+.list-closed__text {
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  margin: 0 0 18px;
+}
+.list-closed__back {
+  margin: 14px 0 0;
+}
+.list-closed__back a {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--accent-text);
+}
+.list-closed__back a:hover,
+.list-closed__back a:focus-visible {
+  text-decoration: underline;
+  outline: none;
+}
+
 /* Redes */
 .social-row {
   display: flex;

@@ -5,3 +5,7 @@ CLAUDE.md
 # favicon-32.png / favicon-192.png / apple-touch-icon.png via sips.
 # Não é usada pelo site em produção, fica só local.
 assets/favicon-bola-espelho-source.png
+
+# Base pra criar página de evento nova — auxiliar de autoria, não é
+# publicada (ver "Como cadastrar uma festa nova" no CLAUDE.md).
+eventos/_MODELO.html

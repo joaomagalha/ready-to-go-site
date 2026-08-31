@@ -13,6 +13,9 @@
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    // Guarda: se event-schedule.js já marcou a lista como fechada (passou do
+    // horário limite / a festa já rolou), não abre o WhatsApp.
+    if (form.hidden || form.dataset.listClosed === '1') return;
     var numeroPromoter = form.dataset.numero;
     var nomeEvento = form.dataset.evento;
     var nome = document.getElementById('f-nome').value.trim();
