@@ -47,6 +47,21 @@
       .reveal { opacity: 1 !important; transform: none !important; filter: none !important; }
     </style>
   </noscript>
+
+  <!-- Microsoft Clarity (09/09/2026): gravação de sessão e mapa de calor, pra
+       ver o que a pessoa FAZ na página, não só quantas entraram. O Vercel
+       Analytics, logo abaixo do </body>, continua sendo a contagem de visitas
+       (sem cookie); este aqui é a camada de comportamento e usa cookie, por
+       isso precisa estar citado na política de privacidade.
+       Mascaramento em "Equilibrado" no painel: o que o visitante digita no
+       formulário (nome e telefone) NÃO é gravado. -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "yfhlf85oy3");
+  </script>
 </head>
 <body>
 
