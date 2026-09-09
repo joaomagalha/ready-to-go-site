@@ -229,8 +229,12 @@ a { color: inherit; text-decoration: none; }
      conta). `svh` usa a menor viewport possível (toolbar sempre expandida)
      como base, então já cabe certo desde o primeiro frame. `vh` continua
      de fallback pra navegador antigo sem suporte a `svh`. */
-  min-height: 62vh;
-  min-height: 62svh;
+  /* 09/09/2026: de 62 pra 52 no refino de conversão. O hero cheio empurrava
+     o primeiro card de festa inteiro pra fora da dobra — a pessoa chegava do
+     Instagram e só via vídeo + botão de sair pro grupo. Com 52 o topo do
+     card da próxima festa já aparece sem rolar, que é o produto de verdade. */
+  min-height: 52vh;
+  min-height: 52svh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -467,8 +471,20 @@ a { color: inherit; text-decoration: none; }
    antes era pequeno (0.62rem/6px) e só texto, fácil de ler como decoração
    em vez de call-to-action. Ícone de etiqueta reforça "desconto" mesmo
    pra quem só bate o olho rápido no card. */
+/* Linha de pílulas no topo do card (09/09/2026). Antes o selo era filho
+   direto do overlay e carregava o `margin-bottom: auto` que empurra o resto
+   do conteúdo pro rodapé; agora quem faz isso é o wrapper, porque o
+   event-schedule.js injeta aqui dentro uma segunda pílula com a urgência
+   real ("Fecha hoje" / "Faltam 3 dias"), calculada da data de fecho. */
+.event-poster__pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: auto;
+}
+
 .event-poster__eyebrow {
-  align-self: flex-start;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -483,9 +499,28 @@ a { color: inherit; text-decoration: none; }
   border-radius: 999px;
   font-weight: 700;
   line-height: 1;
-  margin-bottom: auto;
   /* sombra própria: o selo fica sobre a parte da foto que não tem scrim
      nenhum (topo, fora do gradiente acima), então não pode depender dele */
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+/* Pílula de urgência — clara de propósito, pra não competir com o selo
+   vermelho da marca: uma é "o que é" (lista de desconto), a outra é "quando
+   acaba". Só entra quando falta 3 dias ou menos, e o texto vem sempre de
+   data real (nunca urgência inventada). */
+.event-poster__urgency {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.94);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  line-height: 1;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
 }
 .event-poster__eyebrow svg {
@@ -513,6 +548,27 @@ a { color: inherit; text-decoration: none; }
   margin: 0 0 14px;
 }
 
+/* Rodapé do card (09/09/2026): preço à esquerda, CTA à direita. O preço
+   subiu da página do evento pro card porque "quanto custa?" era a pergunta
+   que só era respondida depois do clique — quem não topava o valor descobria
+   tarde e voltava. Preço colado no CTA é o par clássico: âncora + ação. */
+.event-poster__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.event-poster__price {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: #fff;
+  flex-shrink: 0;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
 .event-poster__cta {
   display: inline-flex;
   align-items: center;
@@ -528,6 +584,12 @@ a { color: inherit; text-decoration: none; }
   transition: transform 0.25s ease;
 }
 .event-poster:hover .event-poster__cta svg { transform: translateX(3px); }
+
+/* 09/09/2026: existiu aqui um `.is-next` que dava CTA em pílula vermelha só
+   pro primeiro card. O João pediu pra tirar — quer os cards idênticos entre
+   si, sem um "escolhido". Quem diferencia as festas agora é a contagem
+   regressiva (.event-poster__urgency), que é informação, não decoração.
+   Não reintroduzir destaque por card sem ele pedir. */
 
 /* Página de evento individual (eventos/{slug}.html) */
 .back-link {
@@ -687,6 +749,11 @@ a { color: inherit; text-decoration: none; }
    não leva dim nenhum — é a explicação do porquê o card está cinza, tem que
    ser o texto mais legível dele, não o mais fraco. Só a seta some. */
 .event-poster.is-closed .event-poster__cta svg { display: none; }
+/* Preço some junto com a lista: valor de lista de desconto que já fechou não
+   vale mais, deixar na tela só confunde quem chegou tarde. A urgência nem é
+   injetada pelo JS em card fechado, mas a regra fica aqui como rede. */
+.event-poster.is-closed .event-poster__price,
+.event-poster.is-closed .event-poster__urgency { display: none; }
 
 /* Estado vazio: sem card nenhum, o título "Próximas Festas" é escondido pelo
    JS e sobra só esta frase. Inter (não mono) porque é frase corrida, igual

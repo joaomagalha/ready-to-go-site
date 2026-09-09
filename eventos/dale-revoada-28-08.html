@@ -7,23 +7,44 @@
   <title>Dale Revoada 28.08 · Lista de Desconto</title>
   <meta name="theme-color" content="#1D1616">
 
+  <link rel="canonical" href="https://ready-to-go-site.vercel.app/eventos/dale-revoada-28-08.html">
+
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="../assets/favicon-192.png">
   <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
 
-  <!-- Sem og:* até 27/08/2026 — página de evento é justamente o link que
-       mais circula solto (grupo de WhatsApp, story), e sem essas tags o
-       preview de compartilhamento vem em branco. -->
+  <!-- Página de evento é o link que mais circula solto (grupo de WhatsApp,
+       story), então o preview importa mais aqui do que na home. As tags
+       chegaram em 27/08/2026; a URL absoluta só em 09/09/2026, e é ela que
+       faz o preview realmente aparecer (raspador não resolve relativo). -->
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ready 2 Go">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:url" content="https://ready-to-go-site.vercel.app/eventos/dale-revoada-28-08.html">
   <meta property="og:title" content="Dale Revoada 28.08 · Lista de Desconto">
   <meta property="og:description" content="Dale Revoada 28.08 · Lista de Desconto.">
-  <meta property="og:image" content="../assets/eventos/dale-revoada-28-08.jpg">
+  <meta property="og:image" content="https://ready-to-go-site.vercel.app/assets/eventos/dale-revoada-28-08.jpg">
+  <meta property="og:image:width" content="1080">
+  <meta property="og:image:height" content="1920">
+  <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="../css/style.css?v=22">
+  <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/inter-normal-latin.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/space-grotesk-latin.woff2" crossorigin>
+
+  <link rel="stylesheet" href="../css/style.css?v=23">
+
+  <!-- Sem JS o .page-loader (fixed, z-999) nunca sai e todo conteúdo fica em
+       .reveal { opacity: 0 } — a página virava uma tela preta. -->
+  <noscript>
+    <style>
+      .page-loader { display: none !important; }
+      .reveal { opacity: 1 !important; transform: none !important; filter: none !important; }
+    </style>
+  </noscript>
 </head>
 <body>
 
-  <script src="../assets/js/loader.js"></script>
+  <script src="../assets/js/loader.js?v=23"></script>
   <div class="page-loader" id="page-loader">
     <div class="page-loader__ring">
       <img class="page-loader__globe" src="../assets/loader-globo.jpg" alt="" width="132" height="132">
@@ -43,7 +64,7 @@
     <img class="event-cover reveal" src="../assets/eventos/dale-revoada-28-08.jpg" alt="Dale Revoada, 28.08" width="1080" height="1920" fetchpriority="high">
 
     <div class="section reveal" style="margin-top: 24px;">
-      <p class="event-title">Dale Revoada</p>
+      <h1 class="event-title">Dale Revoada</h1>
       <p class="event-rule">28.08 · DJ Davi DogDog · Vilarô<br>Lista de Desconto por R$50,00<br>Até 00h · pagamento na portaria</p>
 
       <!-- Sem backend: ao enviar, monta uma mensagem de WhatsApp com os
@@ -71,9 +92,10 @@
 
   </div>
 
-  <script src="../assets/js/event-schedule.js"></script>
-  <script src="../assets/js/lista-desconto.js"></script>
-  <script src="../assets/js/reveal.js"></script>
+  <script src="../assets/js/event-schedule.js?v=23"></script>
+  <script src="../assets/js/lista-desconto.js?v=23"></script>
+  <script src="../assets/js/reveal.js?v=23"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
 
 </body>
 </html>

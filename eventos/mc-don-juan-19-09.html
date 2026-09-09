@@ -7,20 +7,40 @@
   <title>Don Juan 19.09 · Lista de Desconto</title>
   <meta name="theme-color" content="#1D1616">
 
+  <link rel="canonical" href="https://ready-to-go-site.vercel.app/eventos/mc-don-juan-19-09.html">
+
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="../assets/favicon-192.png">
   <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
 
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ready 2 Go">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:url" content="https://ready-to-go-site.vercel.app/eventos/mc-don-juan-19-09.html">
   <meta property="og:title" content="Don Juan 19.09 · Lista de Desconto">
   <meta property="og:description" content="Don Juan 19.09 · Vilarô · Lista de Desconto.">
-  <meta property="og:image" content="../assets/eventos/mc-don-juan-19-09.jpg">
+  <meta property="og:image" content="https://ready-to-go-site.vercel.app/assets/eventos/mc-don-juan-19-09.jpg">
+  <meta property="og:image:width" content="720">
+  <meta property="og:image:height" content="1280">
+  <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="../css/style.css?v=22">
+  <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/inter-normal-latin.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/space-grotesk-latin.woff2" crossorigin>
+
+  <link rel="stylesheet" href="../css/style.css?v=23">
+
+  <!-- Sem JS o .page-loader (fixed, z-999) nunca sai e todo conteúdo fica em
+       .reveal { opacity: 0 } — a página virava uma tela preta. -->
+  <noscript>
+    <style>
+      .page-loader { display: none !important; }
+      .reveal { opacity: 1 !important; transform: none !important; filter: none !important; }
+    </style>
+  </noscript>
 </head>
 <body>
 
-  <script src="../assets/js/loader.js"></script>
+  <script src="../assets/js/loader.js?v=23"></script>
   <div class="page-loader" id="page-loader">
     <div class="page-loader__ring">
       <img class="page-loader__globe" src="../assets/loader-globo.jpg" alt="" width="132" height="132">
@@ -40,7 +60,7 @@
     <img class="event-cover reveal" src="../assets/eventos/mc-don-juan-19-09.jpg" alt="Vilarô, MC Don Juan, 19.09" width="720" height="1280" fetchpriority="high">
 
     <div class="section reveal" style="margin-top: 24px;">
-      <p class="event-title">Don Juan</p>
+      <h1 class="event-title">Don Juan</h1>
       <p class="event-rule">19.09 · MC Don Juan · Vilarô<br>Lista de Desconto por R$70,00</p>
 
       <!-- Sem backend: ao enviar, monta uma mensagem de WhatsApp com os
@@ -68,9 +88,10 @@
 
   </div>
 
-  <script src="../assets/js/event-schedule.js"></script>
-  <script src="../assets/js/lista-desconto.js"></script>
-  <script src="../assets/js/reveal.js"></script>
+  <script src="../assets/js/event-schedule.js?v=23"></script>
+  <script src="../assets/js/lista-desconto.js?v=23"></script>
+  <script src="../assets/js/reveal.js?v=23"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
 
 </body>
 </html>
