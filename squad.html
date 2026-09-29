@@ -27,7 +27,7 @@
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-normal-latin.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/space-grotesk-latin.woff2" crossorigin>
 
-  <link rel="stylesheet" href="css/style.css?v=28">
+  <link rel="stylesheet" href="css/style.css?v=29">
 
   <!-- Sem JS o .page-loader (fixed, z-999) nunca sai e todo conteúdo fica em
        .reveal { opacity: 0 } — a página virava uma tela preta. -->
@@ -55,7 +55,7 @@
 </head>
 <body class="squad-page">
 
-  <script src="assets/js/loader.js?v=28"></script>
+  <script src="assets/js/loader.js?v=29"></script>
   <div class="page-loader" id="page-loader">
     <div class="page-loader__ring">
       <img class="page-loader__globe" src="assets/loader-globo.jpg" alt="" width="132" height="132">
@@ -77,12 +77,30 @@
          vão pra uma planilha Google via Apps Script (código em
          squad-apps-script.gs, fora do site); o endereço fica no data-endpoint
          do <form>. Sem data-endpoint o envio não acontece e a página avisa. -->
+    <!-- 28/09/2026 (pedido do João: texto difícil de ler): lead curto e
+         centralizado, e o "como funciona" em dois itens alinhados à esquerda
+         com ícone. Palavras da promoter, só separadas em duas frases. -->
     <div class="squad-intro reveal">
       <p class="squad-kicker">Want to be part of it?</p>
-      <h1 class="event-title">Ready 2 Go Squad</h1>
-      <p class="squad-text">O Ready 2 Go Squad é o nosso time de creators que curtem viver e compartilhar os melhores rolês.</p>
-      <p class="squad-text">Ao fazer parte do squad, você participa da divulgação dos nossos eventos e, de acordo com as ações realizadas, tem acesso a cortesias, condições exclusivas e experiências especiais.</p>
-      <p class="squad-text squad-text--cta">Quer fazer parte? Preencha o formulário e faça sua inscrição.</p>
+      <h1 class="event-title squad-title">Ready 2 Go Squad</h1>
+      <p class="squad-lead">O Ready 2 Go Squad é o nosso time de creators que curtem viver e compartilhar os melhores&nbsp;rolês.</p>
+
+      <ul class="squad-perks">
+        <li>
+          <span class="squad-perks__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+          </span>
+          <span>Você participa da divulgação dos nossos&nbsp;eventos.</span>
+        </li>
+        <li>
+          <span class="squad-perks__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>
+          </span>
+          <span>De acordo com as ações realizadas, tem acesso a cortesias, condições exclusivas e experiências&nbsp;especiais.</span>
+        </li>
+      </ul>
+
+      <p class="squad-call">Quer fazer parte? Preencha o formulário e faça sua&nbsp;inscrição.</p>
     </div>
 
     <div class="squad-form-wrap reveal">
@@ -150,8 +168,8 @@
 
   </div>
 
-  <script src="assets/js/squad-form.js?v=28"></script>
-  <script src="assets/js/reveal.js?v=28"></script>
+  <script src="assets/js/squad-form.js?v=29"></script>
+  <script src="assets/js/reveal.js?v=29"></script>
   <script defer src="/_vercel/insights/script.js"></script>
 
 </body>

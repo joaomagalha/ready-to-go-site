@@ -940,22 +940,78 @@ footer {
   margin-right: auto;
 }
 .squad-page .back-link { max-width: 520px; margin-left: auto; margin-right: auto; }
-.squad-intro { text-align: center; margin-bottom: 24px; }
+.squad-intro { text-align: center; margin-bottom: 32px; }
 .squad-kicker {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--accent-text);
-  margin: 8px 0 10px;
+  margin: 8px 0 12px;
 }
-.squad-text {
-  color: var(--muted);
-  font-size: 0.92rem;
+.squad-title { margin-bottom: 16px; }
+
+/* Texto de leitura (28/09/2026): o cinza --muted (4,7:1) passava no limite e
+   cansava em parágrafo corrido. Aqui um cinza claro com 11,9:1 sobre --ink,
+   corpo maior e entrelinha folgada. */
+.squad-lead {
+  color: #D6D2D2;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  max-width: 30em;
+  margin: 0 auto 24px;
+  text-wrap: balance;
+}
+
+/* "Como funciona" em itens: texto alinhado à esquerda (centralizado, cada
+   linha começa num lugar diferente e o olho se perde), ícone marcando cada
+   ponto, respiro entre eles. */
+.squad-perks {
+  list-style: none;
+  margin: 0;
+  padding: 18px 20px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+}
+.squad-perks li {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 14px;
+  align-items: start;
+  color: #D6D2D2;
+  font-size: 0.98rem;
   line-height: 1.6;
-  margin: 0 0 10px;
+  text-wrap: pretty;
 }
-.squad-text--cta { color: var(--paper); font-weight: 600; margin-bottom: 0; }
+.squad-perks li + li {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.squad-perks__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+.squad-perks__icon svg { width: 18px; height: 18px; }
+.squad-perks li > span:last-child { padding-top: 5px; }
+
+.squad-call {
+  color: var(--paper);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.55;
+  margin: 28px auto 0;
+  max-width: 26em;
+  text-wrap: balance;
+}
 
 .field textarea {
   width: 100%;
