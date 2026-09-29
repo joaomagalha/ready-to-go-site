@@ -3,16 +3,17 @@
 // rolar), a cada ~5-8 s ele faz UMA coisa, sorteada e diferente da anterior:
 //  - espia por uma borda (direita, esquerda espelhado, de baixo) com uma
 //    reação: tchau, apaixonado, assustado, piscadinha, gargalhada;
-//  - desce pendurado pela corrente, do topo;
-//  - "teia": atravessa a tela de um lado ao outro balançando na corrente.
+//  - desce pendurado pela corrente, do topo.
+// (A "teia", atravessando a tela balançando, saiu em 29/09: o João não gostou
+// de como ficou no site.)
 // Posição sorteada a cada vez, sempre num lugar que não cubra botão, preço,
-// título nem chamada (a teia só passa, não para em cima de nada).
+// título nem chamada.
 // Nunca clicável; some quando a pessoa rola; não aparece com reduced-motion.
 (function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (!document.querySelector('.event-grid')) return;
 
-  var V = '?v=44';
+  var V = '?v=45';
   var BASE = 'assets/mascote/globinho-';
   var LADOS = ['direita', 'esquerda', 'baixo'];
   var REACOES = [
@@ -22,7 +23,6 @@
     { img: 'espiando-piscadinha', lados: LADOS },
     { img: 'espiando-risada', lados: LADOS },
     { img: 'espiando-pendurado', lados: ['cima'] }
-    // a teia é sorteada à parte (chance de 1 em 5), ver mostrar()
   ];
   REACOES.forEach(function (r) { var i = new Image(); i.src = BASE + r.img + '.svg' + V; });
 
@@ -31,14 +31,7 @@
   el.alt = ''; el.setAttribute('aria-hidden', 'true');
   document.body.appendChild(el);
 
-  // Teia: um "pêndulo" preso acima da tela; o fio é uma div, o Globinho vai na ponta.
-  var teia = document.createElement('div');
-  teia.className = 'globinho-teia';
-  teia.setAttribute('aria-hidden', 'true');
-  teia.innerHTML = '<span class="globinho-teia__fio"></span><img alt="" src="' + BASE + 'espiando-teia.svg' + V + '">';
-  document.body.appendChild(teia);
-
-  var ultimaRolagem = Date.now(), ultima = '', ocupado = false, timer = null;
+  var ultimaRolagem = Date.now(), ultima = '', timer = null;
   window.addEventListener('scroll', function () {
     ultimaRolagem = Date.now();
     if (el.classList.contains('is-visivel')) esconder();
@@ -88,36 +81,15 @@
     return null;
   }
 
-  function atravessar() {
-    ocupado = true;
-    var w = innerWidth >= 1024 ? 120 : 96;
-    var ang = 62 * Math.PI / 180;
-    var L = Math.round((innerWidth / 2 + w) / Math.sin(ang));         // fio longo o bastante pra sair dos dois lados
-    var topo = Math.round(innerHeight * (0.58 + Math.random() * 0.18) - L); // ponto mais baixo entre 58% e 76% da tela
-    var ida = Math.random() < 0.5 ? 1 : -1;
-    teia.style.setProperty('--w', w + 'px');
-    teia.style.height = L + 'px';
-    teia.style.top = topo + 'px';
-    teia.classList.add('is-ativa');
-    var anim = teia.animate(
-      [{ transform: 'translateX(-50%) rotate(' + (-62 * ida) + 'deg)' }, { transform: 'translateX(-50%) rotate(' + (62 * ida) + 'deg)' }],
-      { duration: 3400, easing: 'cubic-bezier(.45,.05,.55,.95)' });
-    anim.onfinish = anim.oncancel = function () { teia.classList.remove('is-ativa'); ocupado = false; };
-  }
-
   function mostrar() {
-    if (ocupado || document.hidden || !temFestaAberta() || el.classList.contains('is-visivel')) return;
+    if (document.hidden || !temFestaAberta() || el.classList.contains('is-visivel')) return;
     if (Date.now() - ultimaRolagem < 1500) return;
-    // A teia tem chance fixa de 1 em 5 (no sorteio geral ela seria 1 em 16
-    // e quase nunca aparecia); nunca duas seguidas.
-    if (ultima.indexOf('teia') === -1 && Math.random() < 0.2) { ultima = 'espiando-teiateia'; atravessar(); return; }
     var w = innerWidth >= 1024 ? 116 : 92, h = Math.round(w * 1.12);
     var opcoes = [];
     REACOES.forEach(function (r) { r.lados.forEach(function (l) { if (r.img + l !== ultima) opcoes.push({ img: r.img, lado: l }); }); });
     embaralha(opcoes);
     for (var k = 0; k < opcoes.length; k++) {
       var o = opcoes[k];
-      if (o.lado === 'teia') { ultima = o.img + o.lado; atravessar(); return; }
       var pos = posicao(o.lado, w, h);
       if (!pos) continue;
       // Posiciona no lado novo SEM animação e só depois liga a entrada;

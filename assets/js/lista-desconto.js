@@ -20,7 +20,7 @@
       festa = document.createElement('div');
       festa.className = 'globinho-festa-lista';
       festa.setAttribute('role', 'status');
-      festa.innerHTML = '<img src="../assets/mascote/globinho-comemora.svg?v=44" alt="" width="84" height="94">' +
+      festa.innerHTML = '<img src="../assets/mascote/globinho-comemora.svg?v=45" alt="" width="84" height="94">' +
         '<p>Agora é só tocar em <strong>enviar</strong> lá no WhatsApp!</p>';
       var btn = form.querySelector('button[type="submit"]');
       btn.parentNode.insertBefore(festa, btn.nextSibling);

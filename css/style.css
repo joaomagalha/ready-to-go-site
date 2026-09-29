@@ -1376,37 +1376,8 @@ footer {
 .globinho-espia.entra-baixo { right: auto; top: auto; bottom: 0; transform: translateY(125%); }
 .globinho-espia.entra-baixo.is-visivel { transform: translateY(28%); transition-delay: 0s, 0s; }
 
-/* "Teia": atravessa a tela balançando pendurado. O JS mede o fio (altura)
-   pra ele sair pelos dois lados e anima a rotação (Web Animations). */
-.globinho-teia {
-  position: fixed;
-  left: 50%;
-  top: 0;
-  width: 0;
-  z-index: 40;
-  pointer-events: none;
-  visibility: hidden;
-  transform-origin: 50% 0;
-}
-.globinho-teia.is-ativa { visibility: visible; }
-.globinho-teia__fio {
-  position: absolute;
-  left: -1px;
-  top: 0;
-  bottom: calc(var(--w, 96px) * 0.3);
-  width: 2px;
-  background: repeating-linear-gradient(180deg, #C9CCD3 0 5px, transparent 5px 8px);
-}
-.globinho-teia img {
-  position: absolute;
-  bottom: calc(var(--w, 96px) * -0.8);
-  left: 50%;
-  width: var(--w, 96px);
-  transform: translateX(-50%);
-  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.5));
-}
 /* largura vem do JS (92 no celular, 116 no computador) */
 @media (prefers-reduced-motion: reduce) {
-  .globinho-espia, .globinho-teia { display: none; }
+  .globinho-espia { display: none; }
   .globinho-festa-lista { transition: none; }
 }
