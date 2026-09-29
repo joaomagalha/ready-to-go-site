@@ -776,7 +776,16 @@ a { color: inherit; text-decoration: none; }
   gap: 12px;
   margin-top: 14px;
 }
-.social-row .btn { flex: 1; }
+/* 29/09/2026: flex: 1 sozinho deixava o botão crescer até o tamanho do
+   texto; entre 375 e 389px o "Instagram" pedia 171px com 166 de espaço e
+   empurrava o par pra direita (margem 20 x 5). min-width: 0 + base 0 deixa
+   os dois SEMPRE com a mesma largura; o respiro lateral menor é o que cabe. */
+.social-row .btn {
+  flex: 1 1 0;
+  min-width: 0;
+  padding-left: 12px;
+  padding-right: 12px;
+}
 
 /* Rodapé */
 footer {
@@ -801,7 +810,7 @@ footer {
    (já acontecia antes de 28/09). Abaixo de 360px o card também aperta. */
 @media (max-width: 374px) {
   .social-row { gap: 8px; }
-  .social-row .btn { min-width: 0; padding-left: 10px; padding-right: 10px; gap: 6px; font-size: 0.9rem; }
+  .social-row .btn { padding-left: 10px; padding-right: 10px; gap: 6px; font-size: 0.9rem; }
 }
 @media (max-width: 359px) {
   .event-poster__overlay { padding: 16px; }
