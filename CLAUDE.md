@@ -75,10 +75,27 @@ Passos:
 
 4. **Cache-bust** → se mexeu no `css/style.css` **ou em qualquer arquivo de
    `assets/js/`**, subir o `?v=N` em `index.html`, em todas as páginas de
-   evento e no `_MODELO.html`. Hoje em `?v=23`. O JS passou a ter `?v=` em
+   evento e no `_MODELO.html`. Hoje em `?v=24`. O JS passou a ter `?v=` em
    09/09/2026: sem isso o navegador servia o script velho junto com o HTML
    novo, e recurso novo (destaque da próxima festa, urgência) simplesmente
    não aparecia pra quem já tinha visitado o site.
+
+## Layout (responsivo desde 28/09/2026)
+
+- **< 640px (celular):** coluna única de 480px, o layout original. Nada das
+  regras de tela larga vale aqui.
+- **640 a 1023px:** cards em 2 colunas; **≥ 1024px:** 3 colunas, até 1120px.
+  A grade é flex com `wrap` e `justify-content: center`: linha incompleta fica
+  centralizada. Cadastro de festa não muda: o card é o mesmo HTML.
+- Botão do grupo, nota, Redes e o estado vazio continuam com 480px no máximo.
+- **Página da festa ≥ 900px:** `.event-layout` (flyer parado à esquerda,
+  formulário à direita). Toda página nova sai do `_MODELO.html`, que já tem o
+  wrapper e o `<body class="event-page">`.
+- **Hero:** em tela larga e deitada, `assets/js/hero-video.js` troca pelo vídeo
+  16:9 se o `<video>` tiver `data-src-wide` (e `data-poster-wide`). Sem isso,
+  fica o vertical.
+- Conferir sempre em 320, 360, 375, 640, 768, 1024 e 1440: sem rolagem lateral
+  e a linha `data · dia · artista` do card numa linha só.
 
 ## Comportamento automático das festas (`assets/js/event-schedule.js`)
 

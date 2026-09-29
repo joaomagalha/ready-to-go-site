@@ -27,7 +27,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/inter-normal-latin.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/space-grotesk-latin.woff2" crossorigin>
 
-  <link rel="stylesheet" href="../css/style.css?v=23">
+  <link rel="stylesheet" href="../css/style.css?v=25">
 
   <!-- Sem JS o .page-loader (fixed, z-999) nunca sai e todo conteúdo fica em
        .reveal { opacity: 0 } — a página virava uma tela preta. -->
@@ -53,9 +53,9 @@
     })(window, document, "clarity", "script", "yfhlf85oy3");
   </script>
 </head>
-<body>
+<body class="event-page">
 
-  <script src="../assets/js/loader.js?v=23"></script>
+  <script src="../assets/js/loader.js?v=24"></script>
   <div class="page-loader" id="page-loader">
     <div class="page-loader__ring">
       <img class="page-loader__globe" src="../assets/loader-globo.jpg" alt="" width="132" height="132">
@@ -71,41 +71,43 @@
 
     <p class="back-link reveal"><a href="../index.html">&larr; Voltar</a></p>
 
-    <!-- Flyer do evento, mandado pela promoter (assets/eventos/mc-don-juan-19-09.jpg) -->
-    <img class="event-cover reveal" src="../assets/eventos/mc-don-juan-19-09.jpg" alt="Vilarô, MC Don Juan, 19.09" width="720" height="1280" fetchpriority="high">
+    <div class="event-layout">
+      <!-- Flyer do evento, mandado pela promoter (assets/eventos/mc-don-juan-19-09.jpg) -->
+      <img class="event-cover reveal" src="../assets/eventos/mc-don-juan-19-09.jpg" alt="Vilarô, MC Don Juan, 19.09" width="720" height="1280" fetchpriority="high">
 
-    <div class="section reveal" style="margin-top: 24px;">
-      <h1 class="event-title">Don Juan</h1>
-      <p class="event-rule">19.09 · MC Don Juan · Vilarô<br>Lista de Desconto por R$70,00</p>
+      <div class="section reveal" style="margin-top: 24px;">
+        <h1 class="event-title">Don Juan</h1>
+        <p class="event-rule">19.09 · MC Don Juan · Vilarô<br>Lista de Desconto por R$70,00</p>
 
-      <!-- Sem backend: ao enviar, monta uma mensagem de WhatsApp com os
-           dados preenchidos (evento já embutido, não precisa perguntar)
-           e abre uma conversa pronta pro número da promoter. Ela recebe
-           e confirma o nome na lista manualmente. -->
-      <form class="form-card" id="lista-form" data-numero="5565993475757" data-evento="Don Juan (19.09)" data-event-date="2026-09-19">
-        <div class="field">
-          <label for="f-nome">Nome completo</label>
-          <input type="text" id="f-nome" name="nome" placeholder="Seu nome" required>
-        </div>
-        <div class="field">
-          <label for="f-telefone">Telefone (WhatsApp)</label>
-          <input type="tel" id="f-telefone" name="telefone" placeholder="(65) 9XXXX-XXXX" required>
-        </div>
-        <button type="submit" class="btn btn-primary">
-          <svg class="icon" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
-          Garantir Meu Desconto
-        </button>
-        <p class="form-note">Isso vai abrir o WhatsApp com a mensagem pronta.<br>Toque em <strong>enviar</strong> lá dentro pra confirmar sua entrada na lista.</p>
-      </form>
+        <!-- Sem backend: ao enviar, monta uma mensagem de WhatsApp com os
+             dados preenchidos (evento já embutido, não precisa perguntar)
+             e abre uma conversa pronta pro número da promoter. Ela recebe
+             e confirma o nome na lista manualmente. -->
+        <form class="form-card" id="lista-form" data-numero="5565993475757" data-evento="Don Juan (19.09)" data-event-date="2026-09-19">
+          <div class="field">
+            <label for="f-nome">Nome completo</label>
+            <input type="text" id="f-nome" name="nome" placeholder="Seu nome" required>
+          </div>
+          <div class="field">
+            <label for="f-telefone">Telefone (WhatsApp)</label>
+            <input type="tel" id="f-telefone" name="telefone" placeholder="(65) 9XXXX-XXXX" required>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <svg class="icon" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+            Garantir Meu Desconto
+          </button>
+          <p class="form-note">Isso vai abrir o WhatsApp com a mensagem pronta.<br>Toque em <strong>enviar</strong> lá dentro pra confirmar sua entrada na lista.</p>
+        </form>
+      </div>
     </div>
 
     <footer>Cuiabá, MT · &copy; 2026</footer>
 
   </div>
 
-  <script src="../assets/js/event-schedule.js?v=23"></script>
-  <script src="../assets/js/lista-desconto.js?v=23"></script>
-  <script src="../assets/js/reveal.js?v=23"></script>
+  <script src="../assets/js/event-schedule.js?v=24"></script>
+  <script src="../assets/js/lista-desconto.js?v=24"></script>
+  <script src="../assets/js/reveal.js?v=24"></script>
   <script defer src="/_vercel/insights/script.js"></script>
 
 </body>

@@ -793,3 +793,135 @@ footer {
   display: inline-block;
   flex-shrink: 0;
 }
+
+/* Tela estreita (< 375px: iPhone SE 1ª geração 320px, Android 360px): os
+   dois botões de Redes lado a lado não cabiam e a página rolava pro lado
+   (já acontecia antes de 28/09). Abaixo de 360px o card também aperta. */
+@media (max-width: 374px) {
+  .social-row { gap: 8px; }
+  .social-row .btn { min-width: 0; padding-left: 10px; padding-right: 10px; gap: 6px; font-size: 0.9rem; }
+}
+@media (max-width: 359px) {
+  .event-poster__overlay { padding: 16px; }
+  .event-poster__meta { font-size: 0.7rem; letter-spacing: 0; }
+}
+
+/* ============ TABLET E DESKTOP (28/09/2026) ============
+   Até aqui o site era uma coluna de celular fixa (480px centralizada), decisão
+   de 25/08 por causa do vídeo vertical do hero borrar esticado. O João reabriu:
+   agora é responsivo de verdade. Regra de ouro: NADA abaixo de 640px muda, tudo
+   que é novo mora nestes @media. O vídeo horizontal do desktop é trocado por
+   assets/js/hero-video.js (o celular nunca baixa o arquivo grande). */
+@media (min-width: 640px) {
+  :root { --space-section: 56px; }
+
+  .wrap { max-width: 720px; padding-left: 32px; padding-right: 32px; }
+
+  /* O que é "de uma coluna só" continua com largura de celular, centralizado:
+     botão de 700px de largura fica feio e ninguém lê frase tão comprida. */
+  .btn-row,
+  .cta-note,
+  .social-row,
+  .event-empty {
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero {
+    max-width: none;
+    min-height: clamp(460px, 62vh, 720px);
+    padding-bottom: 56px;
+  }
+  /* Passagem do vídeo pro resto da página (28/09, pedido do João: mais
+     suave). No celular o degradê chega na cor de fundo aos 88% e o resto é
+     liso; em tela larga isso virava uma faixa, e logo abaixo os pontinhos
+     do fundo do body começavam de uma vez, desenhando uma linha reta.
+     Aqui: degradê com várias paradas (curva suave, sem "degrau") que só
+     fecha no fim do hero, e os mesmos pontinhos do body entrando aos poucos
+     por cima (::after), alinhados na mesma grade de 22px. */
+  .hero-overlay {
+    background:
+      radial-gradient(120% 75% at 50% 100%, rgba(29, 22, 22, 0.7) 0%, transparent 65%),
+      linear-gradient(180deg,
+        rgba(29, 22, 22, 0.10) 0%,
+        rgba(29, 22, 22, 0.14) 25%,
+        rgba(29, 22, 22, 0.24) 40%,
+        rgba(29, 22, 22, 0.40) 52%,
+        rgba(29, 22, 22, 0.58) 63%,
+        rgba(29, 22, 22, 0.74) 73%,
+        rgba(29, 22, 22, 0.87) 82%,
+        rgba(29, 22, 22, 0.95) 90%,
+        var(--ink) 100%);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0) 0 0 / 22px 22px;
+    -webkit-mask-image: linear-gradient(180deg, transparent 55%, #000 100%);
+            mask-image: linear-gradient(180deg, transparent 55%, #000 100%);
+  }
+  .brand-mark { font-size: clamp(2.6rem, 6vw, 4.2rem); }
+  .brand-sub { font-size: 0.74rem; }
+  .hero-tagline { max-width: 420px; font-size: 1rem; }
+
+  /* Cards: 2 por linha. Flex com wrap (não grid) pra a última linha ímpar
+     ficar CENTRALIZADA em vez de encostada à esquerda. A largura é fixa por
+     coluna, então todos os cards ficam do mesmo tamanho. */
+  .event-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  .event-poster { flex: 0 0 calc((100% - 20px) / 2); }
+  .event-poster__title { font-size: 1.55rem; }
+  /* Card de 2/3 colunas fica com ~280-330px: com o respiro e a letra do
+     celular, a linha "data · dia · artista" quebrava em duas. */
+  .event-poster__overlay { padding: 16px; }
+  .event-poster__meta { font-size: 0.7rem; letter-spacing: 0; }
+}
+
+@media (min-width: 1024px) {
+  .wrap { max-width: 1120px; padding-left: 40px; padding-right: 40px; }
+
+  .hero { min-height: clamp(520px, 66vh, 760px); }
+
+  .event-grid { gap: 24px; }
+  .event-poster { flex-basis: calc((100% - 48px) / 3); }
+  .event-poster__title { font-size: 1.7rem; }
+}
+
+/* Página da festa entre 640 e 899px: continua empilhada como no celular.
+   Sem este teto o flyer (vertical) ficava com ~650px de largura e ~1150px de
+   altura, e o formulário ia parar muito abaixo da dobra. */
+@media (min-width: 640px) and (max-width: 899px) {
+  .event-page .wrap { max-width: 544px; }
+}
+
+/* Página da festa: flyer à esquerda (fica parado enquanto rola) e o
+   formulário à direita. Abaixo de 900px segue empilhado como no celular. */
+@media (min-width: 900px) {
+  .event-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 420px) minmax(0, 440px);
+    justify-content: center;
+    align-items: start;
+    gap: 48px;
+  }
+  .event-layout .event-cover {
+    position: sticky;
+    top: 24px;
+  }
+  .event-page .wrap { max-width: 1000px; }
+  .event-layout > .section { margin-top: 0 !important; }
+  .event-page .back-link,
+  .event-page footer {
+    max-width: 908px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
