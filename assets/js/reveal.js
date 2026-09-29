@@ -12,7 +12,12 @@
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.15 });
+    // 29/09/2026: era { threshold: 0.15 } (15% da ALTURA do elemento na tela).
+    // Com 4 festas a seção "Próximas Festas" passou de 1.600px e precisava de
+    // ~250px visíveis, mais do que cabe abaixo do botão do grupo num celular
+    // de tela baixa: o primeiro card ficava invisível até rolar. Agora dispara
+    // quando o TOPO do elemento entra 60px na tela, qualquer que seja a altura.
+    }, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
     revealEls.forEach(function (el) { io.observe(el); });
   } else {
     revealEls.forEach(function (el) { el.classList.add('is-in'); });
