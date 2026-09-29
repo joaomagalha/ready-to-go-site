@@ -58,11 +58,11 @@
      escuro do site. */
   --accent: #8E1616;
   --accent-soft: rgba(142, 22, 22, 0.14);
-  --accent-text: #D84040;
+  --accent-text: #EC6A6A; /* 29/09: era #D84040 (3,2:1 sobre o fundo com luz); clareado pra 4,5:1+ */
   --ink: #1D1616;
   --ink-2: #2E1616;
   --paper: #EEEEEE;
-  --muted: #868282;
+  --muted: #ABA6A6; /* 29/09: era #868282; com a luz de fundo caía pra 3,6:1 */
   /* --surface-light (27/08/2026): fundo claro do form-card. Era vermelho
      escuro (--ink-2), depois virou creme #EFE6D8 (pedido do João), mas ele
      achou que o creme dava uma vibe vintage sem sentido pro site — trocado
@@ -81,11 +81,53 @@ html {
 body {
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background:
-    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0) 0 0 / 22px 22px,
-    var(--ink);
+  background: var(--ink);
   color: var(--paper);
   -webkit-font-smoothing: antialiased;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* ============ FUNDO: LUZ DE FESTA DESFOCADA + GRÃO (29/09/2026) ============
+   Referência do João (Pinterest): gradiente desfocado com grão de filme. A
+   referência é clara (branco/amarelo); aqui foi adaptada pro site escuro e
+   pra paleta da marca: manchas de luz vinho, vermelho e um laranja quente,
+   bem suaves, sobre o --ink, e o grão por cima. Substitui a malha de
+   pontinhos. Tudo CSS/SVG, sem imagem pra baixar.
+   - ::before = as manchas. Rolam junto com a página (absolute), então cada
+     trecho tem a sua luz. Na home, somem no topo pra não criar linha na
+     borda de baixo do hero (que é sólido).
+   - ::after = o grão, fixo na tela. */
+body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 38% at 12% 34%, rgba(216, 64, 64, 0.20) 0%, transparent 70%),
+    radial-gradient(55% 30% at 92% 52%, rgba(224, 119, 46, 0.14) 0%, transparent 70%),
+    radial-gradient(70% 34% at 20% 74%, rgba(142, 22, 22, 0.34) 0%, transparent 72%),
+    radial-gradient(60% 28% at 85% 92%, rgba(216, 64, 64, 0.16) 0%, transparent 70%);
+  filter: blur(40px);
+}
+body:has(.hero)::before {
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, transparent 40vh, #000 85vh);
+          mask-image: linear-gradient(180deg, transparent 0, transparent 40vh, #000 85vh);
+}
+/* Grão por cima de tudo (fixo na tela), em "overlay": dá textura de filme
+   sem clarear o fundo. Atrás do conteúdo ele parava na borda do hero (que é
+   sólido) e desenhava uma linha. Abaixo do loader (z 999). */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
 }
 
 /* Entrada suave (fade + blur + sobe), inspirada no design system de
@@ -920,9 +962,8 @@ footer {
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    background: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0) 0 0 / 22px 22px;
-    -webkit-mask-image: linear-gradient(180deg, transparent 55%, #000 100%);
-            mask-image: linear-gradient(180deg, transparent 55%, #000 100%);
+    /* Era a malha de pontinhos do body; agora o fundo é grão (29/09). */
+    display: none;
   }
   .brand-mark { font-size: clamp(2.6rem, 6vw, 4.2rem); }
   .brand-sub { font-size: 0.74rem; }
