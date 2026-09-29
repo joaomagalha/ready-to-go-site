@@ -35,8 +35,9 @@
        duas faces latin (as latin-ext quase nunca são usadas em pt-BR). -->
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-normal-latin.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/space-grotesk-latin.woff2" crossorigin>
+  <link rel="preload" href="assets/mascote/globinho-tonto.svg" as="image" type="image/svg+xml">
 
-  <link rel="stylesheet" href="css/style.css?v=40">
+  <link rel="stylesheet" href="css/style.css?v=41">
 
   <!-- Sem JS o site era uma tela preta: o .page-loader é fixed/z-999 e só sai
        via JS, e todo conteúdo nasce em .reveal { opacity: 0 }. Quem tem JS
@@ -65,10 +66,10 @@
 </head>
 <body>
 
-  <script src="assets/js/loader.js?v=40"></script>
+  <script src="assets/js/loader.js?v=41"></script>
   <div class="page-loader" id="page-loader">
     <div class="page-loader__ring">
-      <img class="page-loader__globe" src="assets/loader-globo.jpg" alt="" width="132" height="132">
+      <img class="page-loader__globinho" src="assets/mascote/globinho-tonto.svg" alt="" width="150" height="168">
     </div>
     <p class="page-loader__label">Ready 2 Go</p>
   </div>
@@ -95,7 +96,7 @@
     </video>
     <!-- Tela larga: hero-video.js troca pelo vídeo horizontal (data-src-wide),
          que nunca é baixado no celular. -->
-    <script src="assets/js/hero-video.js?v=40"></script>
+    <script src="assets/js/hero-video.js?v=41"></script>
     <div class="hero-overlay"></div>
     <!-- Marca real dela: @ready2go.club no Instagram (nome de exibição
          "Ready 2 Go"), já em uso como perfil de divulgação de festas —
@@ -314,8 +315,9 @@
 
   </div>
 
-  <script src="assets/js/event-schedule.js?v=40"></script>
-  <script src="assets/js/reveal.js?v=40"></script>
+  <script src="assets/js/event-schedule.js?v=41"></script>
+  <script src="assets/js/globinho.js?v=41"></script>
+  <script src="assets/js/reveal.js?v=41"></script>
   <!-- Vercel Analytics (09/09/2026): sem medição não dá pra saber se o refino
        de conversão funcionou. Servido pelo próprio domínio da Vercel, então
        em localhost o 404 desse script é esperado e inofensivo. -->

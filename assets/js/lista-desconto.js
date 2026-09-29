@@ -11,6 +11,26 @@
   var form = document.getElementById('lista-form');
   if (!form) return;
 
+  // Globinho comemorando depois do clique (29/09/2026): aparece ABAIXO do
+  // botão, no fluxo da página (por cima ele cobria nome, preço e campos), com
+  // o lembrete de apertar enviar no WhatsApp. Fica uns segundos e fecha.
+  var festa = null, timer = null;
+  function comemorar() {
+    if (!festa) {
+      festa = document.createElement('div');
+      festa.className = 'globinho-festa-lista';
+      festa.setAttribute('role', 'status');
+      festa.innerHTML = '<img src="../assets/mascote/globinho-comemora.svg?v=41" alt="" width="84" height="94">' +
+        '<p>Agora é só tocar em <strong>enviar</strong> lá no WhatsApp!</p>';
+      var btn = form.querySelector('button[type="submit"]');
+      btn.parentNode.insertBefore(festa, btn.nextSibling);
+    }
+    // reflow pra reiniciar a transição se clicar de novo
+    festa.classList.remove('is-visivel'); void festa.offsetWidth; festa.classList.add('is-visivel');
+    clearTimeout(timer);
+    timer = setTimeout(function () { festa.classList.remove('is-visivel'); }, 6000);
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     // Obs: se a lista já fechou, event-schedule.js já mandou a página de
@@ -27,5 +47,6 @@
 
     var url = 'https://wa.me/' + numeroPromoter + '?text=' + encodeURIComponent(texto);
     window.open(url, '_blank');
+    comemorar();
   });
 })();

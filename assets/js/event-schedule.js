@@ -171,7 +171,17 @@
       var empty = document.createElement('p');
       empty.className = 'event-empty';
       empty.textContent = 'Nenhuma festa na agenda essa semana. A próxima é anunciada no grupo primeiro.';
-      section.replaceChild(empty, grid);
+      // Globinho dançando pra entreter quem chegou sem festa (29/09/2026).
+      var wrap = document.createElement('div');
+      wrap.className = 'event-empty-wrap';
+      var danca = document.createElement('img');
+      danca.className = 'globinho-danca';
+      danca.src = 'assets/mascote/globinho-danca.svg?v=41';
+      danca.alt = 'Globinho, o mascote, dançando enquanto não tem festa';
+      danca.width = 150; danca.height = 168;
+      wrap.appendChild(danca);
+      wrap.appendChild(empty);
+      section.replaceChild(wrap, grid);
     }
   }
 
