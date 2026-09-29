@@ -112,8 +112,8 @@ body::before {
   filter: blur(40px);
 }
 body:has(.hero)::before {
-  -webkit-mask-image: linear-gradient(180deg, transparent 0, transparent 40vh, #000 85vh);
-          mask-image: linear-gradient(180deg, transparent 0, transparent 40vh, #000 85vh);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, transparent 22vh, #000 72vh);
+          mask-image: linear-gradient(180deg, transparent 0, transparent 22vh, #000 72vh);
 }
 /* Grão por cima de tudo (fixo na tela), em "overlay": dá textura de filme
    sem clarear o fundo. Atrás do conteúdo ele parava na borda do hero (que é
@@ -286,13 +286,19 @@ a { color: inherit; text-decoration: none; }
      não deixar o texto do hero colado atrás da barra de status em iPhone
      com tela full-bleed (o hero é a única seção que encosta no topo). */
   padding: calc(32px + env(safe-area-inset-top, 0px)) 20px 40px;
-  background: var(--ink);
+  /* 29/09: transparente (era var(--ink)): o fim do hero se mistura com a
+     luz do fundo em vez de acabar numa cor lisa e desenhar uma linha. */
+  background: transparent;
 }
 
 /* Vídeo dos globos de espelho girando, em loop, atrás do conteúdo do hero
    (26/08/2026 — antes era uma foto estática no `background` do .hero).
    `object-fit:cover` + `object-position` centralizam igual a foto fazia. */
 .hero-video {
+  /* 29/09: o vídeo some aos poucos na parte de baixo (fica transparente),
+     deixando aparecer o fundo com luz: transição contínua pra seção de baixo. */
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 50%, rgba(0,0,0,0.55) 75%, transparent 100%);
+          mask-image: linear-gradient(180deg, #000 0%, #000 50%, rgba(0,0,0,0.55) 75%, transparent 100%);
   position: absolute;
   inset: 0;
   width: 100%;
@@ -322,9 +328,12 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   inset: 0;
   z-index: 1;
+  /* 29/09: mais leve (vídeo aparece mais) e termina TRANSPARENTE, não em
+     --ink sólido; quem faz o fim do hero é a máscara do vídeo. O radial atrás
+     do texto continua garantindo a leitura. */
   background:
-    radial-gradient(120% 75% at 50% 100%, rgba(29, 22, 22, 0.8) 0%, transparent 65%),
-    linear-gradient(180deg, rgba(29, 22, 22, 0.12) 0%, rgba(29, 22, 22, 0.22) 45%, var(--ink) 88%);
+    radial-gradient(120% 52% at 50% 60%, rgba(29, 22, 22, 0.82) 0%, transparent 70%), /* termina antes da borda de baixo: se passar, o hero corta e desenha linha */
+    linear-gradient(180deg, rgba(29, 22, 22, 0.04) 0%, rgba(29, 22, 22, 0.14) 30%, rgba(29, 22, 22, 0.52) 50%, rgba(29, 22, 22, 0.6) 72%, rgba(29, 22, 22, 0.32) 90%, rgba(29, 22, 22, 0) 100%);
 }
 
 .hero > .brand-mark,
@@ -354,7 +363,9 @@ a { color: inherit; text-decoration: none; }
   font-size: 0.68rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent-text);
+  /* 29/09: vermelho mais claro só aqui. Fica em cima do globo mais brilhante
+     do vídeo e já estava abaixo de 4,5:1 (3,3:1) mesmo antes do fundo novo. */
+  color: #F59393;
   font-weight: 500;
   margin: 0 0 18px;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
@@ -362,7 +373,8 @@ a { color: inherit; text-decoration: none; }
 
 .hero-tagline {
   font-size: 0.95rem;
-  color: var(--muted);
+  color: #C2BDBD; /* 29/09: um pouco mais claro que --muted, fica sobre o vídeo */
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
   max-width: 320px;
   margin: 0;
   font-weight: 400;
@@ -944,17 +956,14 @@ footer {
      por cima (::after), alinhados na mesma grade de 22px. */
   .hero-overlay {
     background:
-      radial-gradient(120% 75% at 50% 100%, rgba(29, 22, 22, 0.7) 0%, transparent 65%),
+      radial-gradient(70% 46% at 50% 64%, rgba(29, 22, 22, 0.58) 0%, transparent 70%),
       linear-gradient(180deg,
-        rgba(29, 22, 22, 0.10) 0%,
-        rgba(29, 22, 22, 0.14) 25%,
-        rgba(29, 22, 22, 0.24) 40%,
-        rgba(29, 22, 22, 0.40) 52%,
-        rgba(29, 22, 22, 0.58) 63%,
-        rgba(29, 22, 22, 0.74) 73%,
-        rgba(29, 22, 22, 0.87) 82%,
-        rgba(29, 22, 22, 0.95) 90%,
-        var(--ink) 100%);
+        rgba(29, 22, 22, 0.04) 0%,
+        rgba(29, 22, 22, 0.10) 32%,
+        rgba(29, 22, 22, 0.36) 52%,
+        rgba(29, 22, 22, 0.46) 74%,
+        rgba(29, 22, 22, 0.22) 90%,
+        rgba(29, 22, 22, 0) 100%);
   }
   .hero::after {
     content: '';
@@ -984,6 +993,16 @@ footer {
      celular, a linha "data · dia · artista" quebrava em duas. */
   .event-poster__overlay { padding: 16px; }
   .event-poster__meta { font-size: 0.7rem; letter-spacing: 0; }
+}
+
+/* Tablet em pé (usa o vídeo vertical, como o celular): mesmo escurecimento
+   do celular na faixa do texto, senão o subtítulo caía pra ~4:1. */
+@media (min-width: 640px) and (max-aspect-ratio: 1/1) {
+  .hero-overlay {
+    background:
+      radial-gradient(90% 46% at 50% 64%, rgba(29, 22, 22, 0.7) 0%, transparent 70%),
+      linear-gradient(180deg, rgba(29, 22, 22, 0.04) 0%, rgba(29, 22, 22, 0.14) 30%, rgba(29, 22, 22, 0.56) 50%, rgba(29, 22, 22, 0.64) 72%, rgba(29, 22, 22, 0.32) 90%, rgba(29, 22, 22, 0) 100%);
+  }
 }
 
 @media (min-width: 1024px) {
