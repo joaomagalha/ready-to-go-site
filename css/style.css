@@ -1362,18 +1362,51 @@ footer {
   transition: transform 0.7s cubic-bezier(0.34, 1.3, 0.5, 1), visibility 0s linear 0.7s;
   filter: drop-shadow(-4px 8px 14px rgba(0, 0, 0, 0.5));
 }
-.globinho-espia.is-visivel { transform: translateX(38%) rotate(-12deg); visibility: visible; transition-delay: 0s, 0s; }
+.globinho-espia.is-visivel { transform: translateX(22%) rotate(-12deg); visibility: visible; transition-delay: 0s, 0s; }
 /* Troca de lado sem animação (senão ele atravessava a tela indo do lugar da
    aparição anterior pro novo lado). O JS põe e tira esta classe. */
 .globinho-espia.sem-transicao { transition: none !important; }
 /* Entra pela esquerda: espelhado, pra olhar pra dentro da página. */
 .globinho-espia.entra-esquerda { right: auto; left: 0; transform: translateX(-125%) scaleX(-1) rotate(-12deg); }
-.globinho-espia.entra-esquerda.is-visivel { transform: translateX(-38%) scaleX(-1) rotate(-12deg); }
+.globinho-espia.entra-esquerda.is-visivel { transform: translateX(-22%) scaleX(-1) rotate(-12deg); }
 /* Desce pendurado pela corrente, do topo da tela. */
 .globinho-espia.entra-cima { right: auto; transform: translateY(-115%); transition-duration: 0.9s, 0s; transition-delay: 0s, 0.9s; }
 .globinho-espia.entra-cima.is-visivel { transform: translateY(0); transition-delay: 0s, 0s; }
-@media (min-width: 1024px) { .globinho-espia { width: 96px; } }
+/* Sobe pela borda de baixo, mostrando rosto e bracinhos. */
+.globinho-espia.entra-baixo { right: auto; top: auto; bottom: 0; transform: translateY(125%); }
+.globinho-espia.entra-baixo.is-visivel { transform: translateY(28%); transition-delay: 0s, 0s; }
+
+/* "Teia": atravessa a tela balançando pendurado. O JS mede o fio (altura)
+   pra ele sair pelos dois lados e anima a rotação (Web Animations). */
+.globinho-teia {
+  position: fixed;
+  left: 50%;
+  top: 0;
+  width: 0;
+  z-index: 40;
+  pointer-events: none;
+  visibility: hidden;
+  transform-origin: 50% 0;
+}
+.globinho-teia.is-ativa { visibility: visible; }
+.globinho-teia__fio {
+  position: absolute;
+  left: -1px;
+  top: 0;
+  bottom: calc(var(--w, 96px) * 0.3);
+  width: 2px;
+  background: repeating-linear-gradient(180deg, #C9CCD3 0 5px, transparent 5px 8px);
+}
+.globinho-teia img {
+  position: absolute;
+  bottom: calc(var(--w, 96px) * -0.8);
+  left: 50%;
+  width: var(--w, 96px);
+  transform: translateX(-50%);
+  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.5));
+}
+/* largura vem do JS (92 no celular, 116 no computador) */
 @media (prefers-reduced-motion: reduce) {
-  .globinho-espia { display: none; }
+  .globinho-espia, .globinho-teia { display: none; }
   .globinho-festa-lista { transition: none; }
 }
