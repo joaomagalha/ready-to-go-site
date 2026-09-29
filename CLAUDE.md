@@ -75,7 +75,7 @@ Passos:
 
 4. **Cache-bust** → se mexeu no `css/style.css` **ou em qualquer arquivo de
    `assets/js/`**, subir o `?v=N` em `index.html`, em todas as páginas de
-   evento e no `_MODELO.html`. Hoje em `?v=24`. O JS passou a ter `?v=` em
+   evento e no `_MODELO.html`. Hoje em `?v=27`. O JS passou a ter `?v=` em
    09/09/2026: sem isso o navegador servia o script velho junto com o HTML
    novo, e recurso novo (destaque da próxima festa, urgência) simplesmente
    não aparecia pra quem já tinha visitado o site.
@@ -96,6 +96,18 @@ Passos:
   fica o vertical.
 - Conferir sempre em 320, 360, 375, 640, 768, 1024 e 1440: sem rolagem lateral
   e a linha `data · dia · artista` do card numa linha só.
+
+## Formulário do Ready 2 Go Squad (`squad.html`, 28/09/2026)
+
+- Inscrição de creators que divulgam as festas. Texto e perguntas são da
+  promoter; a caixinha de autorização existe por causa da LGPD, não tirar.
+- Envio: `assets/js/squad-form.js` manda por `fetch` (no-cors) pro Apps Script
+  cujo endereço fica em `data-endpoint` no `<form>`. Sem endereço, a página
+  avisa que as inscrições não estão abertas e não envia nada.
+- O código do Apps Script está em `squad-apps-script.gs` (fora do site pelo
+  `.vercelignore`), com o passo a passo de instalação no topo. Mudou o código:
+  publicar como **nova versão da mesma implantação**, senão o endereço muda.
+- Campo `site` é armadilha anti-robô: nunca mostrar nem tornar obrigatório.
 
 ## Comportamento automático das festas (`assets/js/event-schedule.js`)
 

@@ -695,7 +695,9 @@ a { color: inherit; text-decoration: none; }
   padding: 12px 14px;
   color: var(--ink);
   font-family: inherit;
-  font-size: 0.95rem;
+  /* 16px exatos (28/09/2026): abaixo disso o Safari do iPhone dá zoom sozinho
+     ao tocar no campo e não volta. Era 0.95rem (15.2px). */
+  font-size: 16px;
 }
 /* Anel de foco: borda + glow com --accent-text, o mesmo vermelho calibrado
    pra contraste que já é usado em todo o site — funciona tanto sobre fundo
@@ -924,4 +926,182 @@ footer {
     margin-left: auto;
     margin-right: auto;
   }
+}
+
+/* ============ READY 2 GO SQUAD (squad.html, 28/09/2026) ============
+   Formulário de inscrição de creators. Reaproveita .form-card/.field/.btn da
+   lista de desconto e só acrescenta o que ela não tinha: texto longo, opções
+   Sim/Não, caixinha de consentimento (LGPD) e a tela de "inscrição recebida".
+   Largura travada em 520px em qualquer tela: formulário largo cansa de ler. */
+.squad-intro,
+.squad-form-wrap {
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.squad-page .back-link { max-width: 520px; margin-left: auto; margin-right: auto; }
+.squad-intro { text-align: center; margin-bottom: 24px; }
+.squad-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+  margin: 8px 0 10px;
+}
+.squad-text {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin: 0 0 10px;
+}
+.squad-text--cta { color: var(--paper); font-weight: 600; margin-bottom: 0; }
+
+.field textarea {
+  width: 100%;
+  min-height: 110px;
+  resize: vertical;
+  background: rgba(29, 22, 22, 0.05);
+  border: 1px solid rgba(29, 22, 22, 0.15);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 16px; /* mesmo motivo do .field input: sem zoom no iPhone */
+  line-height: 1.5;
+}
+.field textarea:focus {
+  outline: none;
+  border-color: var(--accent-text);
+  box-shadow: 0 0 0 3px rgba(216, 64, 64, 0.22);
+}
+.field textarea::placeholder { color: rgba(29, 22, 22, 0.4); }
+
+/* Sim / Não em pílula: área de toque grande no celular, o rádio de verdade
+   fica invisível por cima (continua acessível por teclado e leitor de tela). */
+.field-choice { border: 0; padding: 0; margin: 0 0 14px; min-width: 0; }
+.field-choice legend {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(29, 22, 22, 0.65);
+  margin-bottom: 6px;
+  padding: 0;
+}
+.choice-row { display: flex; gap: 10px; }
+.choice { position: relative; flex: 1; }
+/* O fieldset também é .field, então o "Sim/Não" herdava o estilo de rótulo
+   (.field label: mono, caixa alta, 0.68rem). Volta pro texto normal. */
+.field-choice .choice {
+  display: block;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  text-transform: none;
+  letter-spacing: 0;
+  color: inherit;
+}
+.choice input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.choice span {
+  display: block;
+  text-align: center;
+  padding: 11px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(29, 22, 22, 0.15);
+  background: rgba(29, 22, 22, 0.05);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.choice input:checked + span {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+}
+.choice input:focus-visible + span { box-shadow: 0 0 0 3px rgba(216, 64, 64, 0.3); }
+
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 4px 0 16px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(29, 22, 22, 0.75);
+  cursor: pointer;
+  border-radius: 10px;
+}
+.consent input {
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+}
+
+/* Campo que faltou preencher: borda no vermelho de texto do site. */
+.field input.is-invalid,
+.field textarea.is-invalid,
+.field-choice.is-invalid .choice span {
+  border-color: var(--accent-text);
+  box-shadow: 0 0 0 3px rgba(216, 64, 64, 0.18);
+}
+.consent.is-invalid { box-shadow: 0 0 0 2px var(--accent-text); padding: 6px; }
+
+.form-status:empty { display: none; }
+.form-status { color: var(--accent); font-weight: 600; }
+
+/* Armadilha anti-robô: fora da tela, não "display:none" (robô esperto pula
+   campo escondido desse jeito). */
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+.squad-done { text-align: center; outline: none; }
+.squad-done__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--ink);
+  margin: 4px 0 6px;
+}
+.squad-done__text { color: rgba(29, 22, 22, 0.7); font-size: 0.92rem; margin: 0 0 18px; }
+/* O botão secundário foi pensado pro fundo escuro; no cartão branco inverte. */
+.squad-done .btn-secondary {
+  background: rgba(29, 22, 22, 0.06);
+  border-color: rgba(29, 22, 22, 0.15);
+  color: var(--ink);
+}
+
+/* Chamada do Squad na home: um cartão discreto entre as festas e as redes,
+   pra não disputar com o botão vermelho do grupo. */
+.squad-cta {
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  padding: 22px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.03);
+}
+.squad-cta__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: -0.01em;
+  color: #fff;
+  margin: 0 0 6px;
+}
+.squad-cta__text {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  margin: 0 0 16px;
 }
