@@ -1359,6 +1359,12 @@ footer {
   filter: drop-shadow(-4px 8px 14px rgba(0, 0, 0, 0.5));
 }
 .globinho-espia.is-visivel { transform: translateX(38%) rotate(-12deg); }
+/* Entra pela esquerda: espelhado, pra olhar pra dentro da página. */
+.globinho-espia.entra-esquerda { right: auto; left: 0; transform: translateX(-105%) scaleX(-1) rotate(-12deg); }
+.globinho-espia.entra-esquerda.is-visivel { transform: translateX(-38%) scaleX(-1) rotate(-12deg); }
+/* Desce pendurado pela corrente, do topo da tela. */
+.globinho-espia.entra-cima { right: auto; transform: translateY(-105%); transition-duration: 0.9s; }
+.globinho-espia.entra-cima.is-visivel { transform: translateY(0); }
 @media (min-width: 1024px) { .globinho-espia { width: 96px; } }
 @media (prefers-reduced-motion: reduce) {
   .globinho-espia { display: none; }

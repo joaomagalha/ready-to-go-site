@@ -6,8 +6,12 @@
 // deixa o loader aparecer normalmente e agenda o sumiço mais abaixo.
 (function () {
   var SESSION_KEY = 'r2gLoaderShown';
-  var MIN_MS = 450;
-  var MAX_MS = 1400;
+  // 29/09/2026: era 450/1400 ms. O João quer ver o Globinho girando e
+  // ficando tonto antes do site abrir: um giro completo leva 1,6 s, então
+  // ele fica no mínimo 2,6 s (e no máximo 3,4 s, mesmo com internet lenta).
+  // Continua aparecendo só uma vez por aba.
+  var MIN_MS = 2600;
+  var MAX_MS = 3400;
 
   var alreadyShown = false;
   try {
