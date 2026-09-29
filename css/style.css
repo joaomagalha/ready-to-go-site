@@ -109,7 +109,9 @@ body::before {
     radial-gradient(55% 30% at 92% 52%, rgba(224, 119, 46, 0.14) 0%, transparent 70%),
     radial-gradient(70% 34% at 20% 74%, rgba(142, 22, 22, 0.34) 0%, transparent 72%),
     radial-gradient(60% 28% at 85% 92%, rgba(216, 64, 64, 0.16) 0%, transparent 70%);
-  filter: blur(40px);
+  /* Sem filter: blur (29/09, auditoria): os radiais já são suaves; o desfoque
+     numa camada do tamanho da página custava GPU na rolagem do celular e
+     mudava menos de 1 tom na tela. */
 }
 body:has(.hero)::before {
   -webkit-mask-image: linear-gradient(180deg, transparent 0, transparent 22vh, #000 72vh);
@@ -479,6 +481,12 @@ a { color: inherit; text-decoration: none; }
   /* O card vira a régua dos selos: 1cqi = 1% da largura do card. */
   container-type: inline-size;
   --pill-size: clamp(0.6rem, 3.15cqi, 0.74rem);
+}
+/* Navegador sem unidade de container (iOS < 16): a variável acima vira
+   inválida e o selo caía pra 16px, passando 90px da borda do card. Tamanho
+   fixo de reserva, que cabe no card mais estreito. */
+@supports not (font-size: 1cqi) {
+  .event-poster { --pill-size: 0.6rem; }
 }
 /* Só o "levantar" + sombra mais funda no hover/focus — João não gostou da
    borda vermelha que entrava junto (removida). :focus-visible replica o
