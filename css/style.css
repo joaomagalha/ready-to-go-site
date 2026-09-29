@@ -747,6 +747,21 @@ a { color: inherit; text-decoration: none; }
 
 .form-card .btn {
   margin-top: 4px;
+  white-space: nowrap; /* 29/09: "Garantir Meu Desconto" numa linha só, sempre */
+}
+/* Abaixo de 390px (maioria dos celulares, 375 inclusive) o botão quebrava em
+   "Garantir meu / desconto". Aqui o cartão e o botão perdem um pouco de
+   respiro lateral, o espaço entre letras sai e, só abaixo de ~360px, a letra
+   diminui junto com a tela. */
+@media (max-width: 389px) {
+  .form-card { padding-left: 16px; padding-right: 16px; }
+  .form-card .btn {
+    padding-left: 12px;
+    padding-right: 12px;
+    gap: 8px;
+    letter-spacing: 0;
+    font-size: clamp(0.84rem, 4.4vw, 1rem);
+  }
 }
 
 /* Aviso pós-botão (27/08/2026, feedback da namorada por áudio): o botão só
