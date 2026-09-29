@@ -1160,8 +1160,8 @@ footer {
   font-size: 0.88rem;
   line-height: 1.55;
   margin: 0 0 16px;
-  /* Linhas de tamanho parecido, sem palavra sozinha na última (28/09, o
-     "você" ficava solto). No HTML, "pra&nbsp;você" segura pelo menos as
-     duas juntas em navegador que não conhece text-wrap. */
-  text-wrap: balance;
+  /* Sem text-wrap: balance de propósito (29/09, o João prefere o texto
+     preenchendo a largura). A palavra sozinha no fim foi resolvida no HTML:
+     "pra&nbsp;você" desce junto e o "boas" saiu do texto, o que deixa a
+     última linha cheia em 360-375px. */
 }
