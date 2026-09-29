@@ -486,7 +486,11 @@ a { color: inherit; text-decoration: none; }
    inválida e o selo caía pra 16px, passando 90px da borda do card. Tamanho
    fixo de reserva, que cabe no card mais estreito. */
 @supports not (font-size: 1cqi) {
-  .event-poster { --pill-size: 0.6rem; }
+  .event-poster { --pill-size: 0.58rem; }
+  /* esses navegadores também não têm @container: tira o espaço entre letras
+     aqui, senão no celular de 320px (iPhone SE 1ª geração, iOS 15) passava 1px */
+  .event-poster__eyebrow,
+  .event-poster__urgency { letter-spacing: 0; padding-left: 0.75em; padding-right: 0.75em; }
 }
 /* Só o "levantar" + sombra mais funda no hover/focus — João não gostou da
    borda vermelha que entrava junto (removida). :focus-visible replica o
