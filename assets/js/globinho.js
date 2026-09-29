@@ -22,7 +22,7 @@
     { img: 'espiando-pendurado', lados: ['cima'] }
   ];
   // pré-carrega todas, pra ele não aparecer "vazio" na primeira vez de cada
-  REACOES.forEach(function (r) { var i = new Image(); i.src = BASE + r.img + '.svg?v=42'; });
+  REACOES.forEach(function (r) { var i = new Image(); i.src = BASE + r.img + '.svg?v=43'; });
 
   var el = document.createElement('img');
   el.className = 'globinho-espia';
@@ -91,9 +91,13 @@
       var pos = posicao(opcoes[k].lado, w, h);
       if (!pos) continue;
       var o = opcoes[k];
-      el.className = 'globinho-espia entra-' + o.lado;
+      // Posiciona no lado novo SEM animação e só depois liga a transição de
+      // entrada; senão ele atravessava a tela vindo do lado anterior.
+      el.className = 'globinho-espia sem-transicao entra-' + o.lado;
       el.style.top = pos.top || ''; el.style.left = pos.left || '';
-      el.src = BASE + o.img + '.svg?v=42';
+      el.src = BASE + o.img + '.svg?v=43';
+      void el.offsetWidth;
+      el.classList.remove('sem-transicao');
       ultima = o.img + o.lado;
       // um quadro depois pra transição de entrada acontecer
       requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('is-visivel'); }); });

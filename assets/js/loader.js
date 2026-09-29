@@ -12,6 +12,12 @@
   // Continua aparecendo só uma vez por aba.
   var MIN_MS = 2600;
   var MAX_MS = 3400;
+  // Quem pediu menos movimento no aparelho vê o Globinho parado: segurar a
+  // tela 2,6 s viraria só espera. Volta pro tempo curto de antes.
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    MIN_MS = 450;
+    MAX_MS = 1400;
+  }
 
   var alreadyShown = false;
   try {
