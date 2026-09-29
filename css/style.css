@@ -500,15 +500,29 @@ a { color: inherit; text-decoration: none; }
   white-space: nowrap;
   text-transform: uppercase;
   color: var(--paper);
-  background: var(--accent);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  /* Vidro escurecido (29/09/2026, pedido do João): o vermelho cheio sumia em
+     flyer vermelho/laranja (ex. Oculta). O desfoque traz a cor do flyer pro
+     selo; a camada escura por cima garante contraste do texto branco em
+     qualquer flyer, claro ou escuro. O ícone da etiqueta fica no vermelho
+     da marca pra continuar dizendo "desconto" de relance. */
+  /* 29/09: o João pediu mais transparente e sem contorno (era 0.46 + borda
+     branca 0.28). Contraste do texto medido em cima de cada flyer. */
+  background: rgba(29, 22, 22, 0.3);
+  -webkit-backdrop-filter: blur(12px) saturate(170%);
+          backdrop-filter: blur(12px) saturate(170%);
+  border: 0;
   padding: 0.72em 0.85em;
   border-radius: 999px;
   font-weight: 700;
   line-height: 1;
   /* sombra própria: o selo fica sobre a parte da foto que não tem scrim
      nenhum (topo, fora do gradiente acima), então não pode depender dele */
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+/* Navegador sem desfoque: sem o vidro, a camada precisa ser mais escura. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .event-poster__eyebrow { background: rgba(29, 22, 22, 0.78); }
 }
 
 /* Pílula de urgência — clara de propósito, pra não competir com o selo
@@ -546,6 +560,7 @@ a { color: inherit; text-decoration: none; }
   width: 1.2em;
   height: 1.2em;
   flex-shrink: 0;
+  color: #FF6B6B; /* vermelho da marca, clareado pra aparecer no vidro escuro */
 }
 
 .event-poster__title {
