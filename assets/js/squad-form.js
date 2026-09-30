@@ -74,6 +74,12 @@
       setStatus('Confere a idade: só o número, em anos.');
       return;
     }
+    // Idade mínima 18 (decisão da Vitória, 29/09/2026).
+    if (n < 18) {
+      flag(idade);
+      setStatus('O Ready 2 Go Squad é só pra maiores de 18 anos.');
+      return;
+    }
 
     var endpoint = form.dataset.endpoint;
     if (!endpoint) {
