@@ -75,10 +75,18 @@ Passos:
 
 4. **Cache-bust** → se mexeu no `css/style.css` **ou em qualquer arquivo de
    `assets/js/`**, subir o `?v=N` em `index.html`, em todas as páginas de
-   evento e no `_MODELO.html`. Hoje em `?v=47`. O JS passou a ter `?v=` em
+   evento e no `_MODELO.html`. Hoje em `?v=48`. O JS passou a ter `?v=` em
    09/09/2026: sem isso o navegador servia o script velho junto com o HTML
    novo, e recurso novo (destaque da próxima festa, urgência) simplesmente
    não aparecia pra quem já tinha visitado o site.
+
+## Festa que já passou: apagar (29/09/2026)
+
+Ao cadastrar festa nova, apagar as que já passaram: o card do `index.html`, a
+página `eventos/{slug}.html` e o flyer `assets/eventos/{slug}.jpg`. Não guardar
+festa antiga (decisão do João). Link antigo cai no `404.html`, que manda pra
+home. O `event-schedule.js` continua escondendo sozinho quem passou até alguém
+apagar.
 
 ## Layout (responsivo desde 28/09/2026)
 
@@ -122,7 +130,7 @@ cuida sozinho, **contando a partir do horário de fecho da lista**
   a página não serve pra mais nada depois que a lista fecha.
 - **24h depois de a lista fechar:** o card **some do index** de vez.
 - **Nenhuma festa ativa:** some o título "Próximas Festas" e entra uma frase
-  curta apontando pro grupo.
+  curta apontando pro grupo, com o Globinho dançando.
 - **Contagem regressiva (09/09/2026):** toda festa aberta ganha uma pílula
   clara em `.event-poster__pills` com "Fecha hoje" / "Fecha amanhã" /
   "Faltam N dias". Conta em dias de calendário, não em horas cheias, e sai

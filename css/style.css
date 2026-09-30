@@ -1384,3 +1384,18 @@ footer {
   .globinho-espia { display: none; }
   .globinho-festa-lista { transition: none; }
 }
+
+/* ============ POLÍTICA DE PRIVACIDADE (29/09/2026) ============ */
+.privacidade { max-width: 640px; margin: 0 auto; color: #D6D2D2; line-height: 1.7; font-size: 0.98rem; }
+.privacidade .event-title { text-align: left; margin-bottom: 4px; }
+.privacidade__data { color: var(--muted); font-size: 0.85rem; margin: 0 0 28px; }
+.privacidade h2 { font-family: var(--font-display); color: #fff; font-size: 1.2rem; margin: 32px 0 10px; letter-spacing: -0.01em; }
+.privacidade h3 { color: var(--paper); font-size: 1rem; margin: 18px 0 6px; }
+.privacidade p { margin: 0 0 12px; }
+.privacidade ul { margin: 0 0 12px; padding-left: 20px; }
+.privacidade li { margin-bottom: 6px; }
+.privacidade a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
+.privacidade strong { color: #fff; }
+footer a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+footer a:hover, footer a:focus-visible { color: var(--accent-text); }
+.consent a { color: var(--accent); text-decoration: underline; }

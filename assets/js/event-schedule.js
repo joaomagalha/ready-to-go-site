@@ -176,7 +176,7 @@
       wrap.className = 'event-empty-wrap';
       var danca = document.createElement('img');
       danca.className = 'globinho-danca';
-      danca.src = 'assets/mascote/globinho-danca.svg?v=47';
+      danca.src = 'assets/mascote/globinho-danca.svg?v=48';
       danca.alt = 'Globinho, o mascote, dançando enquanto não tem festa';
       danca.width = 150; danca.height = 168;
       wrap.appendChild(danca);
