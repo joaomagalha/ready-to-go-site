@@ -37,7 +37,7 @@
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/space-grotesk-latin.woff2" crossorigin>
   <link rel="preload" href="assets/mascote/globinho-tonto.svg" as="image" type="image/svg+xml">
 
-  <link rel="stylesheet" href="css/style.css?v=45">
+  <link rel="stylesheet" href="css/style.css?v=46">
 
   <!-- Sem JS o site era uma tela preta: o .page-loader é fixed/z-999 e só sai
        via JS, e todo conteúdo nasce em .reveal { opacity: 0 }. Quem tem JS
@@ -66,7 +66,7 @@
 </head>
 <body>
 
-  <script src="assets/js/loader.js?v=45"></script>
+  <script src="assets/js/loader.js?v=46"></script>
   <div class="page-loader" id="page-loader">
     <div class="page-loader__ring">
       <img class="page-loader__globinho" src="assets/mascote/globinho-tonto.svg" alt="" width="150" height="168">
@@ -96,7 +96,7 @@
     </video>
     <!-- Tela larga: hero-video.js troca pelo vídeo horizontal (data-src-wide),
          que nunca é baixado no celular. -->
-    <script src="assets/js/hero-video.js?v=45"></script>
+    <script src="assets/js/hero-video.js?v=46"></script>
     <div class="hero-overlay"></div>
     <!-- Marca real dela: @ready2go.club no Instagram (nome de exibição
          "Ready 2 Go"), já em uso como perfil de divulgação de festas —
@@ -220,6 +220,23 @@
             </div>
           </div>
         </a>
+        <a class="event-poster" href="eventos/bailinho-da-azurra-09-10.html" data-event-date="2026-10-09">
+          <img src="assets/eventos/bailinho-da-azurra-09-10.jpg" alt="Vilarô, Bailinho da Azurra com DJ Guh Mix, 09.10" width="720" height="1280" loading="lazy">
+          <div class="event-poster__overlay">
+            <div class="event-poster__pills">
+              <span class="event-poster__eyebrow"><svg aria-hidden="true"><use href="#i-tag"></use></svg>Lista De Desconto</span>
+            </div>
+            <h3 class="event-poster__title">Bailinho da Azurra</h3>
+            <p class="event-poster__meta">09.10 · Sexta-Feira · DJ Guh Mix</p>
+            <div class="event-poster__foot">
+              <span class="event-poster__price">R$70</span>
+              <span class="event-poster__cta">
+                Garantir Meu Desconto
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+              </span>
+            </div>
+          </div>
+        </a>
         <a class="event-poster" href="eventos/mc-joaozinho-vt-17-10.html" data-event-date="2026-10-17">
           <img src="assets/eventos/mc-joaozinho-vt-17-10.jpg" alt="Vilarô, MC Joãozinho VT, 17.10" width="720" height="1280" loading="lazy">
           <div class="event-poster__overlay">
@@ -315,9 +332,9 @@
 
   </div>
 
-  <script src="assets/js/event-schedule.js?v=45"></script>
-  <script src="assets/js/globinho.js?v=45"></script>
-  <script src="assets/js/reveal.js?v=45"></script>
+  <script src="assets/js/event-schedule.js?v=46"></script>
+  <script src="assets/js/globinho.js?v=46"></script>
+  <script src="assets/js/reveal.js?v=46"></script>
   <!-- Vercel Analytics (09/09/2026): sem medição não dá pra saber se o refino
        de conversão funcionou. Servido pelo próprio domínio da Vercel, então
        em localhost o 404 desse script é esperado e inofensivo. -->

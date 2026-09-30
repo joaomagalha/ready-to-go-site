@@ -13,7 +13,7 @@
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (!document.querySelector('.event-grid')) return;
 
-  var V = '?v=45';
+  var V = '?v=46';
   var BASE = 'assets/mascote/globinho-';
   var LADOS = ['direita', 'esquerda', 'baixo'];
   var REACOES = [

@@ -574,8 +574,11 @@ a { color: inherit; text-decoration: none; }
   /* 29/09: o João pediu mais transparente e sem contorno (era 0.46 + borda
      branca 0.28). Contraste do texto medido em cima de cada flyer. */
   background: rgba(29, 22, 22, 0.3);
-  -webkit-backdrop-filter: blur(12px) saturate(170%);
-          backdrop-filter: blur(12px) saturate(170%);
+  /* brightness(.42): escurece o que está ATRÁS do selo na medida do flyer.
+     Em flyer escuro quase não muda; em flyer claro (Bailinho da Azurra, 29/09)
+     o texto branco caía pra ~2:1. Continua transparente e sem contorno. */
+  -webkit-backdrop-filter: blur(12px) saturate(170%) brightness(0.42);
+          backdrop-filter: blur(12px) saturate(170%) brightness(0.42);
   border: 0;
   padding: 0.72em 0.85em;
   border-radius: 999px;
