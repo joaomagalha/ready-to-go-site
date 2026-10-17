@@ -75,7 +75,7 @@ Passos:
 
 4. **Cache-bust** → se mexeu no `css/style.css` **ou em qualquer arquivo de
    `assets/js/`**, subir o `?v=N` em `index.html`, em todas as páginas de
-   evento e no `_MODELO.html`. Hoje em `?v=52`. O JS passou a ter `?v=` em
+   evento e no `_MODELO.html`. Hoje em `?v=53`. O JS passou a ter `?v=` em
    09/09/2026: sem isso o navegador servia o script velho junto com o HTML
    novo, e recurso novo (destaque da próxima festa, urgência) simplesmente
    não aparecia pra quem já tinha visitado o site.
@@ -116,8 +116,9 @@ Toda página de festa sai do `_MODELO.html` com:
 ## Regras da casa e Perguntas rápidas (16/10/2026)
 
 Respostas da promoter, únicas fontes da seção `#duvidas` do index (não inventar
-outra): idade mínima 18 (menor entra com autorização assinada pelos pais, que
-ela manda pelo WhatsApp); nome na lista vale **até meia-noite** (também no
+outra): idade mínima 18 (mais de 16 entra com a autorização dos pais,
+`assets/autorizacao-menores.pdf`, acompanhado de maior de 18, com cópia do RG
+de quem assinou e documento original com foto); nome na lista vale **até meia-noite** (também no
 `form-note` de toda festa); sem dress code, só o Halloween (fantasia); paga
 **na saída** com pulseira, do jeito que quiser, menos boleto e parcelado; pode
 mandar nome de amigos **sem limite** (botão "+ Adicionar amigo" do formulário,
