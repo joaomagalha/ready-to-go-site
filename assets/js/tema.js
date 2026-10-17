@@ -89,6 +89,23 @@ var TEMA = 'halloween';
       hero.appendChild(morcegos);
     }
 
+    if (!evento) {
+      // Céu de Halloween: camada que ROLA com a página (17/10, 3ª rodada). Começa
+      // logo abaixo do hero e nasce do escuro dele; antes era fixo na tela e
+      // deslizava por baixo dos globos na rolagem.
+      // sem hero (Squad, política): o céu fica atrás de texto corrido, então entra apagado
+      var ceu = el('ht-ceu' + (hero ? '' : ' ht-ceu--sem-hero'), '');
+      document.body.insertBefore(ceu, document.body.firstChild);
+      var posiciona = function () {
+        ceu.style.top = (hero ? hero.offsetTop + hero.offsetHeight : 0) + 'px';
+      };
+      posiciona();
+      window.addEventListener('resize', posiciona);
+      window.addEventListener('load', posiciona);
+      var wrap = document.querySelector('.wrap');
+      if (wrap) wrap.appendChild(el('ht-nevoa-fim', ''));
+    }
+
     if (evento) {
       // Página da festa: o canto de cima à esquerda tem o "Voltar"; a teia e a
       // aranha ficam só no canto direito.

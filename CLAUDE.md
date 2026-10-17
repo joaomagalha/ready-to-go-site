@@ -75,7 +75,7 @@ Passos:
 
 4. **Cache-bust** → se mexeu no `css/style.css` **ou em qualquer arquivo de
    `assets/js/`**, subir o `?v=N` em `index.html`, em todas as páginas de
-   evento e no `_MODELO.html`. Hoje em `?v=55`. O JS passou a ter `?v=` em
+   evento e no `_MODELO.html`. Hoje em `?v=57`. O JS passou a ter `?v=` em
    09/09/2026: sem isso o navegador servia o script velho junto com o HTML
    novo, e recurso novo (destaque da próxima festa, urgência) simplesmente
    não aparecia pra quem já tinha visitado o site.
@@ -133,7 +133,8 @@ o link "Ficou com dúvida?" pro `../index.html#duvidas`.
   Todo o visual mora em `css/tema-halloween.css`, só com seletores
   `.tema-halloween`; desligado, o site volta exatamente ao de sempre
   (conferido). Toda página (e o `_MODELO.html`) carrega os dois no `<head>`.
-- **Halloween:** cenário gótico fixo atrás da home, Squad e política
+- **Fundo do tema (3ª rodada, 17/10):** uma cor só (`#0c0a14`) na página e no hero, que termina opaco nela; o céu é a camada `.ht-ceu` (tema.js), que começa logo abaixo do hero e **rola com a página** (nunca `position: fixed`: fixo, ele deslizava por baixo dos globos). Sem hero (Squad, política) o céu entra apagado.
+- **Halloween:** céu de lua e galhos (antes: cenário gótico) atrás da home, Squad e política
   (`assets/tema/halloween-fundo-9x16.jpg` no celular e `-16x9.jpg` no
   computador; originais no cofre, `midia/halloween/site/`); teias, aranha e
   morcegos no hero; teia e aranha nas páginas de festa (que mantêm o fundo
