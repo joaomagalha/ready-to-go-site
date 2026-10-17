@@ -75,7 +75,7 @@ Passos:
 
 4. **Cache-bust** → se mexeu no `css/style.css` **ou em qualquer arquivo de
    `assets/js/`**, subir o `?v=N` em `index.html`, em todas as páginas de
-   evento e no `_MODELO.html`. Hoje em `?v=54`. O JS passou a ter `?v=` em
+   evento e no `_MODELO.html`. Hoje em `?v=55`. O JS passou a ter `?v=` em
    09/09/2026: sem isso o navegador servia o script velho junto com o HTML
    novo, e recurso novo (destaque da próxima festa, urgência) simplesmente
    não aparecia pra quem já tinha visitado o site.
@@ -124,6 +124,28 @@ de quem assinou e documento original com foto); nome na lista vale **até meia-n
 mandar nome de amigos **sem limite** (botão "+ Adicionar amigo" do formulário,
 `lista-desconto.js`; os nomes vão na mesma mensagem). Toda página de festa tem
 o link "Ficou com dúvida?" pro `../index.html#duvidas`.
+
+## Temas sazonais (17/10/2026)
+
+- **Ligar e desligar:** `assets/js/tema.js`, 1ª linha de código:
+  `var TEMA = 'halloween';` (desligar: `var TEMA = '';`). Ele põe
+  `class="tema-halloween"` no `<html>` antes de pintar e injeta a decoração.
+  Todo o visual mora em `css/tema-halloween.css`, só com seletores
+  `.tema-halloween`; desligado, o site volta exatamente ao de sempre
+  (conferido). Toda página (e o `_MODELO.html`) carrega os dois no `<head>`.
+- **Halloween:** cenário gótico fixo atrás da home, Squad e política
+  (`assets/tema/halloween-fundo-9x16.jpg` no celular e `-16x9.jpg` no
+  computador; originais no cofre, `midia/halloween/site/`); teias, aranha e
+  morcegos no hero; teia e aranha nas páginas de festa (que mantêm o fundo
+  da cor do flyer); chapéu de bruxa no título das festas; caldeirão nas
+  Perguntas Rápidas; abóboras no rodapé; títulos em pílula escura e cartões
+  opacos (a lua passa atrás do texto na rolagem).
+- **Globinho fantasiado:** `globinho-hw-*.svg`, feitos no gerador do cofre
+  (`mascote/gerar_globinho.py`, seção "fantasias de Halloween"), nunca
+  imagem de IA. Espiando sorteia um vilão; carregando, comemorando e dançando
+  usam chapéu de bruxa. Sem nome nem logo de filme no site.
+- Decoração sempre `pointer-events: none`, nunca em cima de texto, botão,
+  preço ou campo; `prefers-reduced-motion` para tudo.
 
 ## Festa que já passou: apagar (29/09/2026)
 

@@ -25,7 +25,7 @@
   <meta property="og:url" content="https://ready-to-go-site.vercel.app/">
   <meta property="og:title" content="Ready 2 Go · Festas em Cuiabá">
   <meta property="og:description" content="Listas de desconto e grupo vip, tudo em um só lugar.">
-  <meta property="og:image" content="https://ready-to-go-site.vercel.app/assets/bolas-espelho-teto-preto.jpg">
+  <meta property="og:image" content="https://ready-to-go-site.vercel.app/assets/globos-hero-9x16.jpg">
   <meta property="og:image:width" content="900">
   <meta property="og:image:height" content="1600">
   <meta name="twitter:card" content="summary_large_image">
@@ -37,11 +37,11 @@
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/space-grotesk-latin.woff2" crossorigin>
   <link rel="preload" href="assets/mascote/globinho-tonto.svg" as="image" type="image/svg+xml">
 
-  <link rel="stylesheet" href="css/style.css?v=54">
+  <link rel="stylesheet" href="css/style.css?v=55">
 
-  <link rel="stylesheet" href="css/tema-halloween.css?v=54">
+  <link rel="stylesheet" href="css/tema-halloween.css?v=55">
 
-  <script src="assets/js/tema.js?v=54"></script>
+  <script src="assets/js/tema.js?v=55"></script>
 
   <!-- Sem JS o site era uma tela preta: o .page-loader é fixed/z-999 e só sai
        via JS, e todo conteúdo nasce em .reveal { opacity: 0 }. Quem tem JS
@@ -70,7 +70,7 @@
 </head>
 <body>
 
-  <script src="assets/js/loader.js?v=54"></script>
+  <script src="assets/js/loader.js?v=55"></script>
   <div class="page-loader" id="page-loader">
     <div class="page-loader__ring">
       <img class="page-loader__globinho" src="assets/mascote/globinho-tonto.svg" alt="" width="150" height="168">
@@ -91,17 +91,18 @@
 
   <!-- ============ HERO ============ -->
   <div class="hero">
-    <!-- Vídeo em loop dos globos espelhados girando (mandado pelo João,
-         26/08/2026), no lugar da foto estática. muted+playsinline é
+    <!-- Vídeo em loop dos globos espelhados girando (17/10/2026: novo, 1080p,
+         gerado no Runway com o mesmo quadro no começo e no fim; original no
+         cofre em midia/hero/). Antes: vídeo do João de 26/08. muted+playsinline é
          obrigatório pro autoplay funcionar em iOS/Android; poster usa a
          antiga foto estática como fallback enquanto o vídeo carrega ou se
          o navegador bloquear autoplay. -->
-    <video class="hero-video" width="720" height="1280" autoplay muted loop playsinline fetchpriority="high" poster="assets/bolas-espelho-teto-preto.jpg" data-src-wide="assets/bolas-espelho-video-16x9.mp4?v=2" data-poster-wide="assets/bolas-espelho-16x9.jpg">
-      <source src="assets/bolas-espelho-video.mp4?v=2" type="video/mp4">
+    <video class="hero-video" width="1080" height="1920" autoplay muted loop playsinline fetchpriority="high" poster="assets/globos-hero-9x16.jpg" data-src-wide="assets/globos-hero-16x9.mp4" data-poster-wide="assets/globos-hero-16x9.jpg">
+      <source src="assets/globos-hero-9x16.mp4" type="video/mp4">
     </video>
     <!-- Tela larga: hero-video.js troca pelo vídeo horizontal (data-src-wide),
          que nunca é baixado no celular. -->
-    <script src="assets/js/hero-video.js?v=54"></script>
+    <script src="assets/js/hero-video.js?v=55"></script>
     <div class="hero-overlay"></div>
     <!-- Marca real dela: @ready2go.club no Instagram (nome de exibição
          "Ready 2 Go"), já em uso como perfil de divulgação de festas —
@@ -325,10 +326,10 @@
 
   </div>
 
-  <script src="assets/js/event-schedule.js?v=54"></script>
-  <script src="assets/js/globinho.js?v=54"></script>
-  <script src="assets/js/festa-extras.js?v=54"></script>
-  <script src="assets/js/reveal.js?v=54"></script>
+  <script src="assets/js/event-schedule.js?v=55"></script>
+  <script src="assets/js/globinho.js?v=55"></script>
+  <script src="assets/js/festa-extras.js?v=55"></script>
+  <script src="assets/js/reveal.js?v=55"></script>
   <!-- Vercel Analytics (09/09/2026): sem medição não dá pra saber se o refino
        de conversão funcionou. Servido pelo próprio domínio da Vercel, então
        em localhost o 404 desse script é esperado e inofensivo. -->

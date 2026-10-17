@@ -56,12 +56,47 @@
 .tema-halloween .cta-note,
 .tema-halloween footer { text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9); }
 
-/* Luz roxa e laranja de noite de Halloween por trás do hero. */
+/* Passagem do topo pro corpo (17/10, 2ª rodada: o João achou feia a 1ª).
+   1) Overlay com a mesma estrutura do original: radial atrás do texto e
+      degradê que termina transparente ANTES da borda (o que encosta na borda
+      é cortado e desenha linha reta; foi o que os brilhos da 1ª versão fizeram).
+   2) Base noturna sob o vídeo: o vídeo se dissolve primeiro nesse escuro e só
+      depois aparece o cenário, que nunca fica atrás dos globos.
+   3) Névoa: faixa roxo-acinzentada suave sobre a emenda (gradiente, sem blur). */
+.tema-halloween .hero {
+  background: linear-gradient(180deg, #0c0a14 0%, #0c0a14 70%, rgba(12, 10, 20, 0.92) 80%, rgba(12, 10, 20, 0.7) 88%, rgba(12, 10, 20, 0.35) 95%, rgba(12, 10, 20, 0) 100%);
+}
 .tema-halloween .hero-overlay {
   background:
-    radial-gradient(70% 45% at 50% 46%, rgba(20, 10, 30, 0.55) 0%, transparent 70%),
-    radial-gradient(60% 40% at 15% 85%, rgba(107, 63, 160, 0.28) 0%, transparent 70%),
-    radial-gradient(55% 35% at 90% 80%, rgba(242, 140, 40, 0.18) 0%, transparent 70%);
+    radial-gradient(120% 52% at 50% 60%, rgba(14, 10, 22, 0.80) 0%, transparent 70%),
+    radial-gradient(60% 30% at 50% 40%, rgba(107, 63, 160, 0.14) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(12, 10, 20, 0.04) 0%, rgba(12, 10, 20, 0.14) 30%, rgba(12, 10, 20, 0.5) 50%, rgba(12, 10, 20, 0.58) 72%, rgba(12, 10, 20, 0.3) 90%, rgba(12, 10, 20, 0) 100%);
+}
+/* Tela larga: o texto ocupa só o meio, então o escuro fica concentrado atrás
+   dele e os globos das laterais aparecem (como o style.css já faz fora do tema). */
+@media (min-width: 640px) {
+  .tema-halloween .hero-overlay {
+    background:
+      radial-gradient(52% 40% at 50% 64%, rgba(14, 10, 22, 0.62) 0%, transparent 70%),
+      linear-gradient(180deg, rgba(12, 10, 20, 0) 0%, rgba(12, 10, 20, 0.06) 32%, rgba(12, 10, 20, 0.26) 52%, rgba(12, 10, 20, 0.36) 74%, rgba(12, 10, 20, 0.18) 90%, rgba(12, 10, 20, 0) 100%);
+  }
+}
+.tema-halloween .hero::after {
+  content: '';
+  display: block;      /* o style.css esconde o ::after do hero em tela larga */
+  position: absolute;
+  top: auto;           /* idem: lá ele tem inset: 0 */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 34%;
+  z-index: 1;
+  pointer-events: none;
+  /* a névoa é mais forte no meio da faixa e some antes da borda de baixo:
+     o que encosta na borda do hero é cortado e vira linha reta */
+  background:
+    radial-gradient(55% 45% at 25% 55%, rgba(150, 130, 190, 0.09) 0%, transparent 100%),
+    radial-gradient(50% 40% at 78% 60%, rgba(150, 130, 190, 0.07) 0%, transparent 100%);
 }
 
 /* ---------- teias ---------- */
