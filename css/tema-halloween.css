@@ -5,6 +5,10 @@
    texto, botão, preço ou campo. Tudo para com prefers-reduced-motion. */
 
 .tema-halloween {
+  /* Laranja abóbora no lugar do vermelho da marca (17/10, João: o vermelho não
+     combinava com o roxo). Só no tema; desligado, volta a paleta da Vitória. */
+  --accent: #C2410C;        /* botões, texto branco por cima (~5:1) */
+  --accent-text: #FFA552;   /* detalhes direto sobre o fundo escuro (~8:1) */
   --ht-abobora: #f28c28;
   --ht-abobora-texto: #ffa552; /* laranja claro pra texto pequeno: 8:1 sobre o fundo */
   --ht-roxo: #6b3fa0;
@@ -229,3 +233,32 @@
   .ht-bolhas circle, .ht-fumaca, .ht-fogo path { animation: none !important; }
   .ht-morcegos { display: none; }
 }
+
+/* ---------- laranja no lugar dos vermelhos fixos (sem variável no style.css) ---------- */
+.tema-halloween .btn-primary {
+  background: linear-gradient(180deg, #C2410C 0%, #9A3412 100%);
+  color: #fff;
+  box-shadow: 0 0 22px rgba(242, 120, 30, 0.28), 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+.tema-halloween .btn-primary:hover { filter: brightness(1.1); }
+.tema-halloween .btn:focus-visible,
+.tema-halloween .festa-acoes__btn:focus-visible,
+.tema-halloween .faq__item summary:focus-visible,
+.tema-halloween .btn-amigo:focus-visible,
+.tema-halloween .choice input:focus-visible + span { box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.4); }
+.tema-halloween .field input:focus,
+.tema-halloween .amigo__nome:focus { box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.25); }
+.tema-halloween .btn-amigo:hover { background: rgba(194, 65, 12, 0.06); }
+.tema-halloween .event-poster__eyebrow svg,
+.tema-halloween .event-poster__camarote svg { color: #FFB066; }
+.tema-halloween .page-loader__globe { box-shadow: 0 0 40px rgba(242, 140, 40, 0.35), 0 8px 24px rgba(0, 0, 0, 0.6); }
+.tema-halloween .field textarea:focus { box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.25); }
+/* nos cartões brancos (formulários) o laranja claro some: foco no laranja escuro */
+.tema-halloween .form-card .field input:focus,
+.tema-halloween .form-card .amigo__nome:focus,
+.tema-halloween .field textarea:focus { border-color: var(--accent); }
+/* erro continua vermelho (é aviso, não decoração) */
+.tema-halloween .field input.is-invalid,
+.tema-halloween .field textarea.is-invalid,
+.tema-halloween .field-choice.is-invalid .choice span { border-color: #E04848; box-shadow: 0 0 0 3px rgba(224, 72, 72, 0.2); }
+.tema-halloween .brand-sub { color: #FFB066; }
