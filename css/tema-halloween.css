@@ -11,54 +11,70 @@
   --ht-gosma: #8bff6b;
 }
 
-/* Fundo do tema (17/10, 3ª rodada, pedido do João: a passagem do vídeo pro
-   céu estava ruim). A causa era de estrutura: o céu era FIXO na tela e o hero
-   rolava, com o fim do hero transparente; ao rolar, lua, morcegos e galhos
-   deslizavam por baixo dos globos. Agora:
-   - uma cor de base só (#0c0a14) na página e no hero, que termina OPACO nela;
-   - o céu é a camada .ht-ceu (tema.js), que começa logo abaixo do hero e rola
-     junto com a página, nascendo do escuro e voltando pra ele (máscara suave).
-   Página de festa fica com o fundo da cor do flyer (nada disto vale lá). */
+/* Fundo do tema (17/10, 4ª rodada, depois da auditoria): MENOS camadas.
+   - A imagem inteira fica atrás da página toda (fixa), com o véu de leitura;
+     a névoa da própria imagem fecha o rodapé.
+   - O topo (hero) é opaco #0c0a14 e termina nessa cor; o fundo nunca aparece
+     atrás dos globos.
+   - UMA faixa de degradê (.ht-degrade, tema.js) começa no fim do topo, na mesma
+     cor, e some aos poucos até mostrar o fundo. Rola junto com o conteúdo.
+   O que deu errado antes (não repetir): imagem deslocada dentro de camada com
+   máscara (a borda da imagem virou linha reta) e névoa dentro da coluna
+   central (virou retângulo). Página de festa fica com a cor do flyer. */
 .tema-halloween body:not(.event-page) { background: #0c0a14; }
-.tema-halloween body:not(.event-page)::before { background: none; -webkit-mask-image: none; mask-image: none; }
-
-.ht-ceu {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;              /* o tema.js põe no fim do hero */
-  /* A imagem cabe na largura (sem cortar a lua) e começa 22vh abaixo do topo
-     da camada: o começo é só o escuro da página, onde a máscara ainda está
-     transparente; quando a lua chega, o céu já está quase cheio. */
-  --ht-ceu-img: 177.78vw;   /* altura da imagem 9:16 na largura da tela */
-  height: calc(22vh + var(--ht-ceu-img) + 8vh);
-  z-index: -1;
-  pointer-events: none;
-  background: url('../assets/tema/halloween-fundo-9x16.jpg') center 22vh / 100% auto no-repeat;
-  /* nasce transparente (= o escuro da página), chega no céu cheio e volta a
-     sumir antes das Perguntas Rápidas; muitas paradas = curva sem degrau */
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.04) 5%, rgba(0,0,0,.14) 11%, rgba(0,0,0,.32) 18%, rgba(0,0,0,.56) 25%, rgba(0,0,0,.8) 31%, #000 37%, #000 62%, rgba(0,0,0,.78) 72%, rgba(0,0,0,.45) 82%, rgba(0,0,0,.16) 92%, transparent 100%);
-          mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.04) 5%, rgba(0,0,0,.14) 11%, rgba(0,0,0,.32) 18%, rgba(0,0,0,.56) 25%, rgba(0,0,0,.8) 31%, #000 37%, #000 62%, rgba(0,0,0,.78) 72%, rgba(0,0,0,.45) 82%, rgba(0,0,0,.16) 92%, transparent 100%);
-  opacity: 0.85;
+.tema-halloween body:not(.event-page)::before {
+  position: fixed;
+  inset: 0;
+  -webkit-mask-image: none;
+          mask-image: none;
+  background:
+    linear-gradient(180deg, rgba(12, 10, 20, 0.35) 0%, rgba(12, 10, 20, 0.45) 50%, rgba(12, 10, 20, 0.30) 100%),
+    url('../assets/tema/halloween-fundo-9x16.jpg') center / cover no-repeat;
 }
 @media (min-width: 900px) and (min-aspect-ratio: 1/1) {
-  .ht-ceu { --ht-ceu-img: 56.25vw; background-image: url('../assets/tema/halloween-fundo-16x9.jpg'); }
+  .tema-halloween body:not(.event-page)::before {
+    background:
+      linear-gradient(180deg, rgba(12, 10, 20, 0.35) 0%, rgba(12, 10, 20, 0.45) 50%, rgba(12, 10, 20, 0.30) 100%),
+      url('../assets/tema/halloween-fundo-16x9.jpg') center / cover no-repeat;
+  }
 }
-.ht-ceu--sem-hero { opacity: 0.38; }
-/* Fecho: névoa roxa baixa no fim da página (só gradiente). */
-.tema-halloween body:not(.event-page) .wrap { position: relative; }
-.ht-nevoa-fim {
+/* Squad e política: texto corrido sobre o fundo, véu mais escuro. */
+.tema-halloween body.ht-sem-hero::before {
+  background:
+    linear-gradient(rgba(12, 10, 20, 0.72), rgba(12, 10, 20, 0.72)),
+    url('../assets/tema/halloween-fundo-9x16.jpg') center / cover no-repeat;
+}
+@media (min-width: 900px) and (min-aspect-ratio: 1/1) {
+  .tema-halloween body.ht-sem-hero::before {
+    background:
+      linear-gradient(rgba(12, 10, 20, 0.72), rgba(12, 10, 20, 0.72)),
+      url('../assets/tema/halloween-fundo-16x9.jpg') center / cover no-repeat;
+  }
+}
+
+/* O degradê: da cor do fim do topo até transparente, curva suave (11 paradas). */
+.ht-degrade {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
-  height: 50vh;
-  z-index: -1;
+  top: 0;              /* o tema.js põe no fim do topo */
+  height: 260px;
+  z-index: -1;         /* acima do fundo fixo (vem depois no DOM), abaixo do conteúdo */
   pointer-events: none;
-  background:
-    radial-gradient(70% 60% at 30% 100%, rgba(120, 100, 170, 0.16) 0%, transparent 100%),
-    radial-gradient(60% 55% at 78% 100%, rgba(120, 100, 170, 0.12) 0%, transparent 100%);
+  background: linear-gradient(180deg,
+    rgba(12, 10, 20, 1) 0%,
+    rgba(12, 10, 20, 0.97) 10%,
+    rgba(12, 10, 20, 0.9) 20%,
+    rgba(12, 10, 20, 0.8) 30%,
+    rgba(12, 10, 20, 0.67) 40%,
+    rgba(12, 10, 20, 0.52) 50%,
+    rgba(12, 10, 20, 0.38) 60%,
+    rgba(12, 10, 20, 0.25) 70%,
+    rgba(12, 10, 20, 0.14) 80%,
+    rgba(12, 10, 20, 0.06) 90%,
+    rgba(12, 10, 20, 0) 100%);
 }
+@media (min-width: 900px) { .ht-degrade { height: 360px; } }
 
 /* Títulos de seção em laranja abóbora, numa pílula escura: o cenário é fixo e
    a lua (clara) passa atrás do texto na rolagem; sem a pílula o laranja caía
@@ -89,8 +105,8 @@
       degradê que termina transparente ANTES da borda (o que encosta na borda
       é cortado e desenha linha reta; foi o que os brilhos da 1ª versão fizeram).
    2) Base noturna sob o vídeo, opaca: o vídeo se dissolve nesse escuro, que é a
-      cor da página; o céu só começa abaixo do hero (.ht-ceu).
-   3) Névoa: faixa roxo-acinzentada suave sobre a emenda (gradiente, sem blur). */
+      cor de onde o degradê (.ht-degrade) começa.
+   (A névoa que ficava no fim do hero saiu na auditoria de 17/10.) */
 .tema-halloween .hero {
   background: #0c0a14;  /* opaco até o fim: a borda de baixo tem a cor da página, sem emenda */
 }
@@ -109,24 +125,6 @@
       linear-gradient(180deg, rgba(12, 10, 20, 0) 0%, rgba(12, 10, 20, 0.06) 32%, rgba(12, 10, 20, 0.26) 52%, rgba(12, 10, 20, 0.36) 74%, rgba(12, 10, 20, 0.18) 90%, rgba(12, 10, 20, 0) 100%);
   }
 }
-.tema-halloween .hero::after {
-  content: '';
-  display: block;      /* o style.css esconde o ::after do hero em tela larga */
-  position: absolute;
-  top: auto;           /* idem: lá ele tem inset: 0 */
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 34%;
-  z-index: 1;
-  pointer-events: none;
-  /* a névoa é mais forte no meio da faixa e some antes da borda de baixo:
-     o que encosta na borda do hero é cortado e vira linha reta */
-  background:
-    radial-gradient(55% 40% at 25% 62%, rgba(150, 130, 190, 0.07) 0%, transparent 100%),
-    radial-gradient(50% 36% at 78% 66%, rgba(150, 130, 190, 0.05) 0%, transparent 100%);
-}
-
 /* ---------- teias ---------- */
 .ht-teia {
   position: absolute;

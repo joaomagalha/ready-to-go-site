@@ -90,20 +90,18 @@ var TEMA = 'halloween';
     }
 
     if (!evento) {
-      // Céu de Halloween: camada que ROLA com a página (17/10, 3ª rodada). Começa
-      // logo abaixo do hero e nasce do escuro dele; antes era fixo na tela e
-      // deslizava por baixo dos globos na rolagem.
-      // sem hero (Squad, política): o céu fica atrás de texto corrido, então entra apagado
-      var ceu = el('ht-ceu' + (hero ? '' : ' ht-ceu--sem-hero'), '');
-      document.body.insertBefore(ceu, document.body.firstChild);
-      var posiciona = function () {
-        ceu.style.top = (hero ? hero.offsetTop + hero.offsetHeight : 0) + 'px';
-      };
-      posiciona();
-      window.addEventListener('resize', posiciona);
-      window.addEventListener('load', posiciona);
-      var wrap = document.querySelector('.wrap');
-      if (wrap) wrap.appendChild(el('ht-nevoa-fim', ''));
+      // Degradê do fim do topo pro fundo (17/10, 4ª rodada): uma faixa só, na
+      // largura da página, começando exatamente no fim do topo e rolando junto.
+      if (hero) {
+        var degrade = el('ht-degrade', '');
+        document.body.insertBefore(degrade, hero.nextSibling);
+        var posiciona = function () { degrade.style.top = (hero.offsetTop + hero.offsetHeight) + 'px'; };
+        posiciona();
+        window.addEventListener('resize', posiciona);
+        window.addEventListener('load', posiciona);
+      } else {
+        document.body.classList.add('ht-sem-hero');   // Squad, política: véu mais escuro
+      }
     }
 
     if (evento) {
