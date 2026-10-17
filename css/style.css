@@ -850,6 +850,63 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink);
 }
 
+/* Camarote (16/10/2026, pedido da promoter: vender mais camarote). Bloco
+   escuro abaixo do formulário claro, de propósito: a lista é a ação principal
+   (botão vermelho no cartão branco); o camarote é a segunda oferta, com o
+   botão secundário. É link puro pro WhatsApp dela, que confirma a
+   disponibilidade na conversa. */
+.camarote-card {
+  margin-top: 16px;
+  padding: 20px 22px 22px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: center;
+}
+.camarote-card__titulo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #fff;
+  margin: 0 0 6px;
+}
+.camarote-card__titulo .icon { width: 20px; height: 20px; color: var(--accent-text); }
+.camarote-card__texto {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+.camarote-card .btn { white-space: nowrap; }
+@media (max-width: 389px) {
+  .camarote-card { padding-left: 16px; padding-right: 16px; }
+}
+
+/* No card da home não cabe botão (o card inteiro é link) nem 3ª pílula no
+   topo (selo e contagem lado a lado, regra de 29/09): vira uma linha curta
+   entre o meta e o preço. */
+.event-poster__camarote {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: var(--paper);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+  margin: -6px 0 12px;
+}
+.event-poster__camarote svg {
+  width: 1.25em;
+  height: 1.25em;
+  flex-shrink: 0;
+  color: #FF6B6B; /* o mesmo vermelho do ícone do selo */
+}
+
 /* ============ ESTADOS DE TEMPO DOS EVENTOS ============
    assets/js/event-schedule.js, a partir do horário de fecho da lista
    (data-list-close, ou 23:59 do data-event-date):

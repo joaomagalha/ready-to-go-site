@@ -75,10 +75,23 @@ Passos:
 
 4. **Cache-bust** → se mexeu no `css/style.css` **ou em qualquer arquivo de
    `assets/js/`**, subir o `?v=N` em `index.html`, em todas as páginas de
-   evento e no `_MODELO.html`. Hoje em `?v=48`. O JS passou a ter `?v=` em
+   evento e no `_MODELO.html`. Hoje em `?v=49`. O JS passou a ter `?v=` em
    09/09/2026: sem isso o navegador servia o script velho junto com o HTML
    novo, e recurso novo (destaque da próxima festa, urgência) simplesmente
    não aparecia pra quem já tinha visitado o site.
+
+## Camarote em toda festa (16/10/2026)
+
+Pedido da promoter (precisa vender mais camarote). Toda festa nova leva os dois:
+- **Card no index:** logo depois do `event-poster__meta`, a linha
+  `<p class="event-poster__camarote"><svg aria-hidden="true"><use href="#i-coroa"></use></svg>Camarotes disponíveis</p>`.
+  Não vira 3ª pílula no topo (selo e contagem ficam lado a lado) nem botão
+  (o card inteiro já é link).
+- **Página da festa:** o bloco `.camarote-card` que já vem no `_MODELO.html`,
+  logo depois do formulário, com `{{CAMAROTE_WA_URL}}` trocado (instrução no
+  topo do modelo). Link puro pro WhatsApp da promoter, sem JS; ela confirma a
+  disponibilidade na conversa.
+- O texto do bloco é da promoter: trocar só se ela pedir.
 
 ## Festa que já passou: apagar (29/09/2026)
 
