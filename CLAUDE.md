@@ -75,7 +75,7 @@ Passos:
 
 4. **Cache-bust** → se mexeu no `css/style.css` **ou em qualquer arquivo de
    `assets/js/`**, subir o `?v=N` em `index.html`, em todas as páginas de
-   evento e no `_MODELO.html`. Hoje em `?v=49`. O JS passou a ter `?v=` em
+   evento e no `_MODELO.html`. Hoje em `?v=50`. O JS passou a ter `?v=` em
    09/09/2026: sem isso o navegador servia o script velho junto com o HTML
    novo, e recurso novo (destaque da próxima festa, urgência) simplesmente
    não aparecia pra quem já tinha visitado o site.
@@ -92,6 +92,23 @@ Pedido da promoter (precisa vender mais camarote). Toda festa nova leva os dois:
   topo do modelo). Link puro pro WhatsApp da promoter, sem JS; ela confirma a
   disponibilidade na conversa.
 - O texto do bloco é da promoter: trocar só se ela pedir.
+
+## Extras da festa (16/10/2026)
+
+Toda página de festa sai do `_MODELO.html` com:
+- **Fundo com a cor do flyer:** gerar `assets/eventos/{slug}-fundo.jpg` com
+  `sips -Z 40 -s format jpeg -s formatOptions 70` (Pillow: `thumbnail((40, 72))`).
+  A imagem minúscula esticada já fica desfocada; não usar `filter: blur`
+  (pesa na rolagem do celular).
+- **3 atalhos** (`.festa-acoes`, `assets/js/festa-extras.js`): Mandar pros
+  amigos (compartilhar do celular; no computador copia o link), Salvar na
+  agenda (`.ics` gerado na hora; `data-hora` se o flyer disser o horário) e
+  Como chegar (Google Maps da casa).
+- **Nome e telefone lembrados** no navegador (`localStorage`, chave
+  `r2g-contato`), citado na política de privacidade.
+- **Cliques medidos no Clarity** (`clarity("event")` + tag `festa`):
+  `card_festa`, `lista_desconto`, `camarote`, `compartilhar`, `agenda`,
+  `como_chegar`. Ver em Clarity > Filtros > Eventos personalizados.
 
 ## Festa que já passou: apagar (29/09/2026)
 

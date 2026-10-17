@@ -31,6 +31,19 @@
     timer = setTimeout(function () { festa.classList.remove('is-visivel'); }, 6000);
   }
 
+  // Lembrar nome e telefone (16/10/2026): quem volta toda semana entra na
+  // lista em 1 toque. Fica só no navegador da pessoa (citado na política de
+  // privacidade). Navegador que bloqueia storage: o formulário segue normal.
+  var CHAVE = 'r2g-contato';
+  try {
+    var salvo = JSON.parse(localStorage.getItem(CHAVE) || 'null');
+    if (salvo) {
+      var fNome = document.getElementById('f-nome'), fTel = document.getElementById('f-telefone');
+      if (salvo.nome && !fNome.value) fNome.value = salvo.nome;
+      if (salvo.telefone && !fTel.value) fTel.value = salvo.telefone;
+    }
+  } catch (e) { /* sem storage */ }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     // Obs: se a lista já fechou, event-schedule.js já mandou a página de
@@ -39,6 +52,8 @@
     var nomeEvento = form.dataset.evento;
     var nome = document.getElementById('f-nome').value.trim();
     var telefone = document.getElementById('f-telefone').value.trim();
+    try { localStorage.setItem(CHAVE, JSON.stringify({ nome: nome, telefone: telefone })); } catch (err) { /* sem storage */ }
+    if (window.r2gMedir) window.r2gMedir('lista_desconto', nomeEvento);
 
     var texto = 'Oi! Quero entrar na Lista de Desconto:\n' +
       'Evento: ' + nomeEvento + '\n' +

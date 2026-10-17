@@ -850,6 +850,62 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink);
 }
 
+/* Extras da festa (16/10/2026): 3 atalhos lado a lado entre a linha da festa e
+   o formulário. Ícone em cima e rótulo curto embaixo, pra caber os 3 até em
+   320px sem quebrar a lista (que continua sendo a ação principal). */
+.festa-acoes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: -8px 0 20px;
+}
+.festa-acoes__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 64px;
+  padding: 10px 6px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--paper);
+  font: 600 0.74rem/1.25 'Inter', system-ui, sans-serif;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.festa-acoes__btn svg { width: 20px; height: 20px; color: var(--accent-text); flex-shrink: 0; }
+.festa-acoes__btn:hover { background: rgba(255, 255, 255, 0.09); border-color: var(--accent-text); }
+.festa-acoes__btn:active { transform: scale(0.96); }
+.festa-acoes__btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(216, 64, 64, 0.35); }
+.festa-acoes__aviso {
+  margin: -12px 0 16px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--paper);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  word-break: break-all;
+}
+.festa-acoes__aviso.is-visivel { opacity: 1; }
+
+/* Fundo com a cor do flyer (16/10/2026): miniatura de ~40px do próprio flyer
+   ({slug}-fundo.jpg), esticada na tela inteira. Ampliar uma imagem minúscula
+   já desfoca (sem filter: blur, que pesava na rolagem do celular, ver o
+   body::before acima) e o degradê escuro por cima garante a leitura. Cada
+   festa ganha o clima do próprio flyer. Sem a variável, fica o fundo padrão. */
+body.event-page[style*="--fundo-festa"]::before {
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(29, 22, 22, 0.55) 0%, rgba(29, 22, 22, 0.78) 55%, rgba(29, 22, 22, 0.92) 100%),
+    var(--fundo-festa) center / cover no-repeat;
+}
+
 /* Camarote (16/10/2026, pedido da promoter: vender mais camarote). Bloco
    escuro abaixo do formulário claro, de propósito: a lista é a ação principal
    (botão vermelho no cartão branco); o camarote é a segunda oferta, com o
