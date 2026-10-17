@@ -75,7 +75,7 @@ Passos:
 
 4. **Cache-bust** → se mexeu no `css/style.css` **ou em qualquer arquivo de
    `assets/js/`**, subir o `?v=N` em `index.html`, em todas as páginas de
-   evento e no `_MODELO.html`. Hoje em `?v=58`. O JS passou a ter `?v=` em
+   evento e no `_MODELO.html`. Hoje em `?v=59`. O JS passou a ter `?v=` em
    09/09/2026: sem isso o navegador servia o script velho junto com o HTML
    novo, e recurso novo (destaque da próxima festa, urgência) simplesmente
    não aparecia pra quem já tinha visitado o site.
@@ -141,10 +141,7 @@ o link "Ficou com dúvida?" pro `../index.html#duvidas`.
   da cor do flyer); chapéu de bruxa no título das festas; caldeirão nas
   Perguntas Rápidas; abóboras no rodapé; títulos em pílula escura e cartões
   opacos (a lua passa atrás do texto na rolagem).
-- **Globinho fantasiado:** `globinho-hw-*.svg`, feitos no gerador do cofre
-  (`mascote/gerar_globinho.py`, seção "fantasias de Halloween"), nunca
-  imagem de IA. Espiando sorteia um vilão; carregando, comemorando e dançando
-  usam chapéu de bruxa. Sem nome nem logo de filme no site.
+- **Globinho fantasiado (v2, 17/10, "iguais aos personagens"):** `globinho-hw-*.svg`, feitos no gerador do cofre (`mascote/gerar_globinho.py`, seção "fantasias de Halloween"), nunca imagem de IA. 10 fantasias: mascara (Jason), listrado (Beetlejuice), vampiro, garras (Freddy), monstro (Frankenstein), bruxa (pinta + gato preto), mumia, ghostface, palhaco (It), chucky. Cada uma tem pele, cabelo/chapéu, roupa e objeto; luva e manga por fantasia (`braco_c`). Espiando sorteia uma; carregando, comemorando e dançando usam chapéu de bruxa. Sem nome nem logo de filme no site.
 - Decoração sempre `pointer-events: none`, nunca em cima de texto, botão,
   preço ou campo; `prefers-reduced-motion` para tudo.
 

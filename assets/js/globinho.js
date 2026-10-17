@@ -13,7 +13,7 @@
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (!document.querySelector('.event-grid')) return;
 
-  var V = '?v=54';
+  var V = '?v=59';
   var BASE = 'assets/mascote/globinho-';
   var LADOS = ['direita', 'esquerda', 'baixo'];
   var REACOES = [
@@ -25,10 +25,11 @@
     { img: 'espiando-pendurado', lados: ['cima'] }
   ];
   // Tema Halloween (17/10/2026): no lugar das reações, um vilão fantasiado
-  // por vez (máscara de hóquei, terno listrado, vampiro, garras, monstro,
-  // bruxa, múmia), sorteado e diferente do anterior.
+  // por vez (10: máscara de hóquei, terno listrado, vampiro, garras, monstro,
+  // bruxa, múmia, máscara de grito, palhaço, boneco ruivo), sorteado e
+  // diferente do anterior.
   if (document.documentElement.classList.contains('tema-halloween')) {
-    REACOES = ['mascara', 'listrado', 'vampiro', 'garras', 'monstro', 'bruxa', 'mumia']
+    REACOES = ['mascara', 'listrado', 'vampiro', 'garras', 'monstro', 'bruxa', 'mumia', 'ghostface', 'palhaco', 'chucky']
       .map(function (n) { return { img: 'hw-' + n, lados: LADOS }; });
   }
   REACOES.forEach(function (r) { var i = new Image(); i.src = BASE + r.img + '.svg' + V; });

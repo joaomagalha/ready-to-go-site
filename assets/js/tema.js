@@ -74,7 +74,7 @@ var TEMA = 'halloween';
   function decorar() {
     // Globinho do carregamento de chapéu de bruxa.
     var tonto = document.querySelector('.page-loader__globinho');
-    if (tonto) tonto.src = tonto.getAttribute('src').replace('globinho-tonto.svg', 'globinho-hw-tonto.svg?v=54');
+    if (tonto) tonto.src = tonto.getAttribute('src').replace('globinho-tonto.svg', 'globinho-hw-tonto.svg?v=59');
     var hero = document.querySelector('.hero');
     var evento = document.body.classList.contains('event-page');
 

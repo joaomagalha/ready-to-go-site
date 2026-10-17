@@ -22,7 +22,7 @@
       festa.setAttribute('role', 'status');
       // Tema Halloween (17/10/2026): comemora de chapéu de bruxa.
       var pose = document.documentElement.classList.contains('tema-halloween') ? 'hw-comemora' : 'comemora';
-      festa.innerHTML = '<img src="../assets/mascote/globinho-' + pose + '.svg?v=54" alt="" width="84" height="94">' +
+      festa.innerHTML = '<img src="../assets/mascote/globinho-' + pose + '.svg?v=59" alt="" width="84" height="94">' +
         '<p>Agora é só tocar em <strong>enviar</strong> lá no WhatsApp!</p>';
       var btn = form.querySelector('button[type="submit"]');
       btn.parentNode.insertBefore(festa, btn.nextSibling);
