@@ -176,7 +176,8 @@
       wrap.className = 'event-empty-wrap';
       var danca = document.createElement('img');
       danca.className = 'globinho-danca';
-      danca.src = 'assets/mascote/globinho-danca.svg?v=48';
+      // Tema Halloween (17/10/2026): dança de chapéu de bruxa.
+      danca.src = 'assets/mascote/globinho-' + (document.documentElement.classList.contains('tema-halloween') ? 'hw-danca' : 'danca') + '.svg?v=54';
       danca.alt = 'Globinho, o mascote, dançando enquanto não tem festa';
       danca.width = 150; danca.height = 168;
       wrap.appendChild(danca);

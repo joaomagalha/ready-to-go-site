@@ -72,6 +72,9 @@ var TEMA = 'halloween';
   function el(cls, html) { var d = document.createElement('div'); d.className = cls; d.setAttribute('aria-hidden', 'true'); d.innerHTML = html; return d; }
 
   function decorar() {
+    // Globinho do carregamento de chapéu de bruxa.
+    var tonto = document.querySelector('.page-loader__globinho');
+    if (tonto) tonto.src = tonto.getAttribute('src').replace('globinho-tonto.svg', 'globinho-hw-tonto.svg?v=54');
     var hero = document.querySelector('.hero');
     var evento = document.body.classList.contains('event-page');
 
