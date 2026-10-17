@@ -11,8 +11,50 @@
   --ht-gosma: #8bff6b;
 }
 
-/* Títulos de seção em laranja abóbora (eram vermelho claro). */
-.tema-halloween .section-title { color: var(--ht-abobora-texto); }
+/* Cenário gótico de desenho (lua, casa torta, colina em espiral, abóboras),
+   fixo atrás da home, do Squad e da política. Gerado no Runway em 17/10/2026
+   (originais em midia/halloween/site/). Substitui o brilho vermelho do
+   body::before só no tema; o degradê escuro por cima garante a leitura.
+   Página de festa fica com o fundo da cor do flyer. */
+.tema-halloween body:not(.event-page)::before {
+  position: fixed;
+  inset: 0;
+  -webkit-mask-image: none;
+          mask-image: none;
+  background:
+    linear-gradient(180deg, rgba(12, 10, 20, 0.30) 0%, rgba(12, 10, 20, 0.52) 40%, rgba(12, 10, 20, 0.70) 100%),
+    url('../assets/tema/halloween-fundo-9x16.jpg') center top / cover no-repeat;
+}
+@media (min-width: 900px) and (min-aspect-ratio: 1/1) {
+  .tema-halloween body:not(.event-page)::before {
+    background:
+      linear-gradient(180deg, rgba(12, 10, 20, 0.30) 0%, rgba(12, 10, 20, 0.50) 40%, rgba(12, 10, 20, 0.68) 100%),
+      url('../assets/tema/halloween-fundo-16x9.jpg') center / cover no-repeat;
+  }
+}
+
+/* Títulos de seção em laranja abóbora, numa pílula escura: o cenário é fixo e
+   a lua (clara) passa atrás do texto na rolagem; sem a pílula o laranja caía
+   pra ~1,6:1 em cima dela. */
+.tema-halloween .section-title {
+  color: var(--ht-abobora-texto);
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(12, 10, 20, 0.78);
+  box-shadow: 0 0 18px rgba(12, 10, 20, 0.6);
+}
+/* Cartões mais opacos sobre o cenário (mesmo motivo: a lua atrás). */
+.tema-halloween .faq__item,
+.tema-halloween .btn-secondary,
+.tema-halloween .squad-cta,
+.tema-halloween body:not(.event-page) .camarote-card {
+  background-color: rgba(18, 13, 26, 0.82);
+}
+.tema-halloween .cta-note,
+.tema-halloween footer { text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9); }
 
 /* Luz roxa e laranja de noite de Halloween por trás do hero. */
 .tema-halloween .hero-overlay {

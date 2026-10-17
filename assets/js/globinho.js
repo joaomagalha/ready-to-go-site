@@ -50,7 +50,8 @@
     });
   }
 
-  var PROIBIDO = '.btn, button, a:not(.event-poster), .event-poster__foot, .event-poster__pills, .event-poster__title, .event-poster__meta, .cta-note, .section-title, .brand-mark, .brand-sub, .hero-tagline';
+  // 17/10: + Perguntas Rápidas e textos do Squad (seções novas que ele cobria).
+  var PROIBIDO = '.btn, button, a:not(.event-poster), .event-poster__foot, .event-poster__pills, .event-poster__title, .event-poster__meta, .event-poster__camarote, .cta-note, .section-title, .brand-mark, .brand-sub, .hero-tagline, .faq__item, .squad-cta__title, .squad-cta p';
   function sobrepoe(a, b) { return !(a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom); }
   function livre(caixa) {
     // folga: inclinado (-12°) ele ocupa um pouco mais que a caixa reta
