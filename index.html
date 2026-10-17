@@ -37,7 +37,7 @@
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/space-grotesk-latin.woff2" crossorigin>
   <link rel="preload" href="assets/mascote/globinho-tonto.svg" as="image" type="image/svg+xml">
 
-  <link rel="stylesheet" href="css/style.css?v=51">
+  <link rel="stylesheet" href="css/style.css?v=52">
 
   <!-- Sem JS o site era uma tela preta: o .page-loader é fixed/z-999 e só sai
        via JS, e todo conteúdo nasce em .reveal { opacity: 0 }. Quem tem JS
@@ -66,7 +66,7 @@
 </head>
 <body>
 
-  <script src="assets/js/loader.js?v=51"></script>
+  <script src="assets/js/loader.js?v=52"></script>
   <div class="page-loader" id="page-loader">
     <div class="page-loader__ring">
       <img class="page-loader__globinho" src="assets/mascote/globinho-tonto.svg" alt="" width="150" height="168">
@@ -97,7 +97,7 @@
     </video>
     <!-- Tela larga: hero-video.js troca pelo vídeo horizontal (data-src-wide),
          que nunca é baixado no celular. -->
-    <script src="assets/js/hero-video.js?v=51"></script>
+    <script src="assets/js/hero-video.js?v=52"></script>
     <div class="hero-overlay"></div>
     <!-- Marca real dela: @ready2go.club no Instagram (nome de exibição
          "Ready 2 Go"), já em uso como perfil de divulgação de festas —
@@ -246,6 +246,40 @@
       </div>
     </div>
 
+    <!-- ============ PERGUNTAS RÁPIDAS ============ -->
+    <!-- 16/10/2026: respostas da promoter (registro no cartão do projeto, "Regras
+         da casa"). Só o que ela respondeu; nada inventado. <details> nativo:
+         abre e fecha sem JS. -->
+    <div class="section reveal" id="duvidas">
+      <h2 class="section-title">Perguntas Rápidas</h2>
+      <div class="faq">
+        <details class="faq__item">
+          <summary>Até que horas vale a lista de desconto?</summary>
+          <p>O nome na lista vale até <strong>meia-noite</strong>. Depois disso o desconto não vale mais, então chega cedo!</p>
+        </details>
+        <details class="faq__item">
+          <summary>Como eu pago?</summary>
+          <p>Na entrada você pega uma <strong>pulseira</strong> e paga só <strong>na saída</strong>, do jeito que preferir. Só não aceitamos boleto nem parcelamento.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Posso colocar o nome dos meus amigos?</summary>
+          <p>Pode, <strong>sem limite</strong>. Na página da festa, toque em <strong>Adicionar amigo</strong> e mande todos os nomes numa mensagem só.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Qual a idade mínima?</summary>
+          <p><strong>18 anos.</strong> Menor de idade só entra com a autorização assinada pelos pais. <a href="https://wa.me/5565993475757?text=Oi%21%20Preciso%20da%20autoriza%C3%A7%C3%A3o%20dos%20pais%20pra%20entrar%20na%20festa." target="_blank" rel="noopener">Chama a gente no WhatsApp</a> que a gente manda o documento.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Tem dress code?</summary>
+          <p>Não, pode ir do seu jeito. A exceção é o <strong>Halloween</strong>: festa à fantasia.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Tem camarote?</summary>
+          <p>Tem! Na página da festa, toque em <strong>Consultar Camarote</strong> e fala com a gente pra ver a disponibilidade e o valor.</p>
+        </details>
+      </div>
+    </div>
+
     <!-- ============ SQUAD ============ -->
     <!-- 28/09/2026: chamada pro Ready 2 Go Squad (creators que divulgam as
          festas). Texto da promoter. Botão vermelho cheio (pedido do João,
@@ -286,10 +320,10 @@
 
   </div>
 
-  <script src="assets/js/event-schedule.js?v=51"></script>
-  <script src="assets/js/globinho.js?v=51"></script>
-  <script src="assets/js/festa-extras.js?v=51"></script>
-  <script src="assets/js/reveal.js?v=51"></script>
+  <script src="assets/js/event-schedule.js?v=52"></script>
+  <script src="assets/js/globinho.js?v=52"></script>
+  <script src="assets/js/festa-extras.js?v=52"></script>
+  <script src="assets/js/reveal.js?v=52"></script>
   <!-- Vercel Analytics (09/09/2026): sem medição não dá pra saber se o refino
        de conversão funcionou. Servido pelo próprio domínio da Vercel, então
        em localhost o 404 desse script é esperado e inofensivo. -->

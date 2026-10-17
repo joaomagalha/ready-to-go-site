@@ -28,7 +28,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/space-grotesk-latin.woff2" crossorigin>
   <link rel="preload" href="../assets/mascote/globinho-tonto.svg" as="image" type="image/svg+xml">
 
-  <link rel="stylesheet" href="../css/style.css?v=51">
+  <link rel="stylesheet" href="../css/style.css?v=52">
 
   <!-- Sem JS o .page-loader (fixed, z-999) nunca sai e todo conteúdo fica em
        .reveal { opacity: 0 } — a página virava uma tela preta. -->
@@ -56,7 +56,7 @@
 </head>
 <body class="event-page" style="--fundo-festa: url('../assets/eventos/021-a-vibe-carioca-17-10-fundo.jpg')">
 
-  <script src="../assets/js/loader.js?v=51"></script>
+  <script src="../assets/js/loader.js?v=52"></script>
   <div class="page-loader" id="page-loader">
     <div class="page-loader__ring">
       <img class="page-loader__globinho" src="../assets/mascote/globinho-tonto.svg" alt="" width="150" height="168">
@@ -104,11 +104,15 @@
             <label for="f-telefone">Telefone (WhatsApp)</label>
             <input type="tel" id="f-telefone" name="telefone" placeholder="(65) 9XXXX-XXXX" required>
           </div>
+          <!-- Amigos (16/10/2026): a promoter aceita os nomes juntos, sem limite.
+               Os campos são criados pelo lista-desconto.js. -->
+          <div class="amigos" id="amigos"></div>
+          <button type="button" class="btn-amigo" id="add-amigo">+ Adicionar amigo</button>
           <button type="submit" class="btn btn-primary">
             <svg class="icon" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
             Garantir Meu Desconto
           </button>
-          <p class="form-note">Isso vai abrir o WhatsApp com a mensagem pronta.<br>Toque em <strong>enviar</strong> lá dentro pra confirmar sua entrada na lista.</p>
+          <p class="form-note">Isso vai abrir o WhatsApp com a mensagem pronta.<br>Toque em <strong>enviar</strong> lá dentro pra confirmar sua entrada na lista.<br>O nome na lista vale até <strong>meia-noite</strong>.</p>
         </form>
 
         <!-- Camarote (16/10/2026, pedido da promoter: vender mais camarote). Link
@@ -122,6 +126,7 @@
             Consultar Camarote
           </a>
         </div>
+        <p class="festa-duvidas"><a href="../index.html#duvidas">Ficou com dúvida? Veja as perguntas rápidas</a></p>
       </div>
     </div>
 
@@ -129,10 +134,10 @@
 
   </div>
 
-  <script src="../assets/js/event-schedule.js?v=51"></script>
-  <script src="../assets/js/festa-extras.js?v=51"></script>
-  <script src="../assets/js/lista-desconto.js?v=51"></script>
-  <script src="../assets/js/reveal.js?v=51"></script>
+  <script src="../assets/js/event-schedule.js?v=52"></script>
+  <script src="../assets/js/festa-extras.js?v=52"></script>
+  <script src="../assets/js/lista-desconto.js?v=52"></script>
+  <script src="../assets/js/reveal.js?v=52"></script>
   <script defer src="/_vercel/insights/script.js"></script>
 
 </body>

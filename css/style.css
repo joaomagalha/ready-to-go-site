@@ -850,6 +850,116 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink);
 }
 
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0);
+  white-space: nowrap; border: 0;
+}
+
+/* Amigos na lista (16/10/2026): a promoter aceita os nomes juntos, sem limite.
+   Mesmo visual dos campos do form-card (claro), com um X pra tirar. */
+.amigo {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.amigo__nome {
+  flex: 1;
+  min-width: 0;
+  background: rgba(29, 22, 22, 0.05);
+  border: 1px solid rgba(29, 22, 22, 0.15);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 16px; /* 16px: abaixo disso o iPhone dá zoom no campo */
+}
+.amigo__nome:focus { outline: none; border-color: var(--accent-text); box-shadow: 0 0 0 3px rgba(216, 64, 64, 0.22); }
+.amigo__nome::placeholder { color: rgba(29, 22, 22, 0.4); }
+.amigo__tirar {
+  flex: 0 0 46px;
+  border-radius: 10px;
+  border: 1px solid rgba(29, 22, 22, 0.15);
+  background: transparent;
+  color: rgba(29, 22, 22, 0.6);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.amigo__tirar:hover { color: var(--accent); border-color: var(--accent); }
+.btn-amigo {
+  display: block;
+  width: 100%;
+  margin: 0 0 14px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px dashed rgba(29, 22, 22, 0.3);
+  background: transparent;
+  color: var(--accent);
+  font: 600 0.9rem/1.2 'Inter', system-ui, sans-serif;
+  cursor: pointer;
+}
+.btn-amigo:hover { border-color: var(--accent); background: rgba(142, 22, 22, 0.05); }
+.btn-amigo:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(216, 64, 64, 0.3); }
+
+.festa-duvidas {
+  text-align: center;
+  font-size: 0.82rem;
+  margin: 18px 0 0;
+}
+.festa-duvidas a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+.festa-duvidas a:hover { color: var(--paper); }
+
+/* Perguntas rápidas da home (16/10/2026): <details> nativo, abre sem JS.
+   Respostas só da promoter (cartão do projeto, "Regras da casa"). */
+.faq {
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.faq__item {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+}
+.faq__item summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 16px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--paper);
+  -webkit-tap-highlight-color: transparent;
+}
+.faq__item summary::-webkit-details-marker { display: none; }
+.faq__item summary::after {
+  content: '+';
+  flex-shrink: 0;
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--accent-text);
+  transition: transform 0.2s ease;
+}
+.faq__item[open] summary::after { transform: rotate(45deg); }
+.faq__item summary:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(216, 64, 64, 0.35); border-radius: 14px; }
+.faq__item p {
+  margin: 0;
+  padding: 0 16px 16px;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.faq__item p strong { color: var(--paper); }
+.faq__item p a { color: var(--accent-text); }
+
 /* Extras da festa (16/10/2026): 3 atalhos lado a lado entre a linha da festa e
    o formulário. Ícone em cima e rótulo curto embaixo, pra caber os 3 até em
    320px sem quebrar a lista (que continua sendo a ação principal). */

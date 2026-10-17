@@ -44,6 +44,27 @@
     }
   } catch (e) { /* sem storage */ }
 
+  // Amigos (16/10/2026): a promoter aceita os nomes juntos, sem limite. Cada
+  // toque em "+ Adicionar amigo" cria um campo com botão de tirar; os nomes vão
+  // na mesma mensagem do WhatsApp. Campo vazio é ignorado.
+  var caixaAmigos = document.getElementById('amigos');
+  var addAmigo = document.getElementById('add-amigo');
+  var nAmigo = 0;
+  if (caixaAmigos && addAmigo) {
+    addAmigo.addEventListener('click', function () {
+      nAmigo++;
+      var linha = document.createElement('div');
+      linha.className = 'amigo';
+      var id = 'f-amigo-' + nAmigo;
+      linha.innerHTML = '<label class="visually-hidden" for="' + id + '">Nome do amigo</label>' +
+        '<input type="text" id="' + id + '" class="amigo__nome" placeholder="Nome do amigo" autocomplete="off">' +
+        '<button type="button" class="amigo__tirar" aria-label="Tirar este amigo">&times;</button>';
+      linha.querySelector('.amigo__tirar').addEventListener('click', function () { linha.remove(); addAmigo.focus(); });
+      caixaAmigos.appendChild(linha);
+      linha.querySelector('input').focus();
+    });
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     // Obs: se a lista já fechou, event-schedule.js já mandou a página de
@@ -53,12 +74,17 @@
     var nome = document.getElementById('f-nome').value.trim();
     var telefone = document.getElementById('f-telefone').value.trim();
     try { localStorage.setItem(CHAVE, JSON.stringify({ nome: nome, telefone: telefone })); } catch (err) { /* sem storage */ }
-    if (window.r2gMedir) window.r2gMedir('lista_desconto', nomeEvento);
+    var amigos = Array.prototype.map.call(form.querySelectorAll('.amigo__nome'), function (i) { return i.value.trim(); })
+      .filter(Boolean);
+    if (window.r2gMedir) window.r2gMedir(amigos.length ? 'lista_com_amigos' : 'lista_desconto', nomeEvento);
 
     var texto = 'Oi! Quero entrar na Lista de Desconto:\n' +
       'Evento: ' + nomeEvento + '\n' +
       'Nome: ' + nome + '\n' +
       'Telefone: ' + telefone;
+    if (amigos.length) {
+      texto += '\n\nAmigos (' + amigos.length + '):\n' + amigos.map(function (a) { return '- ' + a; }).join('\n');
+    }
 
     var url = 'https://wa.me/' + numeroPromoter + '?text=' + encodeURIComponent(texto);
     window.open(url, '_blank');
