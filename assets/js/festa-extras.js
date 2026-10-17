@@ -69,44 +69,67 @@
     }
   }
 
-  // Salvar na agenda: .ics gerado na hora. Com data-hora vira evento das HH:mm
-  // até 4h depois, com lembrete 6h antes; sem hora, vira evento do dia todo
-  // com lembrete às 15h.
-  acoes.querySelector('[data-acao="agenda"]').addEventListener('click', function () {
-    medir('agenda', festa);
+  // Salvar na agenda. Android: abre o Google Agenda já preenchido (o app do
+  // Google não abre .ics baixado; a pessoa ficava com um arquivo solto).
+  // iPhone, computador e o resto: .ics gerado na hora, que abre no calendário
+  // do aparelho. Com data-hora vira evento das HH:mm até 4h depois; sem hora,
+  // dia inteiro. Horário sempre de Cuiabá (-04:00 fixo, sem horário de verão
+  // desde 2019), não do fuso do aparelho de quem toca.
+  var FUSO = '-04:00';
+  function dadosDoEvento() {
     var dia = (form && form.dataset.eventDate) || '';
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(dia)) return;
-    var d = dia.replace(/-/g, '');
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dia)) return null;
     var hora = acoes.dataset.hora;
-    var local = acoes.dataset.local || '';
-    var linhasData, alarme;
+    var ev = { titulo: titulo.trim(), dia: dia, d: dia.replace(/-/g, ''), local: acoes.dataset.local || '',
+               detalhes: 'Lista de desconto e camarote: ' + url };
     if (/^\d{2}:\d{2}$/.test(hora)) {
-      var ini = new Date(dia + 'T' + hora + ':00');
-      var fim = new Date(ini.getTime() + 4 * 3600 * 1000);
-      linhasData = ['DTSTART:' + carimbo(ini), 'DTEND:' + carimbo(fim)];
-      alarme = 'TRIGGER:-PT6H';
+      ev.inicio = new Date(dia + 'T' + hora + ':00' + FUSO);
+      ev.fim = new Date(ev.inicio.getTime() + 4 * 3600 * 1000);
     } else {
-      var amanha = new Date(dia + 'T12:00:00'); amanha.setDate(amanha.getDate() + 1);
-      linhasData = ['DTSTART;VALUE=DATE:' + d, 'DTEND;VALUE=DATE:' + amanha.toISOString().slice(0, 10).replace(/-/g, '')];
-      alarme = 'TRIGGER:PT15H';
+      var seguinte = new Date(dia + 'T12:00:00Z'); seguinte.setUTCDate(seguinte.getUTCDate() + 1);
+      ev.diaSeguinte = seguinte.toISOString().slice(0, 10).replace(/-/g, '');
     }
+    return ev;
+  }
+  // Hora local de Cuiabá em AAAAMMDDTHHMMSS (o Google lê junto com ctz).
+  function horaCuiaba(dt) { return carimbo(new Date(dt.getTime() - 4 * 3600 * 1000)).replace('Z', ''); }
+
+  acoes.querySelector('[data-acao="agenda"]').addEventListener('click', function () {
+    var ev = dadosDoEvento();
+    if (!ev) return;
+    if (/Android/i.test(navigator.userAgent)) {
+      medir('agenda_google', festa);
+      var datas = ev.inicio ? horaCuiaba(ev.inicio) + '/' + horaCuiaba(ev.fim) : ev.d + '/' + ev.diaSeguinte;
+      window.open('https://calendar.google.com/calendar/render?action=TEMPLATE' +
+        '&text=' + encodeURIComponent(ev.titulo + ' · Ready 2 Go') +
+        '&dates=' + datas +
+        '&location=' + encodeURIComponent(ev.local) +
+        '&details=' + encodeURIComponent(ev.detalhes) +
+        '&ctz=America/Cuiaba', '_blank', 'noopener');
+      return;
+    }
+    medir('agenda_ics', festa);
+    var linhasData = ev.inicio
+      ? ['DTSTART:' + carimbo(ev.inicio), 'DTEND:' + carimbo(ev.fim)]
+      : ['DTSTART;VALUE=DATE:' + ev.d, 'DTEND;VALUE=DATE:' + ev.diaSeguinte];
+    var alarme = ev.inicio ? 'TRIGGER:-PT6H' : 'TRIGGER:PT15H';
     var ics = [
       'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Ready 2 Go//Festas//PT-BR', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
       'BEGIN:VEVENT',
-      'UID:' + d + '-' + slug(titulo) + '@ready-to-go-site.vercel.app',
+      'UID:' + ev.d + '-' + slug(ev.titulo) + '@ready-to-go-site.vercel.app',
       'DTSTAMP:' + carimbo(new Date()),
     ].concat(linhasData, [
-      'SUMMARY:' + esc(titulo.trim() + ' · Ready 2 Go'),
-      'LOCATION:' + esc(local),
-      'DESCRIPTION:' + esc('Lista de desconto e camarote: ' + url),
+      'SUMMARY:' + esc(ev.titulo + ' · Ready 2 Go'),
+      'LOCATION:' + esc(ev.local),
+      'DESCRIPTION:' + esc(ev.detalhes),
       'URL:' + url,
-      'BEGIN:VALARM', alarme, 'ACTION:DISPLAY', 'DESCRIPTION:' + esc('Hoje tem ' + titulo.trim() + '!'), 'END:VALARM',
+      'BEGIN:VALARM', alarme, 'ACTION:DISPLAY', 'DESCRIPTION:' + esc('Hoje tem ' + ev.titulo + '!'), 'END:VALARM',
       'END:VEVENT', 'END:VCALENDAR'
     ]).join('\r\n');
     var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = slug(titulo) + '-' + dia + '.ics';
+    a.download = slug(ev.titulo) + '-' + ev.dia + '.ics';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
   });

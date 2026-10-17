@@ -75,7 +75,7 @@ Passos:
 
 4. **Cache-bust** → se mexeu no `css/style.css` **ou em qualquer arquivo de
    `assets/js/`**, subir o `?v=N` em `index.html`, em todas as páginas de
-   evento e no `_MODELO.html`. Hoje em `?v=50`. O JS passou a ter `?v=` em
+   evento e no `_MODELO.html`. Hoje em `?v=51`. O JS passou a ter `?v=` em
    09/09/2026: sem isso o navegador servia o script velho junto com o HTML
    novo, e recurso novo (destaque da próxima festa, urgência) simplesmente
    não aparecia pra quem já tinha visitado o site.
@@ -103,7 +103,10 @@ Toda página de festa sai do `_MODELO.html` com:
 - **3 atalhos** (`.festa-acoes`, `assets/js/festa-extras.js`): Mandar pros
   amigos (compartilhar do celular; no computador copia o link), Salvar na
   agenda (`.ics` gerado na hora; `data-hora` se o flyer disser o horário) e
-  Como chegar (Google Maps da casa).
+  Como chegar (Google Maps da casa). A agenda tem dois caminhos: **Android**
+  abre o Google Agenda preenchido (o app do Google não abre `.ics` baixado; o
+  link não aceita lembrete, vale o padrão da pessoa); **iPhone e computador**
+  baixam o `.ics`, com lembrete. Horário sempre de Cuiabá (`-04:00` fixo).
 - **Nome e telefone lembrados** no navegador (`localStorage`, chave
   `r2g-contato`), citado na política de privacidade.
 - **Cliques medidos no Clarity** (`clarity("event")` + tag `festa`):
