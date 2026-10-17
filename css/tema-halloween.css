@@ -1,0 +1,128 @@
+/* ============ TEMA HALLOWEEN (17/10/2026) ============
+   Só vale com <html class="tema-halloween"> (assets/js/tema.js). Desligado o
+   tema, nada daqui pega e o site volta ao de sempre. A decoração é injetada
+   pelo tema.js, sempre com pointer-events: none: nunca rouba toque nem cobre
+   texto, botão, preço ou campo. Tudo para com prefers-reduced-motion. */
+
+.tema-halloween {
+  --ht-abobora: #f28c28;
+  --ht-abobora-texto: #ffa552; /* laranja claro pra texto pequeno: 8:1 sobre o fundo */
+  --ht-roxo: #6b3fa0;
+  --ht-gosma: #8bff6b;
+}
+
+/* Títulos de seção em laranja abóbora (eram vermelho claro). */
+.tema-halloween .section-title { color: var(--ht-abobora-texto); }
+
+/* Luz roxa e laranja de noite de Halloween por trás do hero. */
+.tema-halloween .hero-overlay {
+  background:
+    radial-gradient(70% 45% at 50% 46%, rgba(20, 10, 30, 0.55) 0%, transparent 70%),
+    radial-gradient(60% 40% at 15% 85%, rgba(107, 63, 160, 0.28) 0%, transparent 70%),
+    radial-gradient(55% 35% at 90% 80%, rgba(242, 140, 40, 0.18) 0%, transparent 70%);
+}
+
+/* ---------- teias ---------- */
+.ht-teia {
+  position: absolute;
+  top: 0;
+  z-index: 3;
+  color: rgba(235, 228, 240, 0.42);
+  pointer-events: none;
+  line-height: 0;
+}
+.ht-teia svg { display: block; filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.6)); }
+.ht-teia--esq { left: 0; }
+.ht-teia--dir { right: 0; transform: scaleX(-1); }
+.ht-teia--pagina { right: 0; transform: scaleX(-1); z-index: 3; }
+@media (max-width: 374px) { .ht-teia svg { width: 110px; height: 110px; } }
+@media (min-width: 1024px) { .ht-teia--esq svg, .ht-teia--dir svg { width: 240px; height: 240px; } .ht-aranha--hero { right: 9%; } }
+
+/* ---------- aranhas (descem e sobem devagar no fio) ---------- */
+.ht-aranha {
+  position: absolute;
+  top: 0;
+  z-index: 3;
+  width: 30px;
+  pointer-events: none;
+  transform-origin: top center;
+  animation: ht-balanca 5s ease-in-out infinite;
+}
+.ht-aranha .ht-fio {
+  display: block;
+  width: 1px;
+  margin: 0 auto;
+  height: 70px;
+  background: rgba(235, 228, 240, 0.5);
+  animation: ht-desce 7s ease-in-out infinite;
+}
+.ht-aranha svg { display: block; width: 34px; height: 31px; filter: drop-shadow(0 0 1.5px rgba(214, 190, 255, 0.95)) drop-shadow(0 0 6px rgba(160, 110, 230, 0.6)); }
+.ht-aranha--hero { right: 13%; }
+.ht-aranha--pagina { right: 70px; animation-delay: -2s; }
+.ht-aranha--pagina .ht-fio { height: 50px; animation-delay: -3s; }
+@keyframes ht-desce { 0%, 100% { height: 46px; } 50% { height: 96px; } }
+@keyframes ht-balanca { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+
+/* ---------- morcegos cruzando o céu do hero ---------- */
+.ht-morcegos { position: absolute; inset: 0 0 45% 0; z-index: 2; pointer-events: none; overflow: hidden; }
+.ht-morcego {
+  position: absolute;
+  left: -70px;
+  width: 44px;
+  opacity: 0;
+  animation: ht-voo 16s linear infinite;
+}
+.ht-morcego svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 0 1.5px rgba(255, 190, 120, 0.9)) drop-shadow(0 0 7px rgba(242, 140, 40, 0.55)); animation: ht-asa 0.35s ease-in-out infinite alternate; transform-origin: center 40%; }
+.ht-morcego--1 { top: 16%; }
+.ht-morcego--2 { top: 30%; width: 30px; animation-delay: 5s; animation-duration: 19s; }
+.ht-morcego--3 { top: 8%; width: 24px; animation-delay: 11s; animation-duration: 14s; }
+@keyframes ht-voo {
+  0% { transform: translate(0, 0); opacity: 0; }
+  4% { opacity: 0.85; }
+  25% { transform: translate(calc(50vw + 40px), -18px); }
+  50% { transform: translate(calc(100vw + 80px), 6px); opacity: 0.85; }
+  54%, 100% { transform: translate(calc(100vw + 140px), 0); opacity: 0; }
+}
+@keyframes ht-asa { from { transform: scaleY(1); } to { transform: scaleY(0.35); } }
+
+/* ---------- chapéu de bruxa no título "Próximas Festas" ---------- */
+.ht-chapeu {
+  width: 40px;
+  height: 30px;
+  vertical-align: -8px;
+  filter: drop-shadow(0 0 6px rgba(160, 110, 230, 0.55));
+  margin-right: 8px;
+  transform: rotate(-12deg);
+}
+
+/* ---------- caldeirão nas Perguntas Rápidas ---------- */
+.ht-caldeirao-wrap { display: flex; justify-content: center; margin-bottom: 4px; pointer-events: none; }
+.ht-caldeirao { width: 84px; height: 77px; overflow: visible; }
+.ht-bolhas circle { animation: ht-bolha 2.6s ease-in infinite; transform-box: fill-box; transform-origin: center; }
+.ht-bolhas .b2 { animation-delay: 0.7s; }
+.ht-bolhas .b3 { animation-delay: 1.3s; }
+.ht-bolhas .b4 { animation-delay: 1.9s; }
+@keyframes ht-bolha {
+  0% { transform: translateY(10px) scale(0.4); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 0.9; }
+  100% { transform: translateY(-26px) scale(1.1); opacity: 0; }
+}
+.ht-fumaca { animation: ht-fumaca 3.5s ease-in-out infinite; }
+@keyframes ht-fumaca { 0%, 100% { opacity: 0.2; transform: translateY(0); } 50% { opacity: 0.6; transform: translateY(-3px); } }
+.ht-fogo path { animation: ht-chama 0.6s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: bottom center; }
+.ht-fogo path:nth-child(2) { animation-delay: 0.2s; }
+.ht-fogo path:nth-child(3) { animation-delay: 0.4s; }
+@keyframes ht-chama { from { transform: scaleY(1); } to { transform: scaleY(0.78); } }
+
+/* ---------- abóboras no rodapé ---------- */
+.ht-aboboras { display: flex; justify-content: center; align-items: flex-end; gap: 10px; margin-top: 36px; pointer-events: none; }
+.ht-aboboras svg { width: 38px; height: 35px; filter: drop-shadow(0 0 10px rgba(242, 140, 40, 0.35)); }
+.ht-aboboras .ht-abobora--meio { width: 50px; height: 46px; }
+
+/* ---------- movimento reduzido: tudo parado ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ht-aranha, .ht-aranha .ht-fio, .ht-morcego, .ht-morcego svg,
+  .ht-bolhas circle, .ht-fumaca, .ht-fogo path { animation: none !important; }
+  .ht-morcegos { display: none; }
+}
