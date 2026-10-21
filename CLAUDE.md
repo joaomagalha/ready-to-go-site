@@ -24,6 +24,9 @@ da lista** (se tiver), **nome da lista** (ex. "Lista de Desconto"), **valor**,
 Regras fixas de cadastro (não perguntar):
 - **WhatsApp da promoter é sempre `5565993475757`** — o mesmo pra toda festa.
   Nunca perguntar de novo, nunca usar outro número.
+  **Exceção (21/10/2026):** quando a promoter disser que as infos de uma festa
+  vão pra irmã dela, lista e camarote dessa festa usam `5565992309920`
+  (primeira: Boiler Deck, 06/11). Só nessa festa; as outras seguem no fixo.
 - **Título do card e da página = nome da FESTA**, não de quem organiza
   (ex. "HALTERADOS", não "Atlética Tormenta"). Respeitar o caixa do flyer:
   se a marca é toda maiúscula no flyer, o título vai maiúsculo.
