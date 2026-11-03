@@ -78,7 +78,7 @@ Passos:
 
 4. **Cache-bust** → se mexeu no `css/style.css` **ou em qualquer arquivo de
    `assets/js/`**, subir o `?v=N` em `index.html`, em todas as páginas de
-   evento e no `_MODELO.html`. Hoje em `?v=61`. O JS passou a ter `?v=` em
+   evento e no `_MODELO.html`. Hoje em `?v=62`. O JS passou a ter `?v=` em
    09/09/2026: sem isso o navegador servia o script velho junto com o HTML
    novo, e recurso novo (destaque da próxima festa, urgência) simplesmente
    não aparecia pra quem já tinha visitado o site.
@@ -129,6 +129,8 @@ mandar nome de amigos **sem limite** (botão "+ Adicionar amigo" do formulário,
 o link "Ficou com dúvida?" pro `../index.html#duvidas`.
 
 ## Temas sazonais (17/10/2026)
+
+**Estado: Halloween desligado em 03/11/2026** (pedido da promoter, a festa passou). Tudo do tema continua no repo pra religar.
 
 - **Ligar e desligar:** `assets/js/tema.js`, 1ª linha de código:
   `var TEMA = 'halloween';` (desligar: `var TEMA = '';`). Ele põe

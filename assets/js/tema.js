@@ -4,7 +4,7 @@
 // só com seletores .tema-halloween; desligado, o site volta ao de sempre.
 //
 // DESLIGAR O TEMA: trocar a linha abaixo por  var TEMA = '';
-var TEMA = 'halloween';
+var TEMA = '';
 
 (function () {
   if (!TEMA) return;
