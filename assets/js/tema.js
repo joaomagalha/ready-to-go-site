@@ -287,8 +287,8 @@ var TEMA = 'natal';
         var f = largo.matches ? '16x9' : '9x16';
         if (v.getAttribute('data-f') === f) return;
         v.setAttribute('data-f', f);
-        v.poster = base + 'assets/tema/natal-video-' + f + '.jpg';
-        v.src = base + 'assets/tema/natal-video-' + f + '.mp4';
+        v.poster = base + 'assets/tema/natal-video-' + f + '.jpg?v=2'; // ?v sobe a cada vídeo novo (10/11: 1080p)
+        v.src = base + 'assets/tema/natal-video-' + f + '.mp4?v=2';
         var p = v.play();
         if (p && p.catch) p.catch(function () {});   // autoplay barrado: fica o pôster
       }

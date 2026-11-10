@@ -63,24 +63,24 @@
   .tema-natal body:not(.event-page)::before {
     background:
       linear-gradient(rgba(10, 15, 28, 0.18), rgba(10, 15, 28, 0.18)),
-      url('../assets/tema/natal-video-9x16.jpg') center / cover no-repeat;
+      url('../assets/tema/natal-video-9x16.jpg?v=2') center / cover no-repeat;
   }
   .tema-natal body.nt-sem-hero::before {
     background:
       linear-gradient(rgba(10, 15, 28, 0.72), rgba(10, 15, 28, 0.72)),
-      url('../assets/tema/natal-video-9x16.jpg') center / cover no-repeat;
+      url('../assets/tema/natal-video-9x16.jpg?v=2') center / cover no-repeat;
   }
 }
 @media (prefers-reduced-motion: reduce) and (min-width: 768px) and (min-aspect-ratio: 1/1) {
   .tema-natal body:not(.event-page)::before {
     background:
       linear-gradient(rgba(10, 15, 28, 0.18), rgba(10, 15, 28, 0.18)),
-      url('../assets/tema/natal-video-16x9.jpg') center / cover no-repeat;
+      url('../assets/tema/natal-video-16x9.jpg?v=2') center / cover no-repeat;
   }
   .tema-natal body.nt-sem-hero::before {
     background:
       linear-gradient(rgba(10, 15, 28, 0.72), rgba(10, 15, 28, 0.72)),
-      url('../assets/tema/natal-video-16x9.jpg') center / cover no-repeat;
+      url('../assets/tema/natal-video-16x9.jpg?v=2') center / cover no-repeat;
   }
 }
 
