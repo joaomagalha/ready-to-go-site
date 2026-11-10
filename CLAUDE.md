@@ -78,7 +78,7 @@ Passos:
 
 4. **Cache-bust** → se mexeu no `css/style.css` **ou em qualquer arquivo de
    `assets/js/`**, subir o `?v=N` em `index.html`, em todas as páginas de
-   evento e no `_MODELO.html`. Hoje em `?v=62`. O JS passou a ter `?v=` em
+   evento e no `_MODELO.html`. Hoje em `?v=63`. O JS passou a ter `?v=` em
    09/09/2026: sem isso o navegador servia o script velho junto com o HTML
    novo, e recurso novo (destaque da próxima festa, urgência) simplesmente
    não aparecia pra quem já tinha visitado o site.
@@ -95,6 +95,12 @@ Pedido da promoter (precisa vender mais camarote). Toda festa nova leva os dois:
   topo do modelo). Link puro pro WhatsApp da promoter, sem JS; ela confirma a
   disponibilidade na conversa.
 - O texto do bloco é da promoter: trocar só se ela pedir.
+- **Festa com ingresso vendido fora (09/11/2026, NOSTALGIC):** o bloco do ingresso
+  (mesmo molde `.camarote-card`) vai **acima** do camarote, com botão `btn-primary`; o
+  camarote fica `btn-secondary` embaixo. O Ticpass não aplica cupom pelo link (o `?c=` é
+  código de afiliado, sem desconto): o botão copia o cupom no clique, mostra o aviso e
+  abre o Ticpass (script no fim de `eventos/nostalgic-19-11.html`, copiar de lá). A
+  métrica do camarote pega só `.camarote-card a[href*="wa.me"]`.
 
 ## Extras da festa (16/10/2026)
 

@@ -27,7 +27,7 @@
   var form = document.getElementById('lista-form');
   var festa = form ? form.dataset.evento : '';
 
-  var camarote = document.querySelector('.camarote-card a');
+  var camarote = document.querySelector('.camarote-card a[href*="wa.me"]');
   if (camarote) camarote.addEventListener('click', function () { medir('camarote', festa); });
 
   if (!acoes) return;

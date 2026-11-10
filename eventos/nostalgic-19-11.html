@@ -28,11 +28,11 @@
   <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/space-grotesk-latin.woff2" crossorigin>
   <link rel="preload" href="../assets/mascote/globinho-tonto.svg" as="image" type="image/svg+xml">
 
-  <link rel="stylesheet" href="../css/style.css?v=62">
+  <link rel="stylesheet" href="../css/style.css?v=63">
 
-  <link rel="stylesheet" href="../css/tema-halloween.css?v=62">
+  <link rel="stylesheet" href="../css/tema-halloween.css?v=63">
 
-  <script src="../assets/js/tema.js?v=62"></script>
+  <script src="../assets/js/tema.js?v=63"></script>
 
   <!-- Sem JS o .page-loader (fixed, z-999) nunca sai e todo conteúdo fica em
        .reveal { opacity: 0 } — a página virava uma tela preta. -->
@@ -60,7 +60,7 @@
 </head>
 <body class="event-page" style="--fundo-festa: url('../assets/eventos/nostalgic-19-11-fundo.jpg')">
 
-  <script src="../assets/js/loader.js?v=62"></script>
+  <script src="../assets/js/loader.js?v=63"></script>
   <div class="page-loader" id="page-loader">
     <div class="page-loader__ring">
       <img class="page-loader__globinho" src="../assets/mascote/globinho-tonto.svg" alt="" width="150" height="168">
@@ -125,22 +125,25 @@
         <!-- Camarote (16/10/2026, pedido da promoter: vender mais camarote). Link
              puro pro WhatsApp dela com a mensagem pronta; a disponibilidade ela
              confirma na conversa. -->
+        <!-- Lounge Open Bar Premium (19.11): ingresso vendido no Ticpass, com o cupom da promoter.
+             O Ticpass não aplica cupom pelo link (o ?c= dele é código de afiliado, sem desconto):
+             o botão copia o cupom, avisa e abre o Ticpass. Fica ACIMA do camarote e com botão
+             primário (pedido do João, 09/11). Script no fim da página. -->
+        <div class="camarote-card" id="lounge">
+          <p class="camarote-card__titulo"><svg class="icon" aria-hidden="true"><use href="#i-ingresso"></use></svg>Lounge Open Bar Premium</p>
+          <p class="camarote-card__texto">Acesso diferenciado com vodka, whisky, gin, licor, energéticos, drinks Aperol, Moscow Mule e Gin Tropical. Ingresso antecipado no Ticpass.</p>
+          <p style="margin:0 0 16px;"><span style="display:inline-block;padding:6px 14px;border-radius:999px;border:1px dashed rgba(255,255,255,.45);font-family:var(--font-mono, monospace);font-size:.85rem;letter-spacing:.08em;color:#fff;">CUPOM <strong>VITORIA</strong></span></p>
+          <a class="btn btn-primary" id="lounge-comprar" href="https://ticpass.app/evento/mc-kekel" target="_blank" rel="noopener" data-cupom="VITORIA">
+            <svg class="icon" aria-hidden="true"><use href="#i-ingresso"></use></svg>
+            Comprar Ingresso
+          </a>
+        </div>
         <div class="camarote-card">
           <p class="camarote-card__titulo"><svg class="icon" aria-hidden="true"><use href="#i-coroa"></use></svg>Camarote</p>
           <p class="camarote-card__texto">Quer curtir de camarote com a sua turma? Fala com a gente e veja se ainda tem disponível.</p>
           <a class="btn btn-secondary" href="https://wa.me/5565993475757?text=Oi%21%20Vi%20no%20site%20que%20tem%20camarote%20na%20festa%20NOSTALGIC%20%2819.11%29.%20Ainda%20tem%20dispon%C3%ADvel%3F%20Qual%20o%20valor%20e%20quantas%20pessoas%20cabem%3F" target="_blank" rel="noopener">
             <svg class="icon" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
             Consultar Camarote
-          </a>
-        </div>
-        <!-- Lounge Open Bar Premium (19.11): ingresso vendido no Ticpass, com o cupom da promoter.
-             O Ticpass não aplica cupom pelo link, por isso o código aparece escrito. -->
-        <div class="camarote-card">
-          <p class="camarote-card__titulo"><svg class="icon" aria-hidden="true"><use href="#i-ingresso"></use></svg>Lounge Open Bar Premium</p>
-          <p class="camarote-card__texto">Acesso diferenciado com vodka, whisky, gin, licor, energéticos, drinks Aperol, Moscow Mule e Gin Tropical. Ingresso antecipado no Ticpass: use o cupom <strong>VITORIA</strong> na compra.</p>
-          <a class="btn btn-secondary" href="https://ticpass.app/evento/mc-kekel" target="_blank" rel="noopener">
-            <svg class="icon" aria-hidden="true"><use href="#i-ingresso"></use></svg>
-            Comprar Ingresso
           </a>
         </div>
         <p class="festa-duvidas"><a href="../index.html#duvidas">Ficou com dúvida? Veja as perguntas rápidas</a></p>
@@ -151,11 +154,45 @@
 
   </div>
 
-  <script src="../assets/js/event-schedule.js?v=62"></script>
-  <script src="../assets/js/festa-extras.js?v=62"></script>
-  <script src="../assets/js/lista-desconto.js?v=62"></script>
-  <script src="../assets/js/reveal.js?v=62"></script>
+  <script src="../assets/js/event-schedule.js?v=63"></script>
+  <script src="../assets/js/festa-extras.js?v=63"></script>
+  <script src="../assets/js/lista-desconto.js?v=63"></script>
+  <script src="../assets/js/reveal.js?v=63"></script>
   <script defer src="/_vercel/insights/script.js"></script>
 
+  <script>
+    // Lounge: copia o cupom no mesmo clique que abre o Ticpass e avisa (fica na tela pra quando a pessoa voltar).
+    (function () {
+      var btn = document.getElementById('lounge-comprar');
+      if (!btn) return;
+      var cupom = btn.getAttribute('data-cupom');
+      function avisar() {
+        var t = document.getElementById('aviso-cupom');
+        if (!t) {
+          t = document.createElement('p');
+          t.id = 'aviso-cupom';
+          t.setAttribute('role', 'status');
+          t.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:50;max-width:calc(100% - 32px);width:max-content;margin:0;padding:12px 18px;border-radius:14px;background:#fff;color:#141414;font-size:.9rem;line-height:1.4;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.45);';
+          document.body.appendChild(t);
+        }
+        t.innerHTML = 'Cupom <strong>' + cupom + '</strong> copiado! No Ticpass, cole no campo de cupom.';
+        t.style.display = 'block';
+        clearTimeout(t._timer);
+        t._timer = setTimeout(function () { t.style.display = 'none'; }, 8000);
+      }
+      btn.addEventListener('click', function () {
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = cupom; ta.setAttribute('readonly', '');
+          ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
+          document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, 99);
+          document.execCommand('copy'); document.body.removeChild(ta);
+        } catch (e) {}
+        try { if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(cupom).catch(function () {}); } catch (e) {}
+        avisar();
+        if (window.r2gMedir) window.r2gMedir('ingresso', 'NOSTALGIC com MC Kekel (19.11)');
+      });
+    })();
+  </script>
 </body>
 </html>
