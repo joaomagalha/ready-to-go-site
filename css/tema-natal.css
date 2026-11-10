@@ -1,0 +1,218 @@
+/* ============ TEMA NATAL (10/11/2026) ============
+   Só vale com <html class="tema-natal"> (assets/js/tema.js). Desligado o
+   tema, nada daqui pega e o site volta ao de sempre. Mesmo molde do Halloween
+   (css/tema-halloween.css): a decoração é injetada pelo tema.js, sempre com
+   pointer-events: none (nunca rouba toque nem cobre texto, botão, preço ou
+   campo). Movimento reduzido: sem neve e luzinhas paradas; a árvore fica.
+
+   Camadas (z-index), conferidas contra o style.css:
+   - fundo fixo (body::before) -1 e degradê .nt-degrade -1 (vem depois no DOM)
+   - conteúdo 0 a 2 (hero e cards)
+   - árvore fixa (tela larga) 25
+   - neve 30
+   - Globinho espiando 40, grão 50, tela de carregamento 999 */
+
+.tema-natal {
+  --nt-dourado: #f2c14e;
+  --nt-dourado-texto: #f5d27a; /* dourado claro pra texto: ~12:1 sobre a pílula escura */
+  --nt-vermelho: #d62839;
+}
+
+/* Fundo do tema: a mesma receita do Halloween depois da auditoria de 17/10.
+   - A imagem inteira (bolas de espelho, laços vermelhos e bokeh dourado em fundo
+     escuro) fica atrás da página toda, fixa, com o véu de leitura.
+   - O topo (hero) é opaco #0a0f1c (azul-marinho quase preto, a cor média do fundo, medida 10/11) e termina nessa cor.
+   - UM degradê (.nt-degrade, tema.js) começa no fim do topo, na mesma cor, e
+     some aos poucos até mostrar o fundo. Rola junto com o conteúdo.
+   Não repetir: imagem deslocada dentro de camada com máscara (a borda virou
+   linha reta) nem névoa dentro da coluna central (virou retângulo). Página de
+   festa fica com a cor do flyer (lá só a neve). Sem a imagem (ainda não
+   gerada ou falhou), fica a cor escura, sem quebrar nada.
+   Celular: a imagem 9x16 tem as bolas no TOPO, então ela fica presa pelo
+   topo (center top): passado o hero, as bolas aparecem no alto da tela. */
+.tema-natal body:not(.event-page) { background: #0a0f1c; }
+.tema-natal body:not(.event-page)::before {
+  position: fixed;
+  inset: 0;
+  -webkit-mask-image: none;
+          mask-image: none;
+  background:
+    linear-gradient(180deg, rgba(10, 15, 28, 0.35) 0%, rgba(10, 15, 28, 0.45) 50%, rgba(10, 15, 28, 0.30) 100%),
+    url('../assets/tema/natal-fundo-9x16.jpg') center top / cover no-repeat;
+}
+@media (min-width: 900px) and (min-aspect-ratio: 1/1) {
+  .tema-natal body:not(.event-page)::before {
+    background:
+      linear-gradient(180deg, rgba(10, 15, 28, 0.35) 0%, rgba(10, 15, 28, 0.45) 50%, rgba(10, 15, 28, 0.30) 100%),
+      url('../assets/tema/natal-fundo-16x9.jpg') center / cover no-repeat;
+  }
+}
+/* Squad e política: texto corrido sobre o fundo, véu mais escuro. */
+.tema-natal body.nt-sem-hero::before {
+  background:
+    linear-gradient(rgba(10, 15, 28, 0.72), rgba(10, 15, 28, 0.72)),
+    url('../assets/tema/natal-fundo-9x16.jpg') center top / cover no-repeat;
+}
+@media (min-width: 900px) and (min-aspect-ratio: 1/1) {
+  .tema-natal body.nt-sem-hero::before {
+    background:
+      linear-gradient(rgba(10, 15, 28, 0.72), rgba(10, 15, 28, 0.72)),
+      url('../assets/tema/natal-fundo-16x9.jpg') center / cover no-repeat;
+  }
+}
+
+/* O degradê: da cor do fim do topo até transparente, curva suave (11 paradas). */
+.nt-degrade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;              /* o tema.js põe no fim do topo */
+  height: 260px;
+  z-index: -1;         /* acima do fundo fixo (vem depois no DOM), abaixo do conteúdo */
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(10, 15, 28, 1) 0%,
+    rgba(10, 15, 28, 0.97) 10%,
+    rgba(10, 15, 28, 0.9) 20%,
+    rgba(10, 15, 28, 0.8) 30%,
+    rgba(10, 15, 28, 0.67) 40%,
+    rgba(10, 15, 28, 0.52) 50%,
+    rgba(10, 15, 28, 0.38) 60%,
+    rgba(10, 15, 28, 0.25) 70%,
+    rgba(10, 15, 28, 0.14) 80%,
+    rgba(10, 15, 28, 0.06) 90%,
+    rgba(10, 15, 28, 0) 100%);
+}
+@media (min-width: 900px) { .nt-degrade { height: 360px; } }
+
+/* Títulos de seção em dourado, numa pílula escura: o fundo é fixo e as bolas
+   de espelho (claras, com reflexo) passam atrás do texto na rolagem; sem a
+   pílula o contraste caía em cima dos reflexos (mesmo motivo do Halloween). */
+.tema-natal .section-title {
+  color: var(--nt-dourado-texto);
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(10, 15, 28, 0.78);
+  box-shadow: 0 0 18px rgba(10, 15, 28, 0.6);
+}
+/* Cartões mais opacos sobre o fundo (mesmos do Halloween). */
+.tema-natal .faq__item,
+.tema-natal .btn-secondary,
+.tema-natal .squad-cta,
+.tema-natal .squad-perks,
+.tema-natal body:not(.event-page) .camarote-card {
+  background-color: rgba(13, 19, 34, 0.82);
+}
+.tema-natal .cta-note,
+.tema-natal footer { text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9); }
+
+/* Topo: base opaca na cor de onde o degradê começa e overlay na mesma
+   estrutura do Halloween (radial atrás do texto, degradê que termina
+   transparente ANTES da borda), trocando o roxo por um brilho dourado fraco. */
+.tema-natal .hero {
+  background: #0a0f1c;  /* opaco até o fim: a borda de baixo tem a cor da página, sem emenda */
+}
+.tema-natal .hero-overlay {
+  background:
+    radial-gradient(120% 52% at 50% 60%, rgba(9, 13, 25, 0.80) 0%, transparent 70%),
+    radial-gradient(60% 30% at 50% 40%, rgba(242, 193, 78, 0.08) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(10, 15, 28, 0.04) 0%, rgba(10, 15, 28, 0.14) 30%, rgba(10, 15, 28, 0.5) 50%, rgba(10, 15, 28, 0.58) 72%, rgba(10, 15, 28, 0.3) 90%, rgba(10, 15, 28, 0) 100%);
+}
+@media (min-width: 640px) {
+  .tema-natal .hero-overlay {
+    background:
+      radial-gradient(52% 40% at 50% 64%, rgba(9, 13, 25, 0.62) 0%, transparent 70%),
+      linear-gradient(180deg, rgba(10, 15, 28, 0) 0%, rgba(10, 15, 28, 0.06) 32%, rgba(10, 15, 28, 0.26) 52%, rgba(10, 15, 28, 0.36) 74%, rgba(10, 15, 28, 0.18) 90%, rgba(10, 15, 28, 0) 100%);
+  }
+}
+
+/* ---------- neve caindo na tela inteira ---------- */
+/* Camada fixa acima do conteúdo e abaixo do Globinho, do grão e do loader;
+   pointer-events: none, então nunca bloqueia clique (o floco passa por cima
+   do botão, mas o toque atravessa). Só transform na animação: não mexe em
+   layout e roda na GPU. O de fora (span) desce; o de dentro (i) balança. */
+.nt-neve {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  overflow: hidden;
+  pointer-events: none;
+}
+.nt-floco {
+  position: absolute;
+  top: -12px;
+  animation-name: nt-cai;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+.nt-floco i {
+  display: block;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+  animation-name: nt-balanca;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.nt-floco--desfocado i { filter: blur(1.2px); }  /* os maiores, "mais perto" */
+@keyframes nt-cai { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(0, calc(100vh + 24px), 0); } }
+@keyframes nt-balanca {
+  from { transform: translateX(calc(var(--nt-deriva, 20px) * -0.5)); }
+  to { transform: translateX(calc(var(--nt-deriva, 20px) * 0.5)); }
+}
+
+/* ---------- árvore de Natal com presentes ---------- */
+/* Celular e tela média: parada no fluxo, centralizada acima do rodapé, 90 px
+   (fixa no canto ela cobria cartão, botão e preço em 390 px: a coluna ocupa a
+   tela toda). Tela larga (>= 1280 px e altura >= 600): fixa no canto de baixo
+   à esquerda, 150 px, na margem que sobra fora da coluna de 1120 px. Estática;
+   só as luzinhas piscam. */
+.nt-arvore {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+  pointer-events: none;
+  line-height: 0;
+}
+.nt-arvore svg {
+  display: block;
+  width: 84px;
+  height: 90px;
+  overflow: visible;
+  filter: drop-shadow(0 0 12px rgba(242, 193, 78, 0.22));
+}
+@media (min-width: 1280px) and (min-height: 600px) {
+  .nt-arvore {
+    position: fixed;
+    left: 18px;
+    bottom: 10px;
+    z-index: 25;
+    margin: 0;
+  }
+  .nt-arvore svg { width: 140px; height: 150px; }
+}
+.nt-luz { animation: nt-pisca 2.4s ease-in-out infinite alternate; }
+.nt-luz--2 { animation-delay: -0.8s; animation-duration: 2.9s; }
+.nt-luz--3 { animation-delay: -1.6s; animation-duration: 2.1s; }
+@keyframes nt-pisca { from { opacity: 1; } to { opacity: 0.25; } }
+
+/* ---------- gorro de Papai Noel no título "Próximas Festas" ---------- */
+.nt-gorro {
+  width: 40px;
+  height: 30px;
+  vertical-align: -8px;
+  filter: drop-shadow(0 0 6px rgba(214, 40, 57, 0.45));
+  margin-right: 8px;
+  transform: rotate(-12deg);
+}
+
+/* ---------- movimento reduzido: sem neve, luzinhas paradas ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .nt-neve { display: none; }
+  .nt-luz { animation: none !important; }
+}

@@ -139,6 +139,11 @@ o link "Ficou com dúvida?" pro `../index.html#duvidas`.
 
 **Estado: Halloween desligado em 03/11/2026** (pedido da promoter, a festa passou). Tudo do tema continua no repo pra religar.
 
+**Natal ligado em 10/11/2026** (pedido do João): `var TEMA = 'natal'` no `tema.js` (Halloween em `decoracaoHalloween()`, Natal em `decoracaoNatal()`). Visual em `css/tema-natal.css` (só `.tema-natal`, prefixo `nt-`).
+- **Fundo:** bolas de espelho com laços vermelhos e bokeh dourado (Runway do Evandro), `assets/tema/natal-fundo-9x16.jpg` (celular, preso no topo) e `-16x9.jpg`; originais em `midia/natal/site/` do cofre. Topo e degradê `#0a0f1c`.
+- **Neve** em todas as páginas (40 flocos; 22 abaixo de 640 px), z-index 30 com `pointer-events: none`. **Árvore com 3 presentes** parada: fixa no canto de baixo à esquerda a partir de 1280 px (z 25); abaixo disso ou com menos de 600 px de altura, no fluxo acima do rodapé (senão cobre cartão e botão). Nunca nas páginas de festa. Gorro de Papai Noel no título "Próximas Festas". Reduced-motion: sem neve e sem pisca.
+- **Globinho de Natal** (`globinho-xm-*.svg`, seção "fantasias de Natal" do `mascote/gerar_globinho.py`): noel, mamae-noel, rena, elfo, grinch (homenagem, sem nome no SVG), boneco-neve, biscoito, pijama, quebra-nozes, anjo; tonto e comemora com gorro (o `tema.js` troca e volta pro original se falhar).
+
 - **Ligar e desligar:** `assets/js/tema.js`, 1ª linha de código:
   `var TEMA = 'halloween';` (desligar: `var TEMA = '';`). Ele põe
   `class="tema-halloween"` no `<html>` antes de pintar e injeta a decoração.

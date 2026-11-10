@@ -13,7 +13,7 @@
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (!document.querySelector('.event-grid')) return;
 
-  var V = '?v=59';
+  var V = '?v=64';
   var BASE = 'assets/mascote/globinho-';
   var LADOS = ['direita', 'esquerda', 'baixo'];
   var REACOES = [
@@ -31,6 +31,14 @@
   if (document.documentElement.classList.contains('tema-halloween')) {
     REACOES = ['mascara', 'listrado', 'vampiro', 'garras', 'monstro', 'bruxa', 'mumia', 'ghostface', 'palhaco', 'chucky']
       .map(function (n) { return { img: 'hw-' + n, lados: LADOS }; });
+  }
+  // Tema Natal (10/11/2026, pedido do João): mesma ideia, com o Globinho
+  // fantasiado de personagem de Natal (10: Papai Noel, Mamãe Noel, rena,
+  // elfo, ranzinza verde, boneco de neve, biscoito de gengibre, pijama,
+  // quebra-nozes, anjinho), sorteado e diferente do anterior.
+  if (document.documentElement.classList.contains('tema-natal')) {
+    REACOES = ['noel', 'mamae-noel', 'rena', 'elfo', 'grinch', 'boneco-neve', 'biscoito', 'pijama', 'quebra-nozes', 'anjo']
+      .map(function (n) { return { img: 'xm-' + n, lados: LADOS }; });
   }
   REACOES.forEach(function (r) { var i = new Image(); i.src = BASE + r.img + '.svg' + V; });
 
