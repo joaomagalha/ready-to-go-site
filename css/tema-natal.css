@@ -275,17 +275,22 @@
    em que o pompom e a barra ainda se leem). Giro leve de -8 graus; o
    translateY de -0,04em assenta a barra branca na mesma altura das
    maiúsculas (o peso visual do gorro fica embaixo, na barra). */
+/* 10/11/2026, João (print): o gorro encostava na borda da pílula embaixo e à
+   esquerda (1,7em ~ 19 px numa pílula de 28 px, e o padding-top de 0,42em das
+   maiúsculas empurrava ele pra baixo). Agora: 1,35em; translateY de -0,21em
+   anula aquele padding-top e põe o gorro no meio da ALTURA da pílula; a pílula
+   com gorro tem 2 px a mais de respiro à esquerda (o giro do gorro pede). Folga mínima medida ≥ 4 px. */
 .nt-gorro {
   flex: none;
   display: block;
-  height: 1.7em;
+  height: 1.35em;
   width: auto;
   aspect-ratio: 52 / 35;
-  margin-left: 0.1em;  /* o giro faz a ponta da barra passar ~1 px da caixa; isto devolve o respiro igual ao da direita */
   overflow: visible;
-  transform: translateY(-0.04em) rotate(-8deg);
+  transform: translateY(-0.21em) rotate(-8deg);
   filter: drop-shadow(0 0 4px rgba(214, 40, 57, 0.4));
 }
+.tema-natal .section-title:has(.nt-gorro) { padding-left: 18px; }
 
 /* ---------- movimento reduzido: sem neve, luzinhas paradas ---------- */
 @media (prefers-reduced-motion: reduce) {
