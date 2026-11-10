@@ -6,10 +6,13 @@
    campo). Movimento reduzido: sem neve e luzinhas paradas; a árvore fica.
 
    Camadas (z-index), conferidas contra o style.css:
-   - fundo fixo (body::before) -1 e degradê .nt-degrade -1 (vem depois no DOM)
+   - vídeo de fundo .nt-video -2 (10/11/2026)
+   - véu fixo (body::before) -1 e degradê .nt-degrade -1 (vem depois no DOM)
+   - neve .nt-neve -1 (10/11/2026, rodada 3, pedido do João: a neve
+     passa POR TRÁS dos elementos; é o último filho do body, então fica acima
+     do vídeo, do véu e do degradê e abaixo de todo o conteúdo)
    - conteúdo 0 a 2 (hero e cards)
    - árvore fixa (tela larga) 25
-   - neve 30
    - Globinho espiando 40, grão 50, tela de carregamento 999 */
 
 .tema-natal {
@@ -18,72 +21,88 @@
   --nt-vermelho: #d62839;
 }
 
-/* Fundo do tema: a mesma receita do Halloween depois da auditoria de 17/10.
-   - A imagem inteira (bolas de espelho, laços vermelhos e bokeh dourado em fundo
-     escuro) fica atrás da página toda, fixa, com o véu de leitura.
-   - O topo (hero) é opaco #0a0f1c (azul-marinho quase preto, a cor média do fundo, medida 10/11) e termina nessa cor.
-   - UM degradê (.nt-degrade, tema.js) começa no fim do topo, na mesma cor, e
-     some aos poucos até mostrar o fundo. Rola junto com o conteúdo.
-   Não repetir: imagem deslocada dentro de camada com máscara (a borda virou
-   linha reta) nem névoa dentro da coluna central (virou retângulo). Página de
-   festa fica com a cor do flyer (lá só a neve). Sem a imagem (ainda não
-   gerada ou falhou), fica a cor escura, sem quebrar nada.
-   Celular: a imagem 9x16 tem as bolas no TOPO, então ela fica presa pelo
-   topo (center top): passado o hero, as bolas aparecem no alto da tela. */
+/* Fundo do tema (10/11/2026, 2ª versão): UM vídeo só atrás da página inteira.
+   Antes o topo mostrava o vídeo dos globos (tom quente) e embaixo vinha uma
+   imagem fixa azul-marinho (natal-fundo-*.jpg): não combinavam. Agora:
+   - .nt-video (tema.js, 1º filho do body): fixo, cobre a tela, z -2. Cidade de
+     Natal à noite com neve e a árvore com o globo de espelho no terço de cima.
+   - body::before: véu fixo leve por cima do vídeo (z -1), pra tudo ficar legível.
+   - .nt-degrade (z -1, vem depois no DOM): começa no fim do topo na mesma
+     opacidade em que o topo termina, escurece em ~360 px e segue escuro até o fim da página, rolando junto.
+   - O topo (hero) não tem fundo: o vídeo aparece ali; o .hero-overlay segura a
+     leitura do título. O vídeo dos globos não baixa (hero-video.js) e some.
+   O body fica com a cor escura: o fundo dele vai pro canvas, abaixo do z -2,
+   então não cobre o vídeo e serve de cor enquanto o vídeo carrega.
+   Página de festa fica com a cor do flyer (lá só a neve, sem vídeo).
+   Movimento reduzido: sem vídeo, só o pôster no body::before. */
 .tema-natal body:not(.event-page) { background: #0a0f1c; }
+.nt-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100lvh;      /* a maior altura do celular: a barra do navegador recolhe sem mostrar buraco */
+  object-fit: cover;
+  object-position: center;
+  z-index: -2;
+  pointer-events: none;
+}
 .tema-natal body:not(.event-page)::before {
   position: fixed;
   inset: 0;
   -webkit-mask-image: none;
           mask-image: none;
-  background:
-    linear-gradient(180deg, rgba(10, 15, 28, 0.35) 0%, rgba(10, 15, 28, 0.45) 50%, rgba(10, 15, 28, 0.30) 100%),
-    url('../assets/tema/natal-fundo-9x16.jpg') center top / cover no-repeat;
+  background: rgba(10, 15, 28, 0.18);
 }
-@media (min-width: 900px) and (min-aspect-ratio: 1/1) {
+/* Squad e política: texto corrido direto sobre o vídeo, véu mais escuro. */
+.tema-natal body.nt-sem-hero::before { background: rgba(10, 15, 28, 0.72); }
+/* Movimento reduzido: o tema.js não cria o vídeo; fica o pôster parado (mesma
+   media query do vídeo pra escolher 9:16 ou 16:9). */
+@media (prefers-reduced-motion: reduce) {
   .tema-natal body:not(.event-page)::before {
     background:
-      linear-gradient(180deg, rgba(10, 15, 28, 0.35) 0%, rgba(10, 15, 28, 0.45) 50%, rgba(10, 15, 28, 0.30) 100%),
-      url('../assets/tema/natal-fundo-16x9.jpg') center / cover no-repeat;
+      linear-gradient(rgba(10, 15, 28, 0.18), rgba(10, 15, 28, 0.18)),
+      url('../assets/tema/natal-video-9x16.jpg') center / cover no-repeat;
   }
-}
-/* Squad e política: texto corrido sobre o fundo, véu mais escuro. */
-.tema-natal body.nt-sem-hero::before {
-  background:
-    linear-gradient(rgba(10, 15, 28, 0.72), rgba(10, 15, 28, 0.72)),
-    url('../assets/tema/natal-fundo-9x16.jpg') center top / cover no-repeat;
-}
-@media (min-width: 900px) and (min-aspect-ratio: 1/1) {
   .tema-natal body.nt-sem-hero::before {
     background:
       linear-gradient(rgba(10, 15, 28, 0.72), rgba(10, 15, 28, 0.72)),
-      url('../assets/tema/natal-fundo-16x9.jpg') center / cover no-repeat;
+      url('../assets/tema/natal-video-9x16.jpg') center / cover no-repeat;
+  }
+}
+@media (prefers-reduced-motion: reduce) and (min-width: 768px) and (min-aspect-ratio: 1/1) {
+  .tema-natal body:not(.event-page)::before {
+    background:
+      linear-gradient(rgba(10, 15, 28, 0.18), rgba(10, 15, 28, 0.18)),
+      url('../assets/tema/natal-video-16x9.jpg') center / cover no-repeat;
+  }
+  .tema-natal body.nt-sem-hero::before {
+    background:
+      linear-gradient(rgba(10, 15, 28, 0.72), rgba(10, 15, 28, 0.72)),
+      url('../assets/tema/natal-video-16x9.jpg') center / cover no-repeat;
   }
 }
 
-/* O degradê: da cor do fim do topo até transparente, curva suave (11 paradas). */
+/* O degradê: do fim do topo até o fim da página (o tema.js põe o top; bottom 0
+   no body, que é position: relative). Começa em 0,55, a mesma opacidade em
+   que o overlay do topo termina (emenda sem linha), e escurece suave até 0,72
+   em 360 px, ficando assim até o fim. */
 .nt-degrade {
   position: absolute;
   left: 0;
   right: 0;
   top: 0;              /* o tema.js põe no fim do topo */
-  height: 260px;
-  z-index: -1;         /* acima do fundo fixo (vem depois no DOM), abaixo do conteúdo */
+  bottom: 0;
+  z-index: -1;         /* acima do vídeo e do véu fixo (vem depois no DOM), abaixo do conteúdo */
   pointer-events: none;
   background: linear-gradient(180deg,
-    rgba(10, 15, 28, 1) 0%,
-    rgba(10, 15, 28, 0.97) 10%,
-    rgba(10, 15, 28, 0.9) 20%,
-    rgba(10, 15, 28, 0.8) 30%,
-    rgba(10, 15, 28, 0.67) 40%,
-    rgba(10, 15, 28, 0.52) 50%,
-    rgba(10, 15, 28, 0.38) 60%,
-    rgba(10, 15, 28, 0.25) 70%,
-    rgba(10, 15, 28, 0.14) 80%,
-    rgba(10, 15, 28, 0.06) 90%,
-    rgba(10, 15, 28, 0) 100%);
+    rgba(10, 15, 28, 0.55) 0,
+    rgba(10, 15, 28, 0.6) 90px,
+    rgba(10, 15, 28, 0.66) 180px,
+    rgba(10, 15, 28, 0.7) 270px,
+    rgba(10, 15, 28, 0.72) 360px);
 }
-@media (min-width: 900px) { .nt-degrade { height: 360px; } }
 
 /* Títulos de seção em dourado, numa pílula escura: o fundo é fixo e as bolas
    de espelho (claras, com reflexo) passam atrás do texto na rolagem; sem a
@@ -109,35 +128,41 @@
 .tema-natal .cta-note,
 .tema-natal footer { text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9); }
 
-/* Topo: base opaca na cor de onde o degradê começa e overlay na mesma
-   estrutura do Halloween (radial atrás do texto, degradê que termina
-   transparente ANTES da borda), trocando o roxo por um brilho dourado fraco. */
-.tema-natal .hero {
-  background: #0a0f1c;  /* opaco até o fim: a borda de baixo tem a cor da página, sem emenda */
-}
+/* Topo (10/11/2026): sem fundo, o vídeo de fundo aparece aqui; o vídeo dos
+   globos some. Overlay: transparente em cima (o globo e a árvore ficam no
+   terço de cima, limpos), escurece na faixa do texto e termina em 0,55 na
+   borda de baixo, exatamente onde o .nt-degrade começa (também 0,55): sem
+   emenda e sem um vão claro entre o topo e o botão. Radial escuro atrás do
+   título, subtítulo e tagline. Contraste medido no pôster (10/11): ver o
+   relatório da sessão; texto pequeno um pouco mais claro só no Natal. */
+.tema-natal .hero { background: transparent; }
+.tema-natal .hero-video { display: none; }
 .tema-natal .hero-overlay {
   background:
-    radial-gradient(120% 52% at 50% 60%, rgba(9, 13, 25, 0.80) 0%, transparent 70%),
-    radial-gradient(60% 30% at 50% 40%, rgba(242, 193, 78, 0.08) 0%, transparent 70%),
-    linear-gradient(180deg, rgba(10, 15, 28, 0.04) 0%, rgba(10, 15, 28, 0.14) 30%, rgba(10, 15, 28, 0.5) 50%, rgba(10, 15, 28, 0.58) 72%, rgba(10, 15, 28, 0.3) 90%, rgba(10, 15, 28, 0) 100%);
+    radial-gradient(120% 50% at 50% 70%, rgba(9, 13, 25, 0.86) 0%, transparent 72%),
+    linear-gradient(180deg, rgba(10, 15, 28, 0) 0%, rgba(10, 15, 28, 0.1) 30%, rgba(10, 15, 28, 0.55) 55%, rgba(10, 15, 28, 0.64) 78%, rgba(10, 15, 28, 0.55) 100%);
 }
 @media (min-width: 640px) {
   .tema-natal .hero-overlay {
     background:
-      radial-gradient(52% 40% at 50% 64%, rgba(9, 13, 25, 0.62) 0%, transparent 70%),
-      linear-gradient(180deg, rgba(10, 15, 28, 0) 0%, rgba(10, 15, 28, 0.06) 32%, rgba(10, 15, 28, 0.26) 52%, rgba(10, 15, 28, 0.36) 74%, rgba(10, 15, 28, 0.18) 90%, rgba(10, 15, 28, 0) 100%);
+      radial-gradient(62% 46% at 50% 70%, rgba(9, 13, 25, 0.82) 0%, transparent 72%),
+      linear-gradient(180deg, rgba(10, 15, 28, 0) 0%, rgba(10, 15, 28, 0.06) 30%, rgba(10, 15, 28, 0.48) 55%, rgba(10, 15, 28, 0.6) 78%, rgba(10, 15, 28, 0.55) 100%);
   }
 }
+.tema-natal .brand-sub { color: #f8aaaa; }
+.tema-natal .hero-tagline { color: #e6e2e2; }
+.tema-natal .cta-note { color: #dcd8d8; }
 
 /* ---------- neve caindo na tela inteira ---------- */
-/* Camada fixa acima do conteúdo e abaixo do Globinho, do grão e do loader;
-   pointer-events: none, então nunca bloqueia clique (o floco passa por cima
-   do botão, mas o toque atravessa). Só transform na animação: não mexe em
+/* Camada fixa ATRÁS do conteúdo (10/11/2026, rodada 3: o João quis a neve
+   passando por trás dos elementos): z -1, último filho do body, então pinta
+   acima do vídeo, do véu e do degradê e some atrás de título, card e botão.
+   pointer-events: none. Só transform na animação: não mexe em
    layout e roda na GPU. O de fora (span) desce; o de dentro (i) balança. */
 .nt-neve {
   position: fixed;
   inset: 0;
-  z-index: 30;
+  z-index: -1;
   overflow: hidden;
   pointer-events: none;
 }

@@ -230,19 +230,60 @@ var TEMA = 'natal';
       img.src = original.replace(de, para);
     }
 
+    // ---------- vídeo de fundo, fixo atrás de tudo (10/11/2026) ----------
+    // Primeiro filho do body, z-index -2 (abaixo do véu fixo body::before e do
+    // .nt-degrade). Mesma media query do hero-video.js: tela larga e deitada
+    // usa o 16:9, o resto o 9:16. Movimento reduzido: não cria o vídeo; o CSS
+    // põe só o pôster no fundo. Se a tela vira (celular deitado), troca a fonte.
+    function fundoVideo() {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var largo = window.matchMedia('(min-width: 768px) and (min-aspect-ratio: 1/1)');
+      var v = document.createElement('video');
+      v.className = 'nt-video';
+      v.setAttribute('aria-hidden', 'true');
+      v.setAttribute('autoplay', '');
+      v.setAttribute('muted', '');
+      v.setAttribute('loop', '');
+      v.setAttribute('playsinline', '');
+      v.muted = true;          // a propriedade, não só o atributo: sem ela o autoplay é barrado
+      v.defaultMuted = true;
+      v.playsInline = true;
+      // Caminho tirado do próprio tema.js (vale em qualquer pasta).
+      var s = document.querySelector('script[src*="assets/js/tema.js"]');
+      var base = s ? s.getAttribute('src').split('assets/js/tema.js')[0] : '';
+      function fonte() {
+        var f = largo.matches ? '16x9' : '9x16';
+        if (v.getAttribute('data-f') === f) return;
+        v.setAttribute('data-f', f);
+        v.poster = base + 'assets/tema/natal-video-' + f + '.jpg';
+        v.src = base + 'assets/tema/natal-video-' + f + '.mp4';
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {});   // autoplay barrado: fica o pôster
+      }
+      fonte();
+      if (largo.addEventListener) largo.addEventListener('change', fonte);
+      document.body.insertBefore(v, document.body.firstChild);
+    }
+
     function decorar() {
       var evento = document.body.classList.contains('event-page');
       var hero = document.querySelector('.hero');
 
       // Globinho do carregamento de gorro e o comemorando do Squad.
-      trocaGlobinho(document.querySelector('.page-loader__globinho'), 'globinho-tonto.svg', 'globinho-xm-tonto.svg?v=64');
-      trocaGlobinho(document.querySelector('.globinho-festa'), 'globinho-comemora.svg', 'globinho-xm-comemora.svg?v=64');
+      trocaGlobinho(document.querySelector('.page-loader__globinho'), 'globinho-tonto.svg', 'globinho-xm-tonto.svg?v=66');
+      trocaGlobinho(document.querySelector('.globinho-festa'), 'globinho-comemora.svg', 'globinho-xm-comemora.svg?v=66');
 
       // Neve em todas as páginas, inclusive as de festa (lá é só ela).
       neve();
 
       if (!evento) {
-        // Degradê do fim do topo pro fundo: mesma lógica do Halloween (17/10).
+        // Vídeo de fundo (10/11/2026): um vídeo só, fixo atrás da página
+        // inteira (cidade de Natal com neve e a árvore com o globo de espelho).
+        // O dos globos do hero não baixa com o Natal (hero-video.js).
+        fundoVideo();
+
+        // Degradê do fim do topo pro fundo: começa transparente no fim do hero
+        // e escurece rolando com o conteúdo (10/11/2026; antes era opaco).
         if (hero) {
           var degrade = el('nt-degrade', '');
           document.body.insertBefore(degrade, hero.nextSibling);
@@ -277,5 +318,33 @@ var TEMA = 'natal';
 
   // Escolhe a decoração pelo TEMA (10/11/2026).
   if (TEMA === 'halloween') decoracaoHalloween();
-  else if (TEMA === 'natal') decoracaoNatal();
+  else if (TEMA === 'natal') { semVideoDosGlobos(); decoracaoNatal(); }
+
+  // Natal (10/11/2026): o vídeo dos globos do hero não pode baixar. O
+  // hero-video.js sozinho chegava tarde: o parser para esperando o script e,
+  // nesse meio tempo, o navegador já começava a baixar o <source> (até 786 KB
+  // no teste antes de abortar). Este observador roda no <head>, antes de o
+  // <video> existir, e tira fontes, pôster e autoplay assim que o parser cria
+  // o elemento, antes de o navegador escolher a fonte. O hero-video.js segue
+  // como segunda trava. Desliga sozinho quando a página termina de montar.
+  function semVideoDosGlobos() {
+    if (!window.MutationObserver) return;
+    function limpa(v) {
+      v.removeAttribute('autoplay');
+      v.removeAttribute('poster');
+      v.setAttribute('preload', 'none');
+      Array.prototype.slice.call(v.querySelectorAll('source')).forEach(function (s) { s.parentNode.removeChild(s); });
+    }
+    var obs = new MutationObserver(function (lista) {
+      lista.forEach(function (m) {
+        Array.prototype.forEach.call(m.addedNodes, function (n) {
+          if (n.nodeType !== 1) return;
+          if (n.classList.contains('hero-video')) limpa(n);
+          else if (n.tagName === 'SOURCE' && n.parentNode && n.parentNode.classList && n.parentNode.classList.contains('hero-video')) n.parentNode.removeChild(n);
+        });
+      });
+    });
+    obs.observe(document.documentElement, { childList: true, subtree: true });
+    document.addEventListener('DOMContentLoaded', function () { obs.disconnect(); });
+  }
 })();
