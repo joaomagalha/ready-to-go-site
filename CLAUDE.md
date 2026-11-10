@@ -128,7 +128,8 @@ Respostas da promoter, únicas fontes da seção `#duvidas` do index (não inven
 outra): idade mínima 18 (mais de 16 entra com a autorização dos pais,
 `assets/autorizacao-menores.pdf`, acompanhado de maior de 18, com cópia do RG
 de quem assinou e documento original com foto); nome na lista vale **até meia-noite** (também no
-`form-note` de toda festa); sem dress code, só o Halloween (fantasia ou All Black, 29/10); paga
+`form-note` de toda festa); a pergunta "Tem dress code?" saiu do FAQ em 10/11/2026
+(só existia por causa do Halloween, que passou; não recolocar); paga
 **na saída** com pulseira, do jeito que quiser, menos boleto e parcelado; pode
 mandar nome de amigos **sem limite** (botão "+ Adicionar amigo" do formulário,
 `lista-desconto.js`; os nomes vão na mesma mensagem). Toda página de festa tem
