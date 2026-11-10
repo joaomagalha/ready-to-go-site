@@ -136,8 +136,8 @@ var TEMA = 'natal';
   // ===================== NATAL (10/11/2026) =====================
   // Mesmo molde do Halloween: o visual mora em css/tema-natal.css (só
   // seletores .tema-natal) e aqui só entra a decoração, sempre aria-hidden e
-  // pointer-events: none. Fundo: foto de bolas de espelho com fitas vermelhas
-  // e luzinhas (assets/tema/natal-fundo-*.jpg), atrás da página.
+  // pointer-events: none. Fundo: vídeo da cidade de Natal à noite
+  // (assets/tema/natal-video-*.mp4), fixo atrás da página (ver fundoVideo).
   function decoracaoNatal() {
     function el(cls, html) { var d = document.createElement('div'); d.className = cls; d.setAttribute('aria-hidden', 'true'); d.innerHTML = html; return d; }
     function sorteia(min, max) { return min + Math.random() * (max - min); }
@@ -153,53 +153,85 @@ var TEMA = 'natal';
     }
 
     // ---------- árvore + presentes (um SVG só, pra base ficar alinhada) ----------
-    // Pinheiro em 3 camadas (a metade da direita de cada uma mais escura, dá
-    // volume), festão dourado, bolinhas vermelhas e douradas, luzinhas que
-    // piscam (classe nt-luz) e a estrela no topo. Presentes na frente do tronco.
-    var ARVORE = '<svg viewBox="0 0 140 150" aria-hidden="true">' +
-      '<rect x="54" y="124" width="12" height="16" rx="2" fill="#5a3a22"/>' +
-      // camadas, de baixo pra cima
-      '<path d="M60 56 L106 124 Q60 134 14 124 Z" fill="#1d6a3a"/><path d="M60 56 L106 124 Q84 130 60 131 Z" fill="#165a30"/>' +
-      '<path d="M60 32 L94 90 Q60 99 26 90 Z" fill="#257f46"/><path d="M60 32 L94 90 Q78 96 60 97 Z" fill="#1d6a3a"/>' +
-      '<path d="M60 12 L82 58 Q60 65 38 58 Z" fill="#2f9654"/><path d="M60 12 L82 58 Q71 62 60 63 Z" fill="#257f46"/>' +
+    // Mesmo desenho, lugar e tamanho de antes; rodada 6 (10/11/2026) só
+    // refinou o acabamento pra conversar com o vídeo fotográfico do fundo:
+    // degradê em cada camada do pinheiro (luz vindo de cima), neve fina na
+    // borda das camadas, bolinhas com reflexo (degradê radial), luzinhas com
+    // halo suave (o halo é um degradê, não filtro: leve pra GPU), estrela
+    // dourada com halo, presentes com volume (tampa clara, lado direito mais
+    // escuro, fita com brilho) e sombra elíptica no chão. Os ids levam o
+    // prefixo nt- (só existe uma árvore por página). As luzinhas continuam
+    // com a classe nt-luz (piscam; paradas com movimento reduzido).
+    var ARVORE = '<svg viewBox="0 0 140 150" aria-hidden="true"><defs>' +
+      '<linearGradient id="nt-c1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a8a4c"/><stop offset="1" stop-color="#124a28"/></linearGradient>' +
+      '<linearGradient id="nt-c2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#35a05c"/><stop offset="1" stop-color="#17592f"/></linearGradient>' +
+      '<linearGradient id="nt-c3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4cbb70"/><stop offset="1" stop-color="#1f7040"/></linearGradient>' +
+      '<linearGradient id="nt-tronco" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7a5232"/><stop offset="1" stop-color="#3f2716"/></linearGradient>' +
+      '<radialGradient id="nt-bv" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#ff8a94"/><stop offset=".45" stop-color="#d62839"/><stop offset="1" stop-color="#7c0d1b"/></radialGradient>' +
+      '<radialGradient id="nt-bd" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#fff3c4"/><stop offset=".45" stop-color="#f2c14e"/><stop offset="1" stop-color="#9a6514"/></radialGradient>' +
+      '<radialGradient id="nt-halo"><stop offset="0" stop-color="#fff3b0" stop-opacity=".85"/><stop offset=".35" stop-color="#ffd76a" stop-opacity=".35"/><stop offset="1" stop-color="#ffd76a" stop-opacity="0"/></radialGradient>' +
+      '<radialGradient id="nt-sombra"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>' +
+      '<linearGradient id="nt-est" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1a8"/><stop offset="1" stop-color="#f0a92e"/></linearGradient>' +
+      '<linearGradient id="nt-fita" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".18"/><stop offset=".45" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></linearGradient>' +
+      '<g id="nt-l"><circle r="5" fill="url(#nt-halo)"/><circle r="1.5" fill="#fffbe6"/></g>' +
+      '</defs>' +
+      // sombra no chão
+      '<ellipse cx="70" cy="146" rx="68" ry="4" fill="url(#nt-sombra)"/>' +
+      '<rect x="54" y="124" width="12" height="16" rx="2" fill="url(#nt-tronco)"/>' +
+      // camadas, de baixo pra cima (a metade da direita na sombra)
+      '<path d="M60 56 L106 124 Q60 134 14 124 Z" fill="url(#nt-c1)"/><path d="M60 56 L106 124 Q84 130 60 131 Z" fill="#04140a" fill-opacity=".3"/>' +
+      '<path d="M60 32 L94 90 Q60 99 26 90 Z" fill="url(#nt-c2)"/><path d="M60 32 L94 90 Q78 96 60 97 Z" fill="#04140a" fill-opacity=".28"/>' +
+      '<path d="M60 12 L82 58 Q60 65 38 58 Z" fill="url(#nt-c3)"/><path d="M60 12 L82 58 Q71 62 60 63 Z" fill="#04140a" fill-opacity=".25"/>' +
+      // neve fina na borda de cada camada
+      '<g fill="none" stroke="#eef3fb" stroke-linecap="round" stroke-width="1.1" opacity=".35">' +
+      '<path d="M16 124 Q60 133.5 104 124"/><path d="M28 90 Q60 98.5 92 90"/><path d="M40 58 Q60 64.5 80 58"/></g>' +
       // festão dourado
       '<g fill="none" stroke="#f2c14e" stroke-width="1.6" stroke-linecap="round" opacity=".9">' +
       '<path d="M44 48 Q62 58 78 50"/><path d="M33 78 Q62 92 88 80"/><path d="M22 112 Q60 128 100 114"/></g>' +
-      // bolinhas
-      '<g><circle cx="50" cy="56" r="3.4" fill="#d62839"/><circle cx="70" cy="44" r="3" fill="#f2c14e"/>' +
-      '<circle cx="40" cy="86" r="3.8" fill="#f2c14e"/><circle cx="66" cy="74" r="3.6" fill="#d62839"/><circle cx="84" cy="86" r="3.4" fill="#d62839"/>' +
-      '<circle cx="30" cy="118" r="4" fill="#d62839"/><circle cx="56" cy="108" r="4" fill="#f2c14e"/><circle cx="80" cy="104" r="3.6" fill="#d62839"/><circle cx="96" cy="120" r="3.6" fill="#f2c14e"/>' +
-      '<circle cx="49" cy="55" r="1" fill="#fff" opacity=".7"/><circle cx="65" cy="73" r="1.1" fill="#fff" opacity=".7"/><circle cx="29" cy="117" r="1.2" fill="#fff" opacity=".7"/></g>' +
-      // luzinhas (piscam de 3 em 3 tempos diferentes)
-      '<g fill="#fff3b0">' +
-      '<circle class="nt-luz nt-luz--1" cx="58" cy="36" r="1.6"/><circle class="nt-luz nt-luz--2" cx="46" cy="66" r="1.6"/><circle class="nt-luz nt-luz--3" cx="76" cy="62" r="1.6"/>' +
-      '<circle class="nt-luz nt-luz--1" cx="54" cy="84" r="1.6"/><circle class="nt-luz nt-luz--2" cx="74" cy="94" r="1.6"/><circle class="nt-luz nt-luz--3" cx="36" cy="100" r="1.6"/>' +
-      '<circle class="nt-luz nt-luz--1" cx="88" cy="110" r="1.6"/><circle class="nt-luz nt-luz--2" cx="44" cy="118" r="1.6"/><circle class="nt-luz nt-luz--3" cx="68" cy="120" r="1.6"/></g>' +
-      // estrela
-      '<polygon points="' + estrela(60, 11, 10, 4.2) + '" fill="#ffd45e" stroke="#f2a93b" stroke-width=".8" stroke-linejoin="round"/>' +
+      // bolinhas (o reflexo vem do degradê radial)
+      '<g><circle cx="50" cy="56" r="3.4" fill="url(#nt-bv)"/><circle cx="70" cy="44" r="3" fill="url(#nt-bd)"/>' +
+      '<circle cx="40" cy="86" r="3.8" fill="url(#nt-bd)"/><circle cx="66" cy="74" r="3.6" fill="url(#nt-bv)"/><circle cx="84" cy="86" r="3.4" fill="url(#nt-bv)"/>' +
+      '<circle cx="30" cy="118" r="4" fill="url(#nt-bv)"/><circle cx="56" cy="108" r="4" fill="url(#nt-bd)"/><circle cx="80" cy="104" r="3.6" fill="url(#nt-bv)"/><circle cx="96" cy="120" r="3.6" fill="url(#nt-bd)"/></g>' +
+      // luzinhas com halo (piscam de 3 em 3 tempos diferentes)
+      '<use class="nt-luz nt-luz--1" href="#nt-l" x="58" y="36"/><use class="nt-luz nt-luz--2" href="#nt-l" x="46" y="66"/><use class="nt-luz nt-luz--3" href="#nt-l" x="76" y="62"/>' +
+      '<use class="nt-luz nt-luz--1" href="#nt-l" x="54" y="84"/><use class="nt-luz nt-luz--2" href="#nt-l" x="74" y="94"/><use class="nt-luz nt-luz--3" href="#nt-l" x="36" y="100"/>' +
+      '<use class="nt-luz nt-luz--1" href="#nt-l" x="88" y="110"/><use class="nt-luz nt-luz--2" href="#nt-l" x="44" y="118"/><use class="nt-luz nt-luz--3" href="#nt-l" x="68" y="120"/>' +
+      // estrela com halo
+      '<circle cx="60" cy="11" r="17" fill="url(#nt-halo)" opacity=".8"/>' +
+      '<polygon points="' + estrela(60, 11, 10, 4.2) + '" fill="url(#nt-est)" stroke="#c98a1e" stroke-width=".8" stroke-linejoin="round"/>' +
+      '<polygon points="' + estrela(58.6, 9.4, 3.4, 1.4) + '" fill="#fffbe6" opacity=".7"/>' +
       // presente vermelho (esquerda), laço dourado
-      '<rect x="6" y="122" width="30" height="24" rx="1.5" fill="#c8202f"/><rect x="4" y="118" width="34" height="7" rx="1.5" fill="#e0303f"/>' +
-      '<rect x="19" y="118" width="4" height="28" fill="#f2c14e"/>' +
-      '<path d="M21 118 C14 108 8 114 13 118 Z M21 118 C28 108 34 114 29 118 Z" fill="#f2c14e"/>' +
+      '<rect x="6" y="122" width="30" height="24" rx="1.5" fill="#c8202f"/><rect x="27" y="122" width="9" height="24" fill="#5a0610" fill-opacity=".35"/>' +
+      '<rect x="4" y="118" width="34" height="7" rx="1.5" fill="#e83a4a"/><rect x="4" y="124" width="34" height="1.4" fill="#5a0610" fill-opacity=".3"/>' +
+      '<rect x="19" y="118" width="4" height="28" fill="#f2c14e"/><rect x="19" y="118" width="4" height="28" fill="url(#nt-fita)"/>' +
+      '<path d="M21 118 C14 108 8 114 13 118 Z M21 118 C28 108 34 114 29 118 Z" fill="url(#nt-bd)"/>' +
       // presente branco com fita verde (meio, na frente do tronco)
-      '<rect x="66" y="128" width="26" height="18" rx="1.5" fill="#f4f1ea"/><rect x="64" y="125" width="30" height="5" rx="1.2" fill="#ffffff"/>' +
-      '<rect x="77" y="125" width="4" height="21" fill="#1f8a4c"/><rect x="66" y="135" width="26" height="3" fill="#1f8a4c"/>' +
-      '<path d="M79 125 C73 117 68 122 72 125 Z M79 125 C85 117 90 122 86 125 Z" fill="#1f8a4c"/>' +
+      '<rect x="66" y="128" width="26" height="18" rx="1.5" fill="#e9e5dc"/><rect x="84" y="128" width="8" height="18" fill="#7d7a72" fill-opacity=".3"/>' +
+      '<rect x="64" y="125" width="30" height="5" rx="1.2" fill="#ffffff"/><rect x="64" y="129" width="30" height="1.2" fill="#7d7a72" fill-opacity=".3"/>' +
+      '<rect x="77" y="125" width="4" height="21" fill="#1f8a4c"/><rect x="77" y="125" width="4" height="21" fill="url(#nt-fita)"/><rect x="66" y="135" width="26" height="3" fill="#1f8a4c"/>' +
+      '<path d="M79 125 C73 117 68 122 72 125 Z M79 125 C85 117 90 122 86 125 Z" fill="#26a35a"/>' +
       // presente dourado (direita), fita vermelha
-      '<rect x="98" y="114" width="36" height="32" rx="1.5" fill="#e2a93b"/><rect x="96" y="109" width="40" height="8" rx="1.5" fill="#f2c14e"/>' +
-      '<rect x="114" y="109" width="5" height="37" fill="#b3122a"/><rect x="98" y="127" width="36" height="4" fill="#b3122a"/>' +
-      '<path d="M116.5 109 C108 98 101 105 106 109 Z M116.5 109 C125 98 132 105 127 109 Z" fill="#b3122a"/></svg>';
+      '<rect x="98" y="114" width="36" height="32" rx="1.5" fill="#e2a93b"/><rect x="123" y="114" width="11" height="32" fill="#6b4208" fill-opacity=".35"/>' +
+      '<rect x="96" y="109" width="40" height="8" rx="1.5" fill="#f7cd62"/><rect x="96" y="116" width="40" height="1.4" fill="#6b4208" fill-opacity=".3"/>' +
+      '<rect x="114" y="109" width="5" height="37" fill="#b3122a"/><rect x="114" y="109" width="5" height="37" fill="url(#nt-fita)"/><rect x="98" y="127" width="36" height="4" fill="#b3122a"/>' +
+      '<path d="M116.5 109 C108 98 101 105 106 109 Z M116.5 109 C125 98 132 105 127 109 Z" fill="url(#nt-bv)"/></svg>';
 
     // ---------- gorro de Papai Noel (no lugar do chapéu de bruxa) ----------
-    var GORRO = '<svg class="nt-gorro" viewBox="0 0 60 44" aria-hidden="true">' +
+    // Rodada 6 (10/11/2026): viewBox recortado no desenho (antes 0 0 60 44,
+    // com sobra em cima e embaixo que deslocava o centro). Agora a caixa é o
+    // gorro, e o flex da pílula centraliza de verdade. Barra branca com um
+    // tom de sombra embaixo e brilho no pompom, pra combinar com a árvore.
+    var GORRO = '<svg class="nt-gorro" viewBox="7 5 52 35" aria-hidden="true">' +
       '<path d="M12 33 C13 18 24 6 38 7 C47 8 53 15 52 25 C48 19 43 17 39 21 C38 25 40 29 42 33 Z" fill="#d62839"/>' +
       '<path d="M38 7 C47 8 53 15 52 25 C49 20 46 18 43 18 C44 13 42 9 38 7 Z" fill="#a8172a"/>' +
       '<rect x="8" y="29" width="38" height="10" rx="5" fill="#f5f2ee"/>' +
-      '<circle cx="52" cy="26" r="5.5" fill="#f5f2ee"/></svg>';
+      '<rect x="10" y="35" width="34" height="3" rx="1.5" fill="#c9c4bd" opacity=".6"/>' +
+      '<circle cx="52" cy="26" r="5.5" fill="#f5f2ee"/><circle cx="50.5" cy="24.5" r="2" fill="#fff"/></svg>';
 
     // ---------- neve na tela inteira ----------
-    // Camada fixa por cima do conteúdo (z 30, abaixo do Globinho espiando e do
-    // grão), sem pointer-events: nunca rouba clique. Cada floco cai só com
+    // Camada fixa ATRÁS do conteúdo (z -1, último filho do body; rodada 3 de
+    // 10/11/2026, pedido do João; comentário corrigido na rodada 6), sem
+    // pointer-events: nunca rouba clique. Cada floco cai só com
     // transform (o de fora desce, o de dentro balança de lado). Tamanho,
     // velocidade, deriva e atraso sorteados; atraso negativo = a tela já abre
     // com neve no meio do caminho, sem "chuva" começando lá de cima.
@@ -270,8 +302,8 @@ var TEMA = 'natal';
       var hero = document.querySelector('.hero');
 
       // Globinho do carregamento de gorro e o comemorando do Squad.
-      trocaGlobinho(document.querySelector('.page-loader__globinho'), 'globinho-tonto.svg', 'globinho-xm-tonto.svg?v=66');
-      trocaGlobinho(document.querySelector('.globinho-festa'), 'globinho-comemora.svg', 'globinho-xm-comemora.svg?v=66');
+      trocaGlobinho(document.querySelector('.page-loader__globinho'), 'globinho-tonto.svg', 'globinho-xm-tonto.svg?v=67');
+      trocaGlobinho(document.querySelector('.globinho-festa'), 'globinho-comemora.svg', 'globinho-xm-comemora.svg?v=67');
 
       // Neve em todas as páginas, inclusive as de festa (lá é só ela).
       neve();

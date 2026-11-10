@@ -106,16 +106,44 @@
 
 /* Títulos de seção em dourado, numa pílula escura: o fundo é fixo e as bolas
    de espelho (claras, com reflexo) passam atrás do texto na rolagem; sem a
-   pílula o contraste caía em cima dos reflexos (mesmo motivo do Halloween). */
+   pílula o contraste caía em cima dos reflexos (mesmo motivo do Halloween).
+   Rodada 6 (10/11/2026, o João apontou a pílula das festas torta):
+   - flex com align-items: center: o gorro e o texto se alinham pelo centro,
+     sem vertical-align (antes o gorro caía abaixo da linha do texto);
+   - altura fixa de 28 px em TODAS as pílulas (a das festas tinha 40 e as
+     outras 23, porque o gorro esticava a linha);
+   - o letter-spacing de 0,22em do .section-title também entra depois da
+     última letra; o padding da direita desconta esse 0,22em, então o
+     respiro de tinta fica igual dos dois lados (medido: 17 x 17 px);
+   - borda fina dourada translúcida, que conversa com o globo de espelho do
+     vídeo, e sombra curta embaixo. Fundo 0,82: com um reflexo branco puro
+     atrás, o dourado ainda fica acima de 7:1 (medido; sobre o azul do vídeo
+     passa de 12:1). */
 .tema-natal .section-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  box-sizing: border-box;
+  height: 28px;
+  line-height: 1;
   color: var(--nt-dourado-texto);
   width: fit-content;
   margin-left: auto;
   margin-right: auto;
-  padding: 5px 14px;
+  padding: 0 calc(16px - 0.22em) 0 16px;
+  /* Centro óptico: o texto é todo em maiúscula, e o centro da caixa da letra
+     fica ~0,2em abaixo do meio das maiúsculas (a caixa reserva espaço pras
+     descendentes). Sem isto as maiúsculas ficavam 2,5 px acima do meio da
+     pílula. 0,42em de respiro em cima desce o conteúdo ~0,21em. */
+  padding-top: 0.42em;
+  border: 1px solid rgba(245, 210, 122, 0.28);
   border-radius: 999px;
-  background: rgba(10, 15, 28, 0.78);
-  box-shadow: 0 0 18px rgba(10, 15, 28, 0.6);
+  background: rgba(10, 15, 28, 0.82);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.35),
+    0 0 18px rgba(10, 15, 28, 0.55),
+    inset 0 1px 0 rgba(245, 210, 122, 0.08);
 }
 /* Cartões mais opacos sobre o fundo (mesmos do Halloween). */
 .tema-natal .faq__item,
@@ -200,7 +228,10 @@
 .nt-arvore {
   display: flex;
   justify-content: center;
-  margin-top: 32px;
+  /* Rodada 6 (10/11/2026): mesmo vão das seções (44 px no celular, 56 a
+     partir de 640), em vez de 32 fixos: a árvore ficava mais colada no
+     Redes do que no rodapé (32 x 48 px). */
+  margin-top: var(--space-section, 32px);
   pointer-events: none;
   line-height: 0;
 }
@@ -209,8 +240,15 @@
   width: 84px;
   height: 90px;
   overflow: visible;
-  filter: drop-shadow(0 0 12px rgba(242, 193, 78, 0.22));
+  /* Rodada 6 (10/11/2026): brilho dourado mais curto; a sombra no chão agora
+     é desenhada no próprio SVG (elipse com degradê). */
+  filter: drop-shadow(0 0 10px rgba(242, 193, 78, 0.18));
 }
+/* Rodada 6 (10/11/2026): de 1280 a 1399 px a árvore de 140 px entrava na
+   coluna (o .wrap tem 1120 px com 40 de respiro: o conteúdo começa em
+   (largura - 1040) / 2, só 120 px em 1280). Com 3 festas na grade ela cobria
+   o canto do card da esquerda, onde fica o preço. Ali ela fica com 96 px;
+   a partir de 1400 px volta aos 140. */
 @media (min-width: 1280px) and (min-height: 600px) {
   .nt-arvore {
     position: fixed;
@@ -219,6 +257,9 @@
     z-index: 25;
     margin: 0;
   }
+  .nt-arvore svg { width: 90px; height: 96px; }
+}
+@media (min-width: 1400px) and (min-height: 600px) {
   .nt-arvore svg { width: 140px; height: 150px; }
 }
 .nt-luz { animation: nt-pisca 2.4s ease-in-out infinite alternate; }
@@ -227,13 +268,23 @@
 @keyframes nt-pisca { from { opacity: 1; } to { opacity: 0.25; } }
 
 /* ---------- gorro de Papai Noel no título "Próximas Festas" ---------- */
+/* Rodada 6 (10/11/2026): sem vertical-align (a pílula é flex e centraliza).
+   O viewBox do SVG foi recortado no desenho (tema.js), então a caixa é o
+   gorro e o centro da caixa é o centro do gorro. Medida em em: acompanha a
+   letra do título (1,7em ~ 2,4 vezes a altura da maiúscula, o menor tamanho
+   em que o pompom e a barra ainda se leem). Giro leve de -8 graus; o
+   translateY de -0,04em assenta a barra branca na mesma altura das
+   maiúsculas (o peso visual do gorro fica embaixo, na barra). */
 .nt-gorro {
-  width: 40px;
-  height: 30px;
-  vertical-align: -8px;
-  filter: drop-shadow(0 0 6px rgba(214, 40, 57, 0.45));
-  margin-right: 8px;
-  transform: rotate(-12deg);
+  flex: none;
+  display: block;
+  height: 1.7em;
+  width: auto;
+  aspect-ratio: 52 / 35;
+  margin-left: 0.1em;  /* o giro faz a ponta da barra passar ~1 px da caixa; isto devolve o respiro igual ao da direita */
+  overflow: visible;
+  transform: translateY(-0.04em) rotate(-8deg);
+  filter: drop-shadow(0 0 4px rgba(214, 40, 57, 0.4));
 }
 
 /* ---------- movimento reduzido: sem neve, luzinhas paradas ---------- */
