@@ -78,7 +78,7 @@ Passos:
 
 4. **Cache-bust** → se mexeu no `css/style.css` **ou em qualquer arquivo de
    `assets/js/`**, subir o `?v=N` em `index.html`, em todas as páginas de
-   evento e no `_MODELO.html`. Hoje em `?v=63`. O JS passou a ter `?v=` em
+   evento e no `_MODELO.html`. Hoje em `?v=71`. O JS passou a ter `?v=` em
    09/09/2026: sem isso o navegador servia o script velho junto com o HTML
    novo, e recurso novo (destaque da próxima festa, urgência) simplesmente
    não aparecia pra quem já tinha visitado o site.
@@ -116,11 +116,46 @@ Toda página de festa sai do `_MODELO.html` com:
   abre o Google Agenda preenchido (o app do Google não abre `.ics` baixado; o
   link não aceita lembrete, vale o padrão da pessoa); **iPhone e computador**
   baixam o `.ics`, com lembrete. Horário sempre de Cuiabá (`-04:00` fixo).
-- **Nome e telefone lembrados** no navegador (`localStorage`, chave
-  `r2g-contato`), citado na política de privacidade.
+- **Nome lembrado** no navegador (`localStorage`, chave `r2g-contato`),
+  citado na política de privacidade. O telefone deixou de ser coletado em
+  11/11/2026 (decisão do João); versão antiga guardada no navegador é apagada.
 - **Cliques medidos no Clarity** (`clarity("event")` + tag `festa`):
   `card_festa`, `lista_desconto`, `camarote`, `compartilhar`, `agenda`,
-  `como_chegar`. Ver em Clarity > Filtros > Eventos personalizados.
+  `como_chegar`; do envio pro VipMe: `lista_vipme_ok` e `lista_vipme_falha`.
+  Ver em Clarity > Filtros > Eventos personalizados.
+
+## Lista no VipMe (11/11/2026)
+
+A promoter coloca os nomes da lista no VipMe (events.vipme.com.br). O formulário
+da festa manda o nome (e os amigos) direto pra lista de lá, sem a pessoa sair do
+site e sem a promoter digitar:
+- **Como funciona:** `lista-desconto.js` faz `POST` (text/plain, sem preflight)
+  pro Apps Script de `vipme-apps-script.gs`, que confere a lista no VipMe e
+  repassa pro `PublicPage/AddAttendings` (API **não oficial**, pode mudar; o
+  navegador não chama o VipMe direto porque a API não tem CORS).
+- **Endereço do Apps Script:** constante `ENDPOINT_PADRAO` no topo do
+  `lista-desconto.js` (um só pra todas as festas). **Vazio = tudo cai no
+  WhatsApp**, o jeito antigo. Instalação e nova versão: cabeçalho do `.gs`.
+- **Festa nova com lista no VipMe:** do link do VipMe tirar `{{VIPME_EVENTO}}` (1º
+  número do link `events.vipme.com.br/{evento}/{lista}`) e `{{VIPME_LISTA}}` (número
+  em `/list/{lista}-lista-de-desconto`). **O promoter não vai na página:** é fixo no
+  `.gs` (`PROMOTER = 54799`, Vitória Matos; outra promoter usando o site: mudar a
+  constante). Conferir nos dados da lista
+  (`GET https://api-v2.vipme.com.br/v2.0/PublicPage/GetEventListData?eventListId={lista}`):
+  `listDetail.fields` só `name`, `allowMultipleNames: true`, `idCompany`.
+  **Empresa nova (outra casa no VipMe):** acrescentar o `idCompany` em `EMPRESAS`
+  no `.gs` e publicar nova versão, senão o Apps Script recusa. Lista que pede
+  mais que o nome (telefone, CPF) não funciona neste fluxo.
+- **Festa sem lista no VipMe:** apagar os 2 `data-vipme-*` do `<form>`.
+- **Travas do Apps Script (revisão de segurança de 11/11/2026):** nome só com
+  letras (acento, espaço, apóstrofo, hífen e ponto), 2 a 80 caracteres, 2 palavras
+  (o JS valida igual antes de enviar, `SO_LETRAS`); limite global de 30 pedidos por
+  minuto, 2.000 por dia e 3.000 nomes por dia (o Apps Script não vê o IP). Passou do
+  limite, o site mostra o botão do WhatsApp. Risco aceito pelo João: quem souber o id
+  de outra lista aberta da mesma empresa pode pôr nome nela (não há tabela de listas).
+  Mexeu no `.gs`: Implantar > Gerenciar implantações > editar > Nova versão.
+- **Plano B:** se o envio falhar ou passar do limite, aparece o botão "Enviar pelo
+  WhatsApp" com os nomes (sem telefone). Máximo 50 nomes por envio.
 
 ## Regras da casa e Perguntas rápidas (16/10/2026)
 

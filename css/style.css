@@ -849,6 +849,11 @@ a { color: inherit; text-decoration: none; }
 .form-note strong {
   color: var(--ink);
 }
+/* Estado do envio da lista pro VipMe (11/11/2026): erro em vermelho escuro
+   (contraste no creme do form-card) e botão do plano B (WhatsApp). */
+.form-status { font-size: 0.8rem; }
+.form-status--erro { color: #8e1616; font-weight: 600; }
+.form-status__wa { margin-top: 10px; }
 
 .visually-hidden {
   position: absolute !important;

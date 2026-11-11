@@ -61,12 +61,12 @@
   <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/space-grotesk-latin.woff2" crossorigin>
   <link rel="preload" href="../assets/mascote/globinho-tonto.svg" as="image" type="image/svg+xml">
 
-  <link rel="stylesheet" href="../css/style.css?v=69">
+  <link rel="stylesheet" href="../css/style.css?v=71">
 
-  <link rel="stylesheet" href="../css/tema-halloween.css?v=69">
-  <link rel="stylesheet" href="../css/tema-natal.css?v=69">
+  <link rel="stylesheet" href="../css/tema-halloween.css?v=71">
+  <link rel="stylesheet" href="../css/tema-natal.css?v=71">
 
-  <script src="../assets/js/tema.js?v=69"></script>
+  <script src="../assets/js/tema.js?v=71"></script>
 
   <!-- Sem JS o .page-loader (fixed, z-999) nunca sai e todo conteúdo fica em
        .reveal { opacity: 0 } — a página virava uma tela preta. -->
@@ -83,7 +83,7 @@
        (sem cookie); este aqui é a camada de comportamento e usa cookie, por
        isso precisa estar citado na política de privacidade.
        Mascaramento em "Equilibrado" no painel: o que o visitante digita no
-       formulário (nome e telefone) NÃO é gravado. -->
+       formulário (nome e amigos) NÃO é gravado. -->
   <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -94,7 +94,7 @@
 </head>
 <body class="event-page" style="--fundo-festa: url('../assets/eventos/{{FUNDO_ARQUIVO}}')">
 
-  <script src="../assets/js/loader.js?v=69"></script>
+  <script src="../assets/js/loader.js?v=71"></script>
   <div class="page-loader" id="page-loader">
     <div class="page-loader__ring">
       <img class="page-loader__globinho" src="../assets/mascote/globinho-tonto.svg" alt="" width="150" height="168">
@@ -128,21 +128,22 @@
           <a class="festa-acoes__btn" data-acao="mapa" href="{{MAPA_URL}}" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-mapa"></use></svg>Como chegar</a>
         </div>
 
-        <!-- Sem backend: ao enviar, monta uma mensagem de WhatsApp com os
-             dados preenchidos (evento já embutido) e abre a conversa pronta
-             pro número da promoter. Ela confirma o nome na lista manualmente.
+        <!-- Lista no VipMe (11/11/2026): com data-vipme-* (e o endereço do Apps
+             Script no lista-desconto.js) o nome vai direto pro VipMe; sem eles,
+             monta uma mensagem de WhatsApp pra promoter (plano B também).
+             Telefone não é mais coletado.
+             {{VIPME_EVENTO}} e {{VIPME_LISTA}}: ids do link do VipMe
+             (events.vipme.com.br/{EVENTO}/... e /list/{LISTA}-lista-de-desconto).
+             O promoter (Vitória) é fixo no Apps Script, não vai na página.
+             Festa SEM lista no VipMe: apagar os 2 data-vipme-*.
              data-event-date / data-list-close alimentam o event-schedule.js:
              depois que a lista fecha, quem abrir esta página é redirecionado
              pra ../index.html (a página não serve pra mais nada). O card no
              index fica cinza e some 24h depois de a lista fechar. -->
-        <form class="form-card" id="lista-form" data-numero="{{NUMERO}}" data-evento="{{DATA_EVENTO_WA}}" data-event-date="{{EVENT_DATE}}" data-list-close="{{LIST_CLOSE}}">
+        <form class="form-card" id="lista-form" data-numero="{{NUMERO}}" data-evento="{{DATA_EVENTO_WA}}" data-event-date="{{EVENT_DATE}}" data-list-close="{{LIST_CLOSE}}" data-vipme-evento="{{VIPME_EVENTO}}" data-vipme-lista="{{VIPME_LISTA}}">
           <div class="field">
             <label for="f-nome">Nome completo</label>
-            <input type="text" id="f-nome" name="nome" placeholder="Seu nome" required>
-          </div>
-          <div class="field">
-            <label for="f-telefone">Telefone (WhatsApp)</label>
-            <input type="tel" id="f-telefone" name="telefone" placeholder="(65) 9XXXX-XXXX" required>
+            <input type="text" id="f-nome" name="nome" placeholder="Nome e sobrenome" autocomplete="name" maxlength="80" required>
           </div>
           <!-- Amigos (16/10/2026): a promoter aceita os nomes juntos, sem limite.
                Os campos são criados pelo lista-desconto.js. -->
@@ -174,10 +175,10 @@
 
   </div>
 
-  <script src="../assets/js/event-schedule.js?v=69"></script>
-  <script src="../assets/js/festa-extras.js?v=69"></script>
-  <script src="../assets/js/lista-desconto.js?v=69"></script>
-  <script src="../assets/js/reveal.js?v=69"></script>
+  <script src="../assets/js/event-schedule.js?v=71"></script>
+  <script src="../assets/js/festa-extras.js?v=71"></script>
+  <script src="../assets/js/lista-desconto.js?v=71"></script>
+  <script src="../assets/js/reveal.js?v=71"></script>
   <script defer src="/_vercel/insights/script.js"></script>
 
 </body>

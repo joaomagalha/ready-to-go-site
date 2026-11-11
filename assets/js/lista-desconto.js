@@ -7,48 +7,94 @@
 // Evento e número da promoter vêm de data-attributes no próprio <form>, pra
 // manter o padrão de "copiar a página e trocar os dados" sem precisar tocar
 // em JS por evento.
+//
+// Dois jeitos de entrar na lista (11/11/2026):
+// 1) Festa com lista no VipMe (o <form> tem data-vipme-endpoint, -evento e
+//    -lista): o nome e os amigos vão direto pro VipMe por um Apps Script
+//    (vipme-apps-script.gs). A pessoa não sai do site e a promoter não digita
+//    nada. Se o envio falhar, aparece o plano B: botão que abre o WhatsApp da
+//    promoter com os nomes.
+// 2) Festa sem VipMe: o jeito antigo, abre o WhatsApp com a mensagem pronta.
+// O telefone deixou de ser coletado em 11/11/2026 (decisão do João).
 (function () {
   var form = document.getElementById('lista-form');
   if (!form) return;
 
-  // Globinho comemorando depois do clique (29/09/2026): aparece ABAIXO do
-  // botão, no fluxo da página (por cima ele cobria nome, preço e campos), com
-  // o lembrete de apertar enviar no WhatsApp. Fica uns segundos e fecha.
+  // Endereço /exec do Apps Script (vipme-apps-script.gs), o mesmo pra toda
+  // festa. Vazio = nenhuma festa usa o VipMe ainda e todas caem no WhatsApp.
+  // Uma página pode trocar com data-vipme-endpoint no <form>.
+  var ENDPOINT_PADRAO = 'https://script.google.com/macros/s/AKfycbw3phDIKzGOh88mZz1ufymIPVcUGKipbwrTcCQsMdMYAaW_lHpxapaI8OG7pToM8mmkNw/exec';
+  var endpoint = form.dataset.vipmeEndpoint || ENDPOINT_PADRAO;
+  var idEvento = form.dataset.vipmeEvento || '';
+  var idLista = form.dataset.vipmeLista || '';
+  var usaVipme = !!(endpoint && idEvento && idLista);
+
+  var botao = form.querySelector('button[type="submit"]');
+  // No modo VipMe o aviso e o botão não falam mais de WhatsApp.
+  if (usaVipme) {
+    var nota = form.querySelector('.form-note');
+    if (nota) nota.innerHTML = 'Seu nome entra direto na lista, sem sair do site.<br>Coloque <strong>nome e sobrenome</strong>.<br>O nome na lista vale até <strong>meia-noite</strong>.';
+    var icone = botao.querySelector('svg');
+    if (icone) icone.remove();
+  }
+  var rotuloBotao = botao.innerHTML;
+
+  // Globinho comemorando depois do envio (29/09/2026): aparece ABAIXO do
+  // botão, no fluxo da página (por cima ele cobria nome, preço e campos).
+  // Fica uns segundos e fecha. O texto muda conforme o jeito de entrar.
   var festa = null, timer = null;
-  function comemorar() {
+  // ATENÇÃO: htmlTexto vai em innerHTML. Só texto fixo do código; nunca nome ou
+  // resposta do servidor (isso entra por avisar(), que usa textContent).
+  function comemorar(htmlTexto) {
     if (!festa) {
       festa = document.createElement('div');
       festa.className = 'globinho-festa-lista';
       festa.setAttribute('role', 'status');
       // Tema Halloween (17/10/2026): comemora de chapéu de bruxa.
       var pose = document.documentElement.classList.contains('tema-halloween') ? 'hw-comemora' : 'comemora';
-      festa.innerHTML = '<img src="../assets/mascote/globinho-' + pose + '.svg?v=59" alt="" width="84" height="94">' +
-        '<p>Agora é só tocar em <strong>enviar</strong> lá no WhatsApp!</p>';
-      var btn = form.querySelector('button[type="submit"]');
-      btn.parentNode.insertBefore(festa, btn.nextSibling);
+      festa.innerHTML = '<img src="../assets/mascote/globinho-' + pose + '.svg?v=59" alt="" width="84" height="94"><p></p>';
+      botao.parentNode.insertBefore(festa, botao.nextSibling);
     }
+    festa.querySelector('p').innerHTML = htmlTexto;
     // reflow pra reiniciar a transição se clicar de novo
     festa.classList.remove('is-visivel'); void festa.offsetWidth; festa.classList.add('is-visivel');
     clearTimeout(timer);
     timer = setTimeout(function () { festa.classList.remove('is-visivel'); }, 6000);
   }
 
-  // Lembrar nome e telefone (16/10/2026): quem volta toda semana entra na
-  // lista em 1 toque. Fica só no navegador da pessoa (citado na política de
-  // privacidade). Navegador que bloqueia storage: o formulário segue normal.
+  // Mensagem de estado (erro, repetido, plano B) logo abaixo do botão.
+  var aviso = null;
+  function avisar(texto, erro) {
+    if (!aviso) {
+      aviso = document.createElement('p');
+      aviso.className = 'form-note form-status';
+      aviso.setAttribute('role', 'status');
+      aviso.setAttribute('data-clarity-mask', 'true'); // nomes que voltam do VipMe não vão pro Clarity
+      botao.parentNode.insertBefore(aviso, botao.nextSibling);
+    }
+    aviso.className = 'form-note form-status' + (erro ? ' form-status--erro' : '');
+    aviso.textContent = texto;
+    return aviso;
+  }
+  function limparAviso() { if (aviso) { aviso.remove(); aviso = null; } }
+
+  // Lembrar o nome (16/10/2026; só o nome desde 11/11/2026): quem volta toda
+  // semana entra na lista em 1 toque. Fica só no navegador da pessoa (citado
+  // na política de privacidade). Navegador que bloqueia storage: o formulário
+  // segue normal. Um telefone guardado por versões antigas é apagado.
   var CHAVE = 'r2g-contato';
   try {
     var salvo = JSON.parse(localStorage.getItem(CHAVE) || 'null');
     if (salvo) {
-      var fNome = document.getElementById('f-nome'), fTel = document.getElementById('f-telefone');
+      var fNome = document.getElementById('f-nome');
       if (salvo.nome && !fNome.value) fNome.value = salvo.nome;
-      if (salvo.telefone && !fTel.value) fTel.value = salvo.telefone;
+      if (salvo.telefone) localStorage.setItem(CHAVE, JSON.stringify({ nome: salvo.nome || '' }));
     }
   } catch (e) { /* sem storage */ }
 
   // Amigos (16/10/2026): a promoter aceita os nomes juntos, sem limite. Cada
   // toque em "+ Adicionar amigo" cria um campo com botão de tirar; os nomes vão
-  // na mesma mensagem do WhatsApp. Campo vazio é ignorado.
+  // juntos no mesmo envio. Campo vazio é ignorado. O VipMe aceita até 50 por vez.
   var caixaAmigos = document.getElementById('amigos');
   var addAmigo = document.getElementById('add-amigo');
   var nAmigo = 0;
@@ -59,7 +105,7 @@
       linha.className = 'amigo';
       var id = 'f-amigo-' + nAmigo;
       linha.innerHTML = '<label class="visually-hidden" for="' + id + '">Nome do amigo</label>' +
-        '<input type="text" id="' + id + '" class="amigo__nome" placeholder="Nome do amigo" autocomplete="off">' +
+        '<input type="text" id="' + id + '" class="amigo__nome" placeholder="Nome e sobrenome do amigo" autocomplete="off" maxlength="80">' +
         '<button type="button" class="amigo__tirar" aria-label="Tirar este amigo">&times;</button>';
       linha.querySelector('.amigo__tirar').addEventListener('click', function () { linha.remove(); addAmigo.focus(); });
       caixaAmigos.appendChild(linha);
@@ -67,29 +113,130 @@
     });
   }
 
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    // Obs: se a lista já fechou, event-schedule.js já mandou a página de
-    // volta pra home antes disso rodar — não precisa de guarda aqui.
-    var numeroPromoter = form.dataset.numero;
-    var nomeEvento = form.dataset.evento;
-    var nome = document.getElementById('f-nome').value.trim();
-    var telefone = document.getElementById('f-telefone').value.trim();
-    try { localStorage.setItem(CHAVE, JSON.stringify({ nome: nome, telefone: telefone })); } catch (err) { /* sem storage */ }
-    var amigos = Array.prototype.map.call(form.querySelectorAll('.amigo__nome'), function (i) { return i.value.trim(); })
-      .filter(Boolean);
-    if (window.r2gMedir) window.r2gMedir(amigos.length ? 'lista_com_amigos' : 'lista_desconto', nomeEvento);
-
+  function textoWhatsApp(nomeEvento, nome, amigos) {
     var texto = 'Oi! Quero entrar na Lista de Desconto:\n' +
       'Evento: ' + nomeEvento + '\n' +
-      'Nome: ' + nome + '\n' +
-      'Telefone: ' + telefone;
+      'Nome: ' + nome;
     if (amigos.length) {
       texto += '\n\nAmigos (' + amigos.length + '):\n' + amigos.map(function (a) { return '- ' + a; }).join('\n');
     }
+    return texto;
+  }
 
-    var url = 'https://wa.me/' + numeroPromoter + '?text=' + encodeURIComponent(texto);
-    window.open(url, '_blank');
-    comemorar();
+  // Jeito antigo (e plano B): link do WhatsApp da promoter com a mensagem pronta.
+  function urlWhatsApp(nomeEvento, nome, amigos) {
+    return 'https://wa.me/' + form.dataset.numero + '?text=' +
+      encodeURIComponent(textoWhatsApp(nomeEvento, nome, amigos));
+  }
+
+  // O VipMe pede nome e sobrenome, e o Apps Script só aceita letras, espaço,
+  // apóstrofo, hífen e ponto (mesma regra de nomeValido() no .gs). Devolve o
+  // campo com problema e o motivo, ou null.
+  var SO_LETRAS = /^[\p{L}][\p{L} '’.\-]*$/u;
+  function campoInvalido(campos) {
+    for (var i = 0; i < campos.length; i++) {
+      var v = campos[i].value.trim().replace(/\s+/g, ' ');
+      if (!v) continue;
+      if (v.split(' ').length < 2) return { campo: campos[i], msg: 'Coloque nome e sobrenome, como no documento.' };
+      if (!SO_LETRAS.test(v) || v.length > 80) return { campo: campos[i], msg: 'Use só letras no nome (sem números ou símbolos), até 80 caracteres.' };
+    }
+    return null;
+  }
+
+  function enviarVipme(nomes) {
+    var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    var corte = setTimeout(function () { if (ctrl) ctrl.abort(); }, 15000);
+    // text/plain evita o preflight de CORS, que o Apps Script não responde.
+    return fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        idEvent: Number(idEvento), idList: Number(idLista), names: nomes
+      }),
+      signal: ctrl ? ctrl.signal : undefined
+    }).then(function (r) {
+      clearTimeout(corte);
+      if (!r.ok) throw new Error('http ' + r.status);
+      return r.json();
+    }, function (err) { clearTimeout(corte); throw err; });
+  }
+
+  var enviando = false;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (enviando) return;
+    // Esconde a comemoração do envio anterior (senão ela ficaria ao lado de um erro).
+    if (festa) festa.classList.remove('is-visivel');
+    // Obs: se a lista já fechou, event-schedule.js já mandou a página de
+    // volta pra home antes disso rodar — não precisa de guarda aqui.
+    var nomeEvento = form.dataset.evento;
+    var campoNome = document.getElementById('f-nome');
+    var campoAmigos = Array.prototype.slice.call(form.querySelectorAll('.amigo__nome'));
+    var ruim = campoInvalido([campoNome].concat(campoAmigos));
+    if (usaVipme && ruim) {
+      limparAviso();
+      avisar(ruim.msg, true);
+      ruim.campo.focus();
+      return;
+    }
+    var nome = campoNome.value.trim();
+    try { localStorage.setItem(CHAVE, JSON.stringify({ nome: nome })); } catch (err) { /* sem storage */ }
+    var amigos = campoAmigos.map(function (i) { return i.value.trim(); }).filter(Boolean);
+    if (window.r2gMedir) window.r2gMedir(amigos.length ? 'lista_com_amigos' : 'lista_desconto', nomeEvento);
+
+    if (!usaVipme) {
+      window.open(urlWhatsApp(nomeEvento, nome, amigos), '_blank');
+      comemorar('Agora é só tocar em <strong>enviar</strong> lá no WhatsApp!');
+      return;
+    }
+
+    var nomes = [nome].concat(amigos);
+    if (nomes.length > 50) {
+      limparAviso();
+      avisar('São no máximo 50 nomes por vez. Tire alguns e envie de novo.', true);
+      return;
+    }
+    enviando = true;
+    botao.disabled = true;
+    botao.textContent = 'Enviando...';
+    limparAviso();
+
+    enviarVipme(nomes).then(function (res) {
+      enviando = false; botao.disabled = false; botao.innerHTML = rotuloBotao;
+      var repetidos = (res && res.skippedNames) || [];
+      if (res && res.success) {
+        if (window.r2gMedir) window.r2gMedir('lista_vipme_ok', nomeEvento);
+        comemorar(nomes.length > 1 ? 'Pronto! Seus nomes já estão na lista.' : 'Pronto! Seu nome já está na lista.');
+        if (repetidos.length) avisar('Já estavam na lista: ' + repetidos.join(', ') + '.', false);
+        return;
+      }
+      if (repetidos.length && !(res && res.addedCount)) {
+        avisar('Esse nome já estava na lista: ' + repetidos.join(', ') + '. Está tudo certo!', false);
+        return;
+      }
+      var msg = (res && res.message) || '';
+      // Lista encerrada ou nome fora do padrão: é resposta do servidor, não falha.
+      if (/encerrada|nome e sobrenome|só com letras/i.test(msg)) { avisar(msg + '.', true); return; }
+      planoB(nomeEvento, nome, amigos);
+    }, function () {
+      enviando = false; botao.disabled = false; botao.innerHTML = rotuloBotao;
+      planoB(nomeEvento, nome, amigos);
+    });
   });
+
+  // Plano B: não deu pra enviar sozinho (VipMe fora do ar, sem internet...).
+  // Em vez de perder a pessoa, oferece o WhatsApp da promoter com os nomes.
+  function planoB(nomeEvento, nome, amigos) {
+    if (window.r2gMedir) window.r2gMedir('lista_vipme_falha', nomeEvento);
+    var p = avisar('Não consegui colocar seu nome na lista agora. Toque abaixo pra mandar pelo WhatsApp:', true);
+    var a = document.createElement('a');
+    a.className = 'btn btn-secondary form-status__wa';
+    a.href = urlWhatsApp(nomeEvento, nome, amigos);
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-whatsapp"></use></svg>Enviar pelo WhatsApp';
+    p.appendChild(document.createElement('br'));
+    p.appendChild(a);
+  }
 })();

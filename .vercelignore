@@ -6,3 +6,6 @@ eventos/_MODELO.html
 
 # Código do Apps Script do formulário do Squad (colado na planilha, não é página)
 squad-apps-script.gs
+
+# Código do Apps Script que repassa os nomes da lista pro VipMe (não é página)
+vipme-apps-script.gs

@@ -27,12 +27,12 @@
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-normal-latin.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/space-grotesk-latin.woff2" crossorigin>
 
-  <link rel="stylesheet" href="css/style.css?v=69">
+  <link rel="stylesheet" href="css/style.css?v=71">
 
-  <link rel="stylesheet" href="css/tema-halloween.css?v=69">
-  <link rel="stylesheet" href="css/tema-natal.css?v=69">
+  <link rel="stylesheet" href="css/tema-halloween.css?v=71">
+  <link rel="stylesheet" href="css/tema-natal.css?v=71">
 
-  <script src="assets/js/tema.js?v=69"></script>
+  <script src="assets/js/tema.js?v=71"></script>
 
   <!-- Sem JS o .page-loader (fixed, z-999) nunca sai e todo conteúdo fica em
        .reveal { opacity: 0 } — a página virava uma tela preta. -->
@@ -78,7 +78,7 @@
 
       <h2>Quais dados e pra quê</h2>
       <h3>Lista de desconto</h3>
-      <p>Você informa nome e telefone. <strong>O site não guarda esses dados:</strong> ao tocar no botão, o WhatsApp abre com a mensagem pronta e você mesmo envia pra Ready 2 Go. Usamos pra colocar seu nome na lista e falar com você sobre a festa.</p>
+      <p>Você informa seu nome (e o nome dos amigos, se quiser). <strong>O site não guarda esses dados:</strong> ao tocar no botão, o nome é enviado pra lista da festa no <strong>VipMe</strong>, a plataforma de listas e ingressos que a produção da festa usa. Se o envio não funcionar, aparece um botão que abre o WhatsApp com a mensagem pronta e você mesmo envia pra Ready 2 Go. Usamos só pra colocar seu nome na lista. A Ready 2 Go não pede mais o seu telefone no formulário.</p>
       <h3>Ready 2 Go Squad</h3>
       <p>Na inscrição você informa nome, telefone, Instagram, se mora em Cuiabá, idade, se já divulgou eventos, como conheceu a Ready 2 Go e por que quer participar, além da sua autorização. Esses dados vão pra uma planilha usada só pela equipe da Ready 2 Go, pra avaliar a inscrição e entrar em contato. O Squad é só pra maiores de 18 anos.</p>
       <h3>Estatísticas de uso do site</h3>
@@ -86,14 +86,15 @@
       <p>O <strong>Microsoft Clarity</strong> registra como o site é usado (cliques, rolagem e gravação da navegação) pra gente entender o que funciona e melhorar o site. Ele usa cookies. <strong>O que você digita nos formulários não é gravado.</strong></p>
       <h3>No seu navegador</h3>
       <p>O site guarda uma marcação simples no seu navegador pra mostrar a tela de carregamento só uma vez por visita. Ela não identifica você e some quando você fecha a aba.</p>
-      <p>Depois que você usa a lista de desconto, o <strong>seu nome e telefone ficam salvos só no seu navegador</strong>, pra próxima festa já vir preenchida. Eles não vão pra nenhum servidor. Pra apagar, limpe os dados do site no navegador.</p>
+      <p>Depois que você usa a lista de desconto, o <strong>seu nome fica salvo só no seu navegador</strong>, pra próxima festa já vir preenchido. Ele não vai pra nenhum servidor por causa disso. Pra apagar, limpe os dados do site no navegador.</p>
 
       <h2>Com quem os dados passam</h2>
       <p>A Ready 2 Go <strong>não vende</strong> dados. O site funciona com estes serviços, que podem processar dados fora do Brasil:</p>
       <ul>
         <li><strong>Vercel</strong>: hospedagem do site e estatísticas de visita.</li>
         <li><strong>Microsoft</strong>: Clarity, estatísticas de uso (inclusive quantas vezes os botões de cada festa foram tocados).</li>
-        <li><strong>Google</strong>: planilha das inscrições do Squad.</li>
+        <li><strong>Google</strong>: planilha das inscrições do Squad e o serviço (Apps Script) que repassa o seu nome pra lista no VipMe.</li>
+        <li><strong>VipMe</strong>: recebe o nome colocado na lista da festa e guarda a lista pra produção da festa.</li>
         <li><strong>WhatsApp (Meta)</strong>: quando você manda mensagem pra Ready 2 Go.</li>
       </ul>
 
