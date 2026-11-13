@@ -4,10 +4,12 @@
 // Apps Script publicado como app da Web (código em squad-apps-script.gs, fora
 // do site). O endereço dele fica em data-endpoint.
 //
-// Envio em modo no-cors: o Apps Script não devolve os cabeçalhos de CORS, então
-// o navegador não deixa ler a resposta. Se o fetch resolve, a requisição
-// chegou; só erro de rede cai no catch. É o jeito padrão de usar Apps Script
-// como receptor de formulário sem servidor.
+// Envio como JSON em text/plain (não gera preflight, igual ao lista-desconto.js)
+// pra poder LER a resposta do Apps Script: {success, message, limited, invalid}.
+// A tela só diz "Inscrição recebida" quando success vem verdadeiro. Se o envio
+// falhar (rede, limite, erro do Google), aparece o botão do WhatsApp da promoter
+// com os dados já escritos. As mesmas regras de validação rodam no servidor
+// (squad-apps-script.gs): aqui servem só pra avisar a pessoa antes de enviar.
 (function () {
   var form = document.getElementById('squad-form');
   if (!form) return;
@@ -18,6 +20,44 @@
   var buttonLabel = button.textContent;
 
   function setStatus(msg) { status.textContent = msg || ''; }
+
+  // Mesma limpeza do servidor (limpar() no .gs): Unicode composto, sem
+  // caracteres invisíveis nem de controle, espaços repetidos viram um só.
+  function limpar(v) {
+    return String(v == null ? '' : v).normalize('NFC')
+      .replace(/[\u200b-\u200f\u202a-\u202e\u2060\ufeff]/g, '')
+      .replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+
+  // Plano B: link do WhatsApp da promoter com a inscrição escrita. Só aparece
+  // quando o envio não deu certo. Base fixa e número do data-numero (HTML do
+  // autor); o texto digitado entra só dentro do encodeURIComponent.
+  var planoB = null;
+  function esconderPlanoB() {
+    if (planoB && planoB.parentNode) planoB.parentNode.removeChild(planoB);
+    planoB = null;
+  }
+  function mostrarPlanoB(d) {
+    esconderPlanoB();
+    var numero = form.dataset.numero;
+    if (!numero) return;
+    var texto = 'Oi! Quero entrar no Ready 2 Go Squad.\n' +
+      'Nome: ' + d.nome + '\n' +
+      'Telefone: ' + d.telefone + '\n' +
+      'Instagram: ' + d.instagram + '\n' +
+      'Mora em Cuiabá: ' + d.cuiaba + '\n' +
+      'Idade: ' + d.idade + '\n' +
+      'Já divulgou eventos: ' + d.divulgou + '\n' +
+      'Como conheceu: ' + d.conheceu + '\n' +
+      'Por que quer participar: ' + d.motivo;
+    planoB = document.createElement('a');
+    planoB.className = 'btn btn-secondary';
+    planoB.href = 'https://wa.me/' + numero + '?text=' + encodeURIComponent(texto);
+    planoB.target = '_blank';
+    planoB.rel = 'noopener';
+    planoB.textContent = 'Enviar pelo WhatsApp';
+    status.parentNode.insertBefore(planoB, status.nextSibling);
+  }
 
   function showDone() {
     form.hidden = true;
@@ -68,7 +108,8 @@
 
     // Idade: o novalidate desliga o min/max do HTML, então confere aqui.
     var idade = form.elements.idade;
-    var n = Number(idade.value);
+    var idadeTxt = limpar(idade.value);
+    var n = /^\d{1,3}$/.test(idadeTxt) ? Number(idadeTxt) : NaN;
     if (!Number.isInteger(n) || n < 1 || n > 120) {
       flag(idade);
       setStatus('Confere a idade: só o número, em anos.');
@@ -81,34 +122,85 @@
       return;
     }
 
+    // Mesmas regras do servidor (squad-apps-script.gs), pra avisar antes.
+    var nome = form.elements.nome;
+    var nomeTxt = limpar(nome.value);
+    if (nomeTxt.length < 2 || nomeTxt.split(' ').length < 2 ||
+        !/^[\p{L}][\p{L} '’´.\-]*$/u.test(nomeTxt)) {
+      flag(nome);
+      setStatus('Confere o nome: nome e sobrenome, só com letras.');
+      return;
+    }
+    var telefone = form.elements.telefone;
+    var telTxt = limpar(telefone.value);
+    var digitos = telTxt.replace(/\D/g, '');
+    if (!/^[\d\s()+\-]+$/.test(telTxt) || digitos.length < 10 || digitos.length > 13) {
+      flag(telefone);
+      setStatus('Confere o telefone, com DDD.');
+      return;
+    }
+    var instagram = form.elements.instagram;
+    var insta = limpar(instagram.value).replace(/^@+/, '');
+    if (!/^[A-Za-z0-9._]{1,30}$/.test(insta)) {
+      flag(instagram);
+      setStatus('Confere o Instagram: só o @ do perfil, sem link.');
+      return;
+    }
+
     var endpoint = form.dataset.endpoint;
     if (!endpoint) {
       setStatus('As inscrições ainda não estão abertas. Tenta de novo mais tarde.');
       return;
     }
 
-    var insta = form.elements.instagram.value.trim().replace(/^@+/, '');
-    var data = new URLSearchParams();
-    data.append('nome', form.elements.nome.value.trim());
-    data.append('telefone', form.elements.telefone.value.trim());
-    data.append('instagram', '@' + insta);
-    data.append('cuiaba', form.querySelector('input[name="cuiaba"]:checked').value);
-    data.append('idade', form.elements.idade.value.trim());
-    data.append('divulgou', form.querySelector('input[name="divulgou"]:checked').value);
-    data.append('conheceu', form.elements.conheceu.value.trim());
-    data.append('motivo', form.elements.motivo.value.trim());
-    data.append('consentimento', 'Sim');
-    data.append('site', '');
+    var dados = {
+      nome: nomeTxt,
+      telefone: telTxt,
+      instagram: '@' + insta,
+      cuiaba: form.querySelector('input[name="cuiaba"]:checked').value,
+      idade: String(n),
+      divulgou: form.querySelector('input[name="divulgou"]:checked').value,
+      conheceu: limpar(form.elements.conheceu.value),
+      motivo: limpar(form.elements.motivo.value),
+      consentimento: 'Sim',
+      site: ''
+    };
 
+    function falhou(msg, comPlanoB) {
+      button.disabled = false;
+      button.textContent = buttonLabel;
+      setStatus(msg);
+      if (comPlanoB) mostrarPlanoB(dados);
+    }
+
+    esconderPlanoB();
     button.disabled = true;
     button.textContent = 'Enviando...';
 
-    fetch(endpoint, { method: 'POST', mode: 'no-cors', body: data })
-      .then(showDone)
+    var controle = typeof AbortController === 'function' ? new AbortController() : null;
+    var relogio = controle ? setTimeout(function () { controle.abort(); }, 20000) : null;
+
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(dados),
+      signal: controle ? controle.signal : undefined
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (out) {
+        if (relogio) clearTimeout(relogio);
+        if (out && out.success === true) { showDone(); return; }
+        if (out && out.invalid && out.message) {
+          falhou(String(out.message) + '.', false);
+        } else if (out && out.limited) {
+          falhou('Muitos envios agora. Tenta de novo em instantes ou manda pelo WhatsApp.', true);
+        } else {
+          falhou('Não conseguimos registrar sua inscrição agora. Manda pelo WhatsApp, rapidinho.', true);
+        }
+      })
       .catch(function () {
-        button.disabled = false;
-        button.textContent = buttonLabel;
-        setStatus('Não deu certo. Confere sua internet e tenta de novo.');
+        if (relogio) clearTimeout(relogio);
+        falhou('Não deu certo. Confere sua internet e tenta de novo, ou manda pelo WhatsApp.', true);
       });
   });
 })();

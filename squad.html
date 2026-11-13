@@ -28,12 +28,12 @@
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/space-grotesk-latin.woff2" crossorigin>
   <link rel="preload" href="assets/mascote/globinho-tonto.svg" as="image" type="image/svg+xml">
 
-  <link rel="stylesheet" href="css/style.css?v=71">
+  <link rel="stylesheet" href="css/style.css?v=72">
 
-  <link rel="stylesheet" href="css/tema-halloween.css?v=71">
-  <link rel="stylesheet" href="css/tema-natal.css?v=71">
+  <link rel="stylesheet" href="css/tema-halloween.css?v=72">
+  <link rel="stylesheet" href="css/tema-natal.css?v=72">
 
-  <script src="assets/js/tema.js?v=71"></script>
+  <script src="assets/js/tema.js?v=72"></script>
 
   <!-- Sem JS o .page-loader (fixed, z-999) nunca sai e todo conteúdo fica em
        .reveal { opacity: 0 } — a página virava uma tela preta. -->
@@ -61,7 +61,7 @@
 </head>
 <body class="squad-page">
 
-  <script src="assets/js/loader.js?v=71"></script>
+  <script src="assets/js/loader.js?v=72"></script>
   <div class="page-loader" id="page-loader">
     <div class="page-loader__ring">
       <img class="page-loader__globinho" src="assets/mascote/globinho-tonto.svg" alt="" width="150" height="168">
@@ -110,18 +110,18 @@
     </div>
 
     <div class="squad-form-wrap reveal">
-      <form class="form-card" id="squad-form" data-endpoint="https://script.google.com/macros/s/AKfycbx_-3nDRbw_Gp1yVxR7-cxzOE2SyzS8yKx22vE1takQrWIc9MIdQr3t-4NlahkcLUl-1g/exec" novalidate>
+      <form class="form-card" id="squad-form" data-endpoint="https://script.google.com/macros/s/AKfycbx_-3nDRbw_Gp1yVxR7-cxzOE2SyzS8yKx22vE1takQrWIc9MIdQr3t-4NlahkcLUl-1g/exec" data-numero="5565993475757" novalidate>
         <div class="field">
           <label for="s-nome">Nome</label>
-          <input type="text" id="s-nome" name="nome" placeholder="Seu nome completo" autocomplete="name" required>
+          <input type="text" id="s-nome" name="nome" placeholder="Seu nome completo" autocomplete="name" maxlength="80" required>
         </div>
         <div class="field">
           <label for="s-telefone">Telefone (WhatsApp)</label>
-          <input type="tel" id="s-telefone" name="telefone" placeholder="(65) 9XXXX-XXXX" autocomplete="tel" inputmode="tel" required>
+          <input type="tel" id="s-telefone" name="telefone" placeholder="(65) 9XXXX-XXXX" autocomplete="tel" inputmode="tel" maxlength="20" required>
         </div>
         <div class="field">
           <label for="s-instagram">Instagram</label>
-          <input type="text" id="s-instagram" name="instagram" placeholder="@seuperfil" autocapitalize="off" autocorrect="off" spellcheck="false" required>
+          <input type="text" id="s-instagram" name="instagram" placeholder="@seuperfil" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="31" required>
         </div>
           <fieldset class="field field-choice">
             <legend>Mora em Cuiabá?</legend>
@@ -143,11 +143,11 @@
           </fieldset>
         <div class="field">
           <label for="s-conheceu">Como conheceu a Ready 2 Go?</label>
-          <input type="text" id="s-conheceu" name="conheceu" placeholder="Instagram, amigos, numa festa..." required>
+          <input type="text" id="s-conheceu" name="conheceu" placeholder="Instagram, amigos, numa festa..." maxlength="120" required>
         </div>
         <div class="field">
           <label for="s-motivo">Por que quer participar do squad?</label>
-          <textarea id="s-motivo" name="motivo" rows="4" placeholder="Conta um pouco sobre você" required></textarea>
+          <textarea id="s-motivo" name="motivo" rows="4" placeholder="Conta um pouco sobre você" maxlength="1000" required></textarea>
         </div>
         <!-- Armadilha pra robô: escondida de gente de verdade. Se vier
              preenchida, o JS finge sucesso e não envia nada. -->
@@ -175,8 +175,8 @@
 
   </div>
 
-  <script src="assets/js/squad-form.js?v=71"></script>
-  <script src="assets/js/reveal.js?v=71"></script>
+  <script src="assets/js/squad-form.js?v=72"></script>
+  <script src="assets/js/reveal.js?v=72"></script>
   <script defer src="/_vercel/insights/script.js"></script>
 
 </body>
