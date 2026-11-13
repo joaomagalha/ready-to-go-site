@@ -25,8 +25,9 @@ Regras fixas de cadastro (não perguntar):
 - **WhatsApp da promoter é sempre `5565993475757`** — o mesmo pra toda festa.
   Nunca perguntar de novo, nunca usar outro número.
   **Exceção (21/10/2026):** quando a promoter disser que as infos de uma festa
-  vão pra irmã dela, lista e camarote dessa festa usam `5565992309920`
-  (primeira: Boiler Deck, 06/11). Só nessa festa; as outras seguem no fixo.
+  vão pra irmã dela, lista e camarote dessa festa usam o número dela (está no
+  `CLAUDE.local.md`, fora do git: é de uma terceira pessoa e o repo é público;
+  primeira: Boiler Deck, 06/11). Só nessa festa; as outras seguem no fixo.
 - **Título do card e da página = nome da FESTA**, não de quem organiza
   (ex. "HALTERADOS", não "Atlética Tormenta"). Respeitar o caixa do flyer:
   se a marca é toda maiúscula no flyer, o título vai maiúsculo.
@@ -139,7 +140,7 @@ site e sem a promoter digitar:
 - **Festa nova com lista no VipMe:** do link do VipMe tirar `{{VIPME_EVENTO}}` (1º
   número do link `events.vipme.com.br/{evento}/{lista}`) e `{{VIPME_LISTA}}` (número
   em `/list/{lista}-lista-de-desconto`). **O promoter não vai na página:** é fixo no
-  `.gs` (`PROMOTER = 54799`, Vitória Matos; outra promoter usando o site: mudar a
+  `.gs` (`PROMOTER = 54799`, a promoter; outra promoter usando o site: mudar a
   constante). Conferir nos dados da lista
   (`GET https://api-v2.vipme.com.br/v2.0/PublicPage/GetEventListData?eventListId={lista}`):
   `listDetail.fields` só `name`, `allowMultipleNames: true`, `idCompany`.
