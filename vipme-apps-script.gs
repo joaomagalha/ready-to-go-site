@@ -35,7 +35,11 @@
  *   site mostra o botão do WhatsApp (plano B). Só pedido que chegaria ao
  *   VipMe conta; pedido malformado é recusado antes e não gasta limite.
  * - Nome: só letras, espaço, apóstrofo, hífen e ponto, 2 a 80 caracteres e
- *   pelo menos 2 palavras.
+ *   pelo menos 2 palavras. O texto é normalizado (Unicode composto, sem
+ *   caracteres invisíveis) antes de conferir.
+ * - Pedido com mais de 100 nomes é recusado antes de olhar nome por nome (e
+ *   sem gastar limite). A resposta só devolve, em skippedNames, nomes que o
+ *   próprio pedido enviou (nunca nome de outra pessoa da lista).
  * Risco aceito pelo João (11/11/2026): quem souber o id de OUTRA lista aberta
  * da mesma empresa pode pôr nome nela (só escrita). Não há tabela de listas
  * permitidas porque cada festa nova exigiria mexer aqui.
@@ -57,15 +61,23 @@ function responder(obj) {
 }
 
 function limparNome(n) {
-  return String(n == null ? '' : n).replace(/[\u0000-\u001f\u007f]/g, ' ')
+  return String(n == null ? '' : n).normalize('NFC')
+    .replace(/\u200b/g, ' ')                                   // espaço de largura zero separa palavras
+    .replace(/[\u200c-\u200f\u202a-\u202e\u2060\ufeff]/g, '')  // outros invisíveis somem
+    .replace(/[\u0000-\u001f\u007f]/g, ' ')
     .replace(/\s+/g, ' ').trim();
+}
+
+// Chave pra comparar nomes sem ligar pra maiúscula, espaço ou acento composto.
+function chaveNome(n) {
+  return limparNome(n).toLowerCase();
 }
 
 // Letras (com acento), espaço, apóstrofo, hífen e ponto. Não pode começar com
 // símbolo (evita fórmula de planilha e marcação no painel do VipMe).
 function nomeValido(n) {
   return n.length >= 2 && n.length <= 80 && n.split(' ').length >= 2 &&
-    /^[\p{L}][\p{L} '’.\-]*$/u.test(n);
+    /^[\p{L}][\p{L} '’´.\-]*$/u.test(n);
 }
 
 // Conta o pedido nos três limites. Devolve true se pode seguir. Falha fechado:
@@ -113,6 +125,10 @@ function doPost(e) {
     if (!(Number.isInteger(idEvent) && idEvent > 0 && Number.isInteger(idList) && idList > 0) ||
         !Array.isArray(corpo.names)) {
       return responder({ success: false, message: 'Pedido inválido' });
+    }
+    // Pedido enorme: recusa antes do laço (barato, e não gasta limite).
+    if (corpo.names.length > MAX_NOMES * 2) {
+      return responder({ success: false, message: 'Envie de 1 a ' + MAX_NOMES + ' nomes' });
     }
 
     // Nomes: 1 a 50, só caracteres de nome, com sobrenome.
@@ -162,11 +178,24 @@ function doPost(e) {
     if (r.getResponseCode() >= 400 && out.success !== false) {
       out = { success: false, message: 'VipMe indisponível' };
     }
+    // Só devolve, como repetido, nome que este pedido enviou (comparando sem
+    // ligar pra maiúscula ou espaço) e com a grafia que a pessoa mandou. O
+    // total que o VipMe apontou segue em skippedCount.
+    var enviados = Object.create(null);  // sem protótipo: 'constructor' não vira nome enviado
+    nomes.forEach(function (n) { enviados[chaveNome(n)] = n; });
+    var brutos = Array.isArray(out.skippedNames) ? out.skippedNames : [];
+    var repetidos = [];
+    brutos.forEach(function (x) {
+      if (typeof x !== 'string') return;
+      var enviado = enviados[chaveNome(x)];
+      if (enviado && repetidos.indexOf(enviado) < 0 && repetidos.length < MAX_NOMES) repetidos.push(enviado);
+    });
     return responder({
       success: !!out.success,
-      message: out.message || '',
-      addedCount: out.addedCount || 0,
-      skippedNames: out.skippedNames || []
+      message: String(out.message || '').slice(0, 200),
+      addedCount: Number(out.addedCount) || 0,
+      skippedNames: repetidos,
+      skippedCount: Math.min(brutos.length, MAX_NOMES)
     });
   } catch (err) {
     return responder({ success: false, message: 'Erro ao processar' });

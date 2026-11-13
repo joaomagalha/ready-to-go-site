@@ -132,10 +132,20 @@
   // O VipMe pede nome e sobrenome, e o Apps Script só aceita letras, espaço,
   // apóstrofo, hífen e ponto (mesma regra de nomeValido() no .gs). Devolve o
   // campo com problema e o motivo, ou null.
-  var SO_LETRAS = /^[\p{L}][\p{L} '’.\-]*$/u;
+  var SO_LETRAS = /^[\p{L}][\p{L} '’´.\-]*$/u;
+
+  // Mesma limpeza do servidor (limparNome no .gs): Unicode composto, sem
+  // caracteres invisíveis nem de controle, espaços repetidos viram um só.
+  function limpar(v) {
+    return String(v == null ? '' : v).normalize('NFC')
+      .replace(/\u200b/g, ' ')
+      .replace(/[\u200c-\u200f\u202a-\u202e\u2060\ufeff]/g, '')
+      .replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+
   function campoInvalido(campos) {
     for (var i = 0; i < campos.length; i++) {
-      var v = campos[i].value.trim().replace(/\s+/g, ' ');
+      var v = limpar(campos[i].value);
       if (!v) continue;
       if (v.split(' ').length < 2) return { campo: campos[i], msg: 'Coloque nome e sobrenome, como no documento.' };
       if (!SO_LETRAS.test(v) || v.length > 80) return { campo: campos[i], msg: 'Use só letras no nome (sem números ou símbolos), até 80 caracteres.' };
@@ -180,9 +190,9 @@
       ruim.campo.focus();
       return;
     }
-    var nome = campoNome.value.trim();
+    var nome = limpar(campoNome.value);
     try { localStorage.setItem(CHAVE, JSON.stringify({ nome: nome })); } catch (err) { /* sem storage */ }
-    var amigos = campoAmigos.map(function (i) { return i.value.trim(); }).filter(Boolean);
+    var amigos = campoAmigos.map(function (i) { return limpar(i.value); }).filter(Boolean);
     if (window.r2gMedir) window.r2gMedir(amigos.length ? 'lista_com_amigos' : 'lista_desconto', nomeEvento);
 
     if (!usaVipme) {
@@ -204,15 +214,21 @@
 
     enviarVipme(nomes).then(function (res) {
       enviando = false; botao.disabled = false; botao.innerHTML = rotuloBotao;
-      var repetidos = (res && res.skippedNames) || [];
+      var repetidos = (res && Array.isArray(res.skippedNames) && res.skippedNames) || [];
+      // O servidor só devolve nomes que o pedido enviou; skippedCount avisa que
+      // o VipMe achou repetido mesmo quando nenhum nome casou.
+      var qtdRepetidos = Math.max(repetidos.length, Number(res && res.skippedCount) || 0);
       if (res && res.success) {
         if (window.r2gMedir) window.r2gMedir('lista_vipme_ok', nomeEvento);
         comemorar(nomes.length > 1 ? 'Pronto! Seus nomes já estão na lista.' : 'Pronto! Seu nome já está na lista.');
         if (repetidos.length) avisar('Já estavam na lista: ' + repetidos.join(', ') + '.', false);
+        else if (qtdRepetidos) avisar('Alguns nomes já estavam na lista.', false);
         return;
       }
-      if (repetidos.length && !(res && res.addedCount)) {
-        avisar('Esse nome já estava na lista: ' + repetidos.join(', ') + '. Está tudo certo!', false);
+      if (qtdRepetidos && !(res && res.addedCount)) {
+        avisar(repetidos.length
+          ? 'Esse nome já estava na lista: ' + repetidos.join(', ') + '. Está tudo certo!'
+          : 'Esse nome já estava na lista. Está tudo certo!', false);
         return;
       }
       var msg = (res && res.message) || '';

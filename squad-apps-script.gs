@@ -69,7 +69,8 @@ function lerPedido(e) {
 function limpar(v) {
   if (v == null || typeof v === 'object' || typeof v === 'function') return '';
   return String(v).normalize('NFC')
-    .replace(/[\u200b-\u200f\u202a-\u202e\u2060\ufeff]/g, '')   // invisíveis (largura zero, direção)
+    .replace(/\u200b/g, ' ')                                   // espaço de largura zero separa palavras
+    .replace(/[\u200c-\u200f\u202a-\u202e\u2060\ufeff]/g, '')  // outros invisíveis somem
     .replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 

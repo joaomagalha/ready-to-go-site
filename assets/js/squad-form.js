@@ -25,7 +25,8 @@
   // caracteres invisíveis nem de controle, espaços repetidos viram um só.
   function limpar(v) {
     return String(v == null ? '' : v).normalize('NFC')
-      .replace(/[\u200b-\u200f\u202a-\u202e\u2060\ufeff]/g, '')
+      .replace(/\u200b/g, ' ')
+      .replace(/[\u200c-\u200f\u202a-\u202e\u2060\ufeff]/g, '')
       .replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim();
   }
 
