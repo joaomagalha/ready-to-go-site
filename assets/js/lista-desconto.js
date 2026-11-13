@@ -196,7 +196,7 @@
     if (window.r2gMedir) window.r2gMedir(amigos.length ? 'lista_com_amigos' : 'lista_desconto', nomeEvento);
 
     if (!usaVipme) {
-      window.open(urlWhatsApp(nomeEvento, nome, amigos), '_blank');
+      window.open(urlWhatsApp(nomeEvento, nome, amigos), '_blank', 'noopener');
       comemorar('Agora é só tocar em <strong>enviar</strong> lá no WhatsApp!');
       return;
     }

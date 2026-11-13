@@ -28,12 +28,12 @@
   <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/space-grotesk-latin.woff2" crossorigin>
   <link rel="preload" href="../assets/mascote/globinho-tonto.svg" as="image" type="image/svg+xml">
 
-  <link rel="stylesheet" href="../css/style.css?v=73">
+  <link rel="stylesheet" href="../css/style.css?v=74">
 
-  <link rel="stylesheet" href="../css/tema-halloween.css?v=73">
-  <link rel="stylesheet" href="../css/tema-natal.css?v=73">
+  <link rel="stylesheet" href="../css/tema-halloween.css?v=74">
+  <link rel="stylesheet" href="../css/tema-natal.css?v=74">
 
-  <script src="../assets/js/tema.js?v=73"></script>
+  <script src="../assets/js/tema.js?v=74"></script>
 
   <!-- Sem JS o .page-loader (fixed, z-999) nunca sai e todo conteúdo fica em
        .reveal { opacity: 0 } — a página virava uma tela preta. -->
@@ -62,7 +62,7 @@
 </head>
 <body class="event-page" style="--fundo-festa: url('../assets/eventos/nostalgic-19-11-fundo.jpg')">
 
-  <script src="../assets/js/loader.js?v=73"></script>
+  <script src="../assets/js/loader.js?v=74"></script>
   <div class="page-loader" id="page-loader">
     <div class="page-loader__ring">
       <img class="page-loader__globinho" src="../assets/mascote/globinho-tonto.svg" alt="" width="150" height="168">
@@ -154,10 +154,10 @@
 
   </div>
 
-  <script src="../assets/js/event-schedule.js?v=73"></script>
-  <script src="../assets/js/festa-extras.js?v=73"></script>
-  <script src="../assets/js/lista-desconto.js?v=73"></script>
-  <script src="../assets/js/reveal.js?v=73"></script>
+  <script src="../assets/js/event-schedule.js?v=74"></script>
+  <script src="../assets/js/festa-extras.js?v=74"></script>
+  <script src="../assets/js/lista-desconto.js?v=74"></script>
+  <script src="../assets/js/reveal.js?v=74"></script>
   <script defer src="/_vercel/insights/script.js"></script>
 
   <script>
@@ -175,7 +175,13 @@
           t.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:50;max-width:calc(100% - 32px);width:max-content;margin:0;padding:12px 18px;border-radius:14px;background:#fff;color:#141414;font-size:.9rem;line-height:1.4;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.45);';
           document.body.appendChild(t);
         }
-        t.innerHTML = 'Cupom <strong>' + cupom + '</strong> copiado! No Ticpass, cole no campo de cupom.';
+        // Sem innerHTML: o cupom vem de um atributo e entra só como texto.
+        t.textContent = '';
+        t.appendChild(document.createTextNode('Cupom '));
+        var forte = document.createElement('strong');
+        forte.textContent = cupom;
+        t.appendChild(forte);
+        t.appendChild(document.createTextNode(' copiado! No Ticpass, cole no campo de cupom.'));
         t.style.display = 'block';
         clearTimeout(t._timer);
         t._timer = setTimeout(function () { t.style.display = 'none'; }, 8000);
