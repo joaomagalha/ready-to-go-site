@@ -25,9 +25,9 @@ Regras fixas de cadastro (não perguntar):
 - **WhatsApp da promoter é sempre `5565993475757`** — o mesmo pra toda festa.
   Nunca perguntar de novo, nunca usar outro número.
   **Exceção (21/10/2026):** quando a promoter disser que as infos de uma festa
-  vão pra irmã dela, lista e camarote dessa festa usam o número dela (está no
-  `CLAUDE.local.md`, fora do git: é de uma terceira pessoa e o repo é público;
-  primeira: Boiler Deck, 06/11). Só nessa festa; as outras seguem no fixo.
+  vão pra outra pessoa da equipe dela, lista e camarote dessa festa usam o
+  número que ela indicar (o número fica no `CLAUDE.local.md`, fora do git: é de
+  uma terceira pessoa e o repo é público). Só nessa festa; as outras seguem no fixo.
 - **Título do card e da página = nome da FESTA**, não de quem organiza
   (ex. "HALTERADOS", não "Atlética Tormenta"). Respeitar o caixa do flyer:
   se a marca é toda maiúscula no flyer, o título vai maiúsculo.
@@ -79,7 +79,7 @@ Passos:
 
 4. **Cache-bust** → se mexeu no `css/style.css` **ou em qualquer arquivo de
    `assets/js/`**, subir o `?v=N` em `index.html`, em todas as páginas de
-   evento e no `_MODELO.html`. Hoje em `?v=74`. O JS passou a ter `?v=` em
+   evento e no `_MODELO.html`. Hoje em `?v=75`. O JS passou a ter `?v=` em
    09/09/2026: sem isso o navegador servia o script velho junto com o HTML
    novo, e recurso novo (destaque da próxima festa, urgência) simplesmente
    não aparecia pra quem já tinha visitado o site.
@@ -227,9 +227,19 @@ apagar.
 
 - Inscrição de creators que divulgam as festas. Texto e perguntas são da
   promoter; a caixinha de autorização existe por causa da LGPD, não tirar.
-- Envio: `assets/js/squad-form.js` manda por `fetch` (no-cors) pro Apps Script
-  cujo endereço fica em `data-endpoint` no `<form>`. Sem endereço, a página
-  avisa que as inscrições não estão abertas e não envia nada.
+- Envio: `assets/js/squad-form.js` manda um JSON (`text/plain`, sem preflight)
+  por `fetch` pro Apps Script cujo endereço fica em `data-endpoint` no `<form>`
+  e **lê a resposta** (`{success, message, limited, invalid}`): a tela só diz
+  "Inscrição recebida" quando `success` vem verdadeiro; recusa de dado mostra a
+  mensagem, e limite, erro de rede ou resposta estranha mostram o botão "Enviar
+  pelo WhatsApp" (`data-numero` do `<form>`) com os dados escritos. Sem endereço,
+  a página avisa que as inscrições não estão abertas e não envia nada.
+- **O servidor confere tudo** (idade 18 a 120, nome com sobrenome, telefone de
+  10 a 13 dígitos, Instagram, Sim/Não, tamanhos) e tem limite global de 20 por
+  minuto e 500 por dia; o navegador usa as mesmas regras só pra avisar antes.
+  Mexeu numa regra: mudar nos dois lados e rodar os testes.
+- Os `<form>` do Squad e da lista levam `data-clarity-mask="true"` (o que a
+  pessoa digita não vai pro Clarity); festa nova herda do `_MODELO.html`.
 - O código do Apps Script está em `squad-apps-script.gs` (fora do site pelo
   `.vercelignore`), com o passo a passo de instalação no topo. Mudou o código:
   publicar como **nova versão da mesma implantação**, senão o endereço muda.

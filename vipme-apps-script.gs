@@ -31,9 +31,12 @@
  * - O promoter vem DAQUI (PROMOTER), nunca do site: ninguém credita nome a
  *   outro promoter. Outra promoter usando o site: mudar a constante.
  * - Limite de volume (global, porque o Apps Script não enxerga o IP de quem
- *   chama): por minuto, pedidos por dia e nomes por dia. Passou do limite, o
- *   site mostra o botão do WhatsApp (plano B). Só pedido que chegaria ao
- *   VipMe conta; pedido malformado é recusado antes e não gasta limite.
+ *   chama): por minuto (conta quando o pedido vai consultar a lista no VipMe) e
+ *   pedidos e nomes por dia (contam só depois que a lista passou na conferência,
+ *   então lista falsa não gasta o limite do dia). Passou do limite, o site
+ *   mostra o botão do WhatsApp (plano B). Pedido malformado é recusado antes e
+ *   não gasta nada. Quem tem o endereço ainda pode manter o limite por minuto
+ *   esgotado com um laço (o formulário cai no WhatsApp); só CAPTCHA resolveria.
  * - Nome: só letras, espaço, apóstrofo, hífen e ponto, 2 a 80 caracteres e
  *   pelo menos 2 palavras. O texto é normalizado (Unicode composto, sem
  *   caracteres invisíveis) antes de conferir.
@@ -63,7 +66,8 @@ function responder(obj) {
 function limparNome(n) {
   return String(n == null ? '' : n).normalize('NFC')
     .replace(/\u200b/g, ' ')                                   // espaço de largura zero separa palavras
-    .replace(/[\u200c-\u200f\u202a-\u202e\u2060\ufeff]/g, '')  // outros invisíveis somem
+    .replace(/[\u200c-\u200f\u202a-\u202e\u2060-\u2064\u2066-\u2069\u00ad\u180e\ufeff]/g, '')  // outros invisíveis somem
+    .replace(/[\u0080-\u009f]/g, ' ')                          // controles C1 (inclui o NEL)
     .replace(/[\u0000-\u001f\u007f]/g, ' ')
     .replace(/\s+/g, ' ').trim();
 }
@@ -80,9 +84,13 @@ function nomeValido(n) {
     /^[\p{L}][\p{L} '’´.\-]*$/u.test(n);
 }
 
-// Conta o pedido nos três limites. Devolve true se pode seguir. Falha fechado:
-// se não conseguir a trava ou der erro, recusa.
-function dentroDoLimite(qtdNomes) {
+// Conta o pedido nos limites. Duas fases, pra pedido que não chega a entregar
+// nome não gastar o limite do dia de todas as listas:
+//   'consulta' (antes de olhar a lista no VipMe): só o limite por minuto, que
+//     protege as chamadas externas;
+//   'entrega' (lista conferida, antes de entregar os nomes): pedidos e nomes do dia.
+// Devolve true se pode seguir. Falha fechado: sem trava ou com erro, recusa.
+function dentroDoLimite(fase, qtdNomes) {
   var lock = LockService.getScriptLock();
   if (!lock.tryLock(5000)) return false;
   try {
@@ -95,7 +103,9 @@ function dentroDoLimite(qtdNomes) {
     var nMin = Number(todas[kMin]) || 0;
     var nPed = Number(todas[kPed]) || 0;
     var nNom = Number(todas[kNom]) || 0;
-    if (nMin >= LIMITE_POR_MINUTO || nPed >= LIMITE_PEDIDOS_DIA || nNom + qtdNomes > LIMITE_NOMES_DIA) {
+    var consulta = fase === 'consulta';
+    if (consulta ? nMin >= LIMITE_POR_MINUTO
+                 : (nPed >= LIMITE_PEDIDOS_DIA || nNom + qtdNomes > LIMITE_NOMES_DIA)) {
       return false;
     }
     // Limpa contadores de minutos e dias antigos pra a lista não crescer.
@@ -106,9 +116,12 @@ function dentroDoLimite(qtdNomes) {
       }
     });
     var novo = {};
-    novo[kMin] = String(nMin + 1);
-    novo[kPed] = String(nPed + 1);
-    novo[kNom] = String(nNom + qtdNomes);
+    if (consulta) {
+      novo[kMin] = String(nMin + 1);
+    } else {
+      novo[kPed] = String(nPed + 1);
+      novo[kNom] = String(nNom + qtdNomes);
+    }
     p.setProperties(novo);
     return true;
   } catch (e) {
@@ -145,8 +158,8 @@ function doPost(e) {
       return responder({ success: false, message: 'Envie de 1 a ' + MAX_NOMES + ' nomes' });
     }
 
-    // Daqui pra baixo o pedido chega ao VipMe: conta no limite.
-    if (!dentroDoLimite(nomes.length)) {
+    // Daqui pra baixo o pedido chama o VipMe: conta no limite por minuto.
+    if (!dentroDoLimite('consulta', nomes.length)) {
       return responder({ success: false, limited: true, message: 'Muitos envios agora, tente de novo em instantes' });
     }
 
@@ -165,6 +178,12 @@ function doPost(e) {
     }
     if (campos.length !== 1 || campos[0] !== 'name') {
       return responder({ success: false, message: 'Lista pede outros dados' });
+    }
+
+    // Lista conferida: agora conta os pedidos e nomes do dia (só o que de fato
+    // seria entregue ao VipMe gasta o limite diário).
+    if (!dentroDoLimite('entrega', nomes.length)) {
+      return responder({ success: false, limited: true, message: 'Muitos envios agora, tente de novo em instantes' });
     }
 
     var r = UrlFetchApp.fetch(API + 'AddAttendings', {

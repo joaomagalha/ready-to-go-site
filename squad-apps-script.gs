@@ -70,7 +70,8 @@ function limpar(v) {
   if (v == null || typeof v === 'object' || typeof v === 'function') return '';
   return String(v).normalize('NFC')
     .replace(/\u200b/g, ' ')                                   // espaço de largura zero separa palavras
-    .replace(/[\u200c-\u200f\u202a-\u202e\u2060\ufeff]/g, '')  // outros invisíveis somem
+    .replace(/[\u200c-\u200f\u202a-\u202e\u2060-\u2064\u2066-\u2069\u00ad\u180e\ufeff]/g, '')  // outros invisíveis somem
+    .replace(/[\u0080-\u009f]/g, ' ')                          // controles C1 (inclui o NEL)
     .replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
