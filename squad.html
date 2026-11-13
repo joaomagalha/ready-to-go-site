@@ -49,8 +49,9 @@
        Analytics, carregado no fim da página, continua sendo a contagem de visitas
        (sem cookie); este aqui é a camada de comportamento e usa cookie, por
        isso precisa estar citado na política de privacidade.
-       Mascaramento em "Equilibrado" no painel: o que o visitante digita no
-       formulário (nome e telefone) NÃO é gravado. -->
+       Mascaramento: o <form> leva data-clarity-mask="true", então o que o
+       visitante digita não é gravado, mesmo se o painel mudar. O painel
+       também fica em "Equilibrado". -->
   <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -110,7 +111,7 @@
     </div>
 
     <div class="squad-form-wrap reveal">
-      <form class="form-card" id="squad-form" data-endpoint="https://script.google.com/macros/s/AKfycbx_-3nDRbw_Gp1yVxR7-cxzOE2SyzS8yKx22vE1takQrWIc9MIdQr3t-4NlahkcLUl-1g/exec" data-numero="5565993475757" novalidate>
+      <form class="form-card" id="squad-form" data-clarity-mask="true" data-endpoint="https://script.google.com/macros/s/AKfycbx_-3nDRbw_Gp1yVxR7-cxzOE2SyzS8yKx22vE1takQrWIc9MIdQr3t-4NlahkcLUl-1g/exec" data-numero="5565993475757" novalidate>
         <div class="field">
           <label for="s-nome">Nome</label>
           <input type="text" id="s-nome" name="nome" placeholder="Seu nome completo" autocomplete="name" maxlength="80" required>
