@@ -79,21 +79,28 @@ Passos:
 
 4. **Cache-bust** → se mexeu no `css/style.css` **ou em qualquer arquivo de
    `assets/js/`**, subir o `?v=N` em `index.html`, em todas as páginas de
-   evento e no `_MODELO.html`. Hoje o `style.css` está em `?v=76` (os JS seguem em `?v=75`). O JS passou a ter `?v=` em
+   evento e no `_MODELO.html`. Hoje o `style.css` e os temas estão em `?v=78` (os JS seguem em `?v=75`). O JS passou a ter `?v=` em
    09/09/2026: sem isso o navegador servia o script velho junto com o HTML
    novo, e recurso novo (destaque da próxima festa, urgência) simplesmente
    não aparecia pra quem já tinha visitado o site.
 
 ## Botões e card da festa (16/11/2026)
 
-- **Botão de globo de espelho só na home:** classe `btn-globo` nos 2 botões
-  do `index.html` (Entrar no Grupo e Quero fazer parte). Mosaico em
-  `--globo-mosaico` no `style.css`. Nas páginas de festa, no `_MODELO.html` e
-  no Squad o botão principal continua o `.btn-primary` vermelho: não pôr
+- **Botões (16/11/2026, Vitória e João): só dois estilos no site.** O
+  **globo de espelho** (`btn-globo`, mosaico em `--globo-mosaico`) só no
+  "Entrar no Grupo" do topo da home; **todo o resto é o prata liso**
+  (`--prata`): `.btn-primary` e `.btn-secondary` têm o mesmo visual (festa,
+  camarote, Squad, Redes, botões de reserva), e o mesmo prata veste a
+  opção marcada do Squad (o CTA do card é vidro escuro com detalhe prata). Não criar outra
+  variação (grafite, vermelho, translúcido foram testados e recusados) nem pôr
   `btn-globo` em festa nova.
 - **Card da festa (home):** sem efeito por cima do flyer (holográfico e
-  refletivo foram testados e recusados). Título maior em prata, preço maior
-  e "Garantir Meu Desconto" em pílula vermelha. O HTML do card não mudou.
+  refletivo foram testados e recusados), formato **3:4** (era 4:5; o flyer
+  aparece mais), título maior em prata, data e camarote mais discretos, preço
+  maior e "Garantir Meu Desconto" em pílula de vidro escuro com borda prata e a
+  seta numa bolinha prata. O "Garantir Meu Desconto" do formulário da festa
+  (`#lista-form`) usa o mesmo vidro (mais denso, no cartão branco). Preço e pílula cabem numa linha de 320 a 1440 px (degraus por
+  `@container`; medir antes de mexer). O HTML do card não mudou.
 
 ## Camarote em toda festa (16/10/2026)
 
@@ -109,7 +116,7 @@ Pedido da promoter (precisa vender mais camarote). Toda festa nova leva os dois:
 - O texto do bloco é da promoter: trocar só se ela pedir.
 - **Festa com ingresso vendido fora (09/11/2026, NOSTALGIC):** o bloco do ingresso
   (mesmo molde `.camarote-card`) vai **acima** do camarote, com botão `btn-primary`; o
-  camarote fica `btn-secondary` embaixo. O Ticpass não aplica cupom pelo link (o `?c=` é
+  camarote fica `btn-secondary` embaixo (visual prata desde 16/11/2026). O Ticpass não aplica cupom pelo link (o `?c=` é
   código de afiliado, sem desconto): o botão copia o cupom no clique, mostra o aviso e
   abre o Ticpass (script no fim de `eventos/nostalgic-19-11.html`, copiar de lá). A
   métrica do camarote pega só `.camarote-card a[href*="wa.me"]`.

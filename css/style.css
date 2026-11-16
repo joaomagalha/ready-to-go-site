@@ -408,15 +408,44 @@ a { color: inherit; text-decoration: none; }
   box-shadow: 0 0 0 3px rgba(216, 64, 64, 0.35);
 }
 
-.btn-primary {
-  background: var(--accent);
-  color: var(--paper);
+/* 16/11/2026, pedido da Vitória ("pode deixar só cinza, sem os quadrados") e
+   do João: o botão principal sai do vermelho cheio e vira cinza prateado liso
+   em todo o site; o globo de espelho (.btn-globo, abaixo) fica só no
+   "Entrar no Grupo" do topo. #1D1616 sobre o ponto mais escuro (#A9AEB6) dá
+   ~8:1. O mesmo prata veste a pílula do card da festa e a opção marcada do Squad. Foco segue no anel vermelho da marca. */
+:root {
+  --prata: linear-gradient(180deg, #F4F5F7 0%, #CDD1D7 45%, #A9AEB6 55%, #DADDE2 100%);
 }
-.btn-primary:hover { filter: brightness(1.08); }
+.btn-primary,
+.btn-secondary {
+  background:
+    linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.75) 45%, transparent 60%) 120% 0 / 250% 100% no-repeat,
+    var(--prata);
+  border-color: rgba(255, 255, 255, 0.55);
+  color: var(--ink);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+    0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 0.15s ease, background-position 0.6s ease, box-shadow 0.15s ease;
+}
+.btn-primary:hover,
+.btn-secondary:hover { background-position: -20% 0, 0 0; }
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0 0 3px rgba(216, 64, 64, 0.45);
+}
+.btn-primary:disabled,
+.btn-secondary:disabled { opacity: 0.75; cursor: progress; }
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary, .btn-secondary { transition: none; }
+}
 
 /* 16/11/2026, pedido da Vitória e do João: botão como um globo de espelho
-   de verdade, SÓ NA HOME (classe .btn-globo nos 2 botões do index; nas
-   festas e no Squad o João preferiu o vermelho .btn-primary). Mosaico SVG
+   de verdade, só no "Entrar no Grupo" do topo da home (classe .btn-globo);
+   o resto dos botões principais é o prata liso do .btn-primary. Mosaico SVG
    160x40 embutido, cada espelhinho com degradê próprio (reflete a luz num
    ângulo), uns estourados de branco, raros reflexos rosados (do Globinho) e
    azulados; rejunte #6F737C. Por cima: volume de esfera, verniz no terço de
@@ -503,19 +532,6 @@ a { color: inherit; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
   .btn-globo, .btn-globo:hover { animation: none; }
   .btn-globo::before, .btn-globo::after { animation: none; opacity: 0.75; }
-}
-
-.btn-secondary {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.14);
-  color: var(--paper);
-}
-/* Antes só a borda mudava no hover (e pro --accent escuro, que quase não
-   aparece sobre o botão translúcido). Adicionado leve reforço no fundo
-   também, pra combinar com o feedback do botão primário (que clareia). */
-.btn-secondary:hover {
-  border-color: var(--accent-text);
-  background: rgba(255, 255, 255, 0.1);
 }
 
 .btn-row {
@@ -780,13 +796,31 @@ a { color: inherit; text-decoration: none; }
 .event-poster:hover .event-poster__cta svg { transform: translateX(3px); }
 
 /* 16/11/2026: testados um card holográfico e um refletivo (inspirados no
-   React Bits); o João preferiu sem efeito. Ficou só o texto mais forte. */
-/* Texto do card mais forte (mesma estrutura de HTML do cadastro). */
+   React Bits); o João preferiu sem efeito. Depois, card mais alto (3:4, era
+   4:5: os flyers vêm em 3:4 e 9:16 e o 4:5 cortava muito) e texto refinado:
+   ritmo de espaço em múltiplos de 4 e hierarquia título > data > camarote.
+   Mesma estrutura de HTML do cadastro. */
+.event-poster {
+  aspect-ratio: 3 / 4;
+  border-radius: 22px;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+}
+.event-poster img { object-position: center top; }
+.event-poster__overlay {
+  padding: 22px;
+  /* escuro só na metade de baixo: mais flyer limpo no card alto */
+  background: linear-gradient(180deg,
+    rgba(29, 22, 22, 0) 42%,
+    rgba(29, 22, 22, 0.35) 58%,
+    rgba(29, 22, 22, 0.78) 78%,
+    rgba(29, 22, 22, 0.96) 100%);
+}
 .event-poster__title {
   font-size: 2rem;
-  line-height: 1;
-  letter-spacing: -0.03em;
-  margin-bottom: 8px;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  margin-bottom: 6px;
   background: linear-gradient(180deg, #FFFFFF 35%, #D5D9E0 100%);
   -webkit-background-clip: text;
           background-clip: text;
@@ -795,34 +829,132 @@ a { color: inherit; text-decoration: none; }
   filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.75)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9));
 }
 .event-poster__meta {
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: #FF9A9A;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #F4B3B3;
+  margin-bottom: 10px;
 }
+.event-poster__camarote {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 16px;
+}
+.event-poster__camarote svg { width: 1.1em; height: 1.1em; }
 .event-poster__foot {
   padding-top: 14px;
   border-top: 1px solid transparent;
-  border-image: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.35) 20%, rgba(255, 255, 255, 0.35) 80%, rgba(255, 255, 255, 0)) 1;
+  border-image: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.22) 20%, rgba(255, 255, 255, 0.22) 80%, rgba(255, 255, 255, 0)) 1;
 }
 .event-poster__price {
   font-size: 1.5rem;
   line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
-/* CTA em pílula vermelha da marca (16/11/2026: o João testou a de globo e
-   preferiu vermelho). O texto continua solto dentro do span (o
-   event-schedule.js troca o primeiro nó de texto por "Lista encerrada"). */
+/* "Garantir Meu Desconto" (16/11/2026, várias rodadas com o João e a
+   Vitória: vermelho, globo, prata claro; ficou este). Vale pros DOIS: o do
+   card da home e o do formulário da festa (#lista-form). Vidro escuro em
+   camadas: corpo fumê translúcido com desfoque (no cartão branco, mais
+   denso, porque não há flyer atrás), volume (claro em cima, escuro embaixo),
+   ::before = contorno prata em degradê (mask exclude), ::after = reflexo na
+   metade de cima, e uma faixa de luz que atravessa no hover. O resto dos
+   botões segue prata; o globo, só no Entrar no Grupo. No card o texto
+   continua solto dentro do span (o event-schedule.js troca o primeiro nó de
+   texto por "Lista encerrada"). */
+.event-poster__cta,
+#lista-form button[type="submit"] {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #EEF0F3;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  border: 0;
+  background:
+    linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.22) 47%, transparent 58%) 130% 0 / 250% 100% no-repeat,
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.12) 100%),
+    rgba(29, 22, 22, 0.42);
+  -webkit-backdrop-filter: blur(14px) saturate(160%) brightness(0.55);
+          backdrop-filter: blur(14px) saturate(160%) brightness(0.55);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  transition: background-position 0.7s ease, transform 0.15s ease;
+}
+.event-poster__cta::before,
+#lista-form button[type="submit"]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(205, 209, 215, 0.18) 45%, rgba(205, 209, 215, 0.18) 60%, rgba(255, 255, 255, 0.55));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+.event-poster__cta::after,
+#lista-form button[type="submit"]::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 40%, rgba(255, 255, 255, 0) 62%);
+  pointer-events: none;
+}
+.event-poster:hover .event-poster__cta,
+#lista-form button[type="submit"]:hover { background-position: -30% 0, 0 0, 0 0; }
+/* No cartão branco não há flyer pra desfocar: vidro fumê mais denso. */
+#lista-form button[type="submit"] {
+  background:
+    linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.22) 47%, transparent 58%) 130% 0 / 250% 100% no-repeat,
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.18) 100%),
+    rgba(29, 22, 22, 0.92);
+  box-shadow: 0 10px 24px rgba(29, 22, 22, 0.28);
+}
+#lista-form button[type="submit"] { font-family: inherit; }
+#lista-form button[type="submit"]:focus-visible { box-shadow: 0 0 0 3px rgba(216, 64, 64, 0.45); }
+#lista-form button[type="submit"]:disabled { opacity: 0.7; cursor: progress; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .event-poster__cta { background-color: rgba(29, 22, 22, 0.85); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .event-poster__cta, #lista-form button[type="submit"] { transition: none; }
+}
 .event-poster__cta {
-  padding: 10px 14px 10px 16px;
+  gap: 10px;
+  padding: 6px 6px 6px 16px;
   border-radius: 999px;
-  color: #fff;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  font-size: 0.74rem;
-  text-shadow: none;
-  background: var(--accent);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  letter-spacing: 0.06em;
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+.event-poster__cta svg {
+  width: 26px;
+  height: 26px;
+  padding: 6px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #FAFBFC 0%, #E4E7EB 50%, #CBCFD6 100%);
+  color: var(--ink);
+  box-shadow: inset 0 -1px 2px rgba(29, 22, 22, 0.25);
+  flex-shrink: 0;
+}
+/* Cards estreitos: preço + pílula numa linha só, sem passar da borda
+   (medido: card 318 px no celular de 360, 278 px no de 320). */
+@container (max-width: 340px) {
+  .event-poster__overlay { padding: 20px; }
+  .event-poster__foot { gap: 10px; }
+  .event-poster__cta { gap: 8px; padding-left: 13px; letter-spacing: 0.02em; font-size: 0.68rem; }
+  .event-poster__cta svg { width: 24px; height: 24px; padding: 5px; }
+}
+@container (max-width: 300px) {
+  .event-poster__foot { gap: 8px; }
+  .event-poster__price { font-size: 1.3rem; }
+  .event-poster__cta { gap: 6px; padding-left: 10px; letter-spacing: 0; font-size: 0.64rem; }
+  .event-poster__cta svg { width: 22px; height: 22px; }
 }
 .event-poster.is-closed .event-poster__cta {
   background: rgba(255, 255, 255, 0.12);
@@ -1599,10 +1731,14 @@ footer {
   font-size: 0.92rem;
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
+/* 16/11/2026: opção marcada em prata (era vermelho), igual ao botão. */
+/* 16/11/2026: opção marcada em prata (era vermelho), igual ao botão. */
 .choice input:checked + span {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--paper);
+  background: var(--prata);
+  border-color: rgba(29, 22, 22, 0.25);
+  color: var(--ink);
+  font-weight: 700;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 2px 6px rgba(29, 22, 22, 0.15);
 }
 .choice input:focus-visible + span { box-shadow: 0 0 0 3px rgba(216, 64, 64, 0.3); }
 
@@ -1650,12 +1786,6 @@ footer {
   margin: 4px 0 6px;
 }
 .squad-done__text { color: rgba(29, 22, 22, 0.7); font-size: 0.92rem; margin: 0 0 18px; }
-/* O botão secundário foi pensado pro fundo escuro; no cartão branco inverte. */
-.squad-done .btn-secondary {
-  background: rgba(29, 22, 22, 0.06);
-  border-color: rgba(29, 22, 22, 0.15);
-  color: var(--ink);
-}
 
 /* Chamada do Squad na home: um cartão discreto entre as festas e as redes,
    pra não disputar com o botão vermelho do grupo. */
