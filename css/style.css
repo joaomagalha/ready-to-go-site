@@ -414,6 +414,97 @@ a { color: inherit; text-decoration: none; }
 }
 .btn-primary:hover { filter: brightness(1.08); }
 
+/* 16/11/2026, pedido da Vitória e do João: botão como um globo de espelho
+   de verdade, SÓ NA HOME (classe .btn-globo nos 2 botões do index; nas
+   festas e no Squad o João preferiu o vermelho .btn-primary). Mosaico SVG
+   160x40 embutido, cada espelhinho com degradê próprio (reflete a luz num
+   ângulo), uns estourados de branco, raros reflexos rosados (do Globinho) e
+   azulados; rejunte #6F737C. Por cima: volume de esfera, verniz no terço de
+   cima e uma luz clara atrás do texto. Uma faixa de luz atravessa sozinha a
+   cada ~4,5 s (e na hora, no hover); ::before e ::after são estrelinhas de
+   4 pontas nas bordas, piscando em tempos diferentes. Atrás da letra a luz
+   clara clareia tudo: o pior ponto medido fica no texto.
+   Texto #140E0E peso 800 com halo branco (João: estava
+   apagado sobre o mosaico). O --accent vermelho segue no foco e nos links. O
+   mosaico mora em --globo-mosaico e fica disponível pra outro uso. */
+:root { --globo-mosaico: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='40'><defs><linearGradient id='a' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23FFFFFF'/><stop offset='1' stop-color='%239FA3AC'/></linearGradient><linearGradient id='b' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23C9CCD3'/><stop offset='1' stop-color='%23FFFFFF'/></linearGradient><linearGradient id='c' x1='1' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23F7F8FA'/><stop offset='1' stop-color='%238F949D'/></linearGradient><linearGradient id='d' x1='0' y1='1' x2='1' y2='0'><stop offset='0' stop-color='%23A9ADB5'/><stop offset='1' stop-color='%23F4F5F8'/></linearGradient><linearGradient id='e' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23FFFFFF'/><stop offset='1' stop-color='%23C2C6CD'/></linearGradient><linearGradient id='f' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23A5A9B2'/><stop offset='1' stop-color='%237C808B'/></linearGradient><linearGradient id='w' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23FFFFFF'/><stop offset='1' stop-color='%23F3F5F9'/></linearGradient><linearGradient id='r' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23FBD3D3'/><stop offset='1' stop-color='%23E99A9A'/></linearGradient><linearGradient id='z' x1='1' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23DDE8FA'/><stop offset='1' stop-color='%23A9BCDD'/></linearGradient></defs><rect width='160' height='40' fill='%236F737C'/><rect x='0.5' y='0.5' width='7' height='7' fill='url(%23c)'/><rect x='8.5' y='0.5' width='7' height='7' fill='url(%23a)'/><rect x='16.5' y='0.5' width='7' height='7' fill='url(%23w)'/><rect x='24.5' y='0.5' width='7' height='7' fill='url(%23d)'/><rect x='32.5' y='0.5' width='7' height='7' fill='url(%23b)'/><rect x='40.5' y='0.5' width='7' height='7' fill='url(%23c)'/><rect x='48.5' y='0.5' width='7' height='7' fill='url(%23b)'/><rect x='56.5' y='0.5' width='7' height='7' fill='url(%23a)'/><rect x='64.5' y='0.5' width='7' height='7' fill='url(%23r)'/><rect x='72.5' y='0.5' width='7' height='7' fill='url(%23d)'/><rect x='80.5' y='0.5' width='7' height='7' fill='url(%23e)'/><rect x='88.5' y='0.5' width='7' height='7' fill='url(%23d)'/><rect x='96.5' y='0.5' width='7' height='7' fill='url(%23a)'/><rect x='104.5' y='0.5' width='7' height='7' fill='url(%23a)'/><rect x='112.5' y='0.5' width='7' height='7' fill='url(%23a)'/><rect x='120.5' y='0.5' width='7' height='7' fill='url(%23b)'/><rect x='128.5' y='0.5' width='7' height='7' fill='url(%23c)'/><rect x='136.5' y='0.5' width='7' height='7' fill='url(%23f)'/><rect x='144.5' y='0.5' width='7' height='7' fill='url(%23e)'/><rect x='152.5' y='0.5' width='7' height='7' fill='url(%23c)'/><rect x='0.5' y='8.5' width='7' height='7' fill='url(%23f)'/><rect x='8.5' y='8.5' width='7' height='7' fill='url(%23a)'/><rect x='16.5' y='8.5' width='7' height='7' fill='url(%23f)'/><rect x='24.5' y='8.5' width='7' height='7' fill='url(%23a)'/><rect x='32.5' y='8.5' width='7' height='7' fill='url(%23f)'/><rect x='40.5' y='8.5' width='7' height='7' fill='url(%23c)'/><rect x='48.5' y='8.5' width='7' height='7' fill='url(%23e)'/><rect x='56.5' y='8.5' width='7' height='7' fill='url(%23a)'/><rect x='64.5' y='8.5' width='7' height='7' fill='url(%23w)'/><rect x='72.5' y='8.5' width='7' height='7' fill='url(%23e)'/><rect x='80.5' y='8.5' width='7' height='7' fill='url(%23e)'/><rect x='88.5' y='8.5' width='7' height='7' fill='url(%23e)'/><rect x='96.5' y='8.5' width='7' height='7' fill='url(%23c)'/><rect x='104.5' y='8.5' width='7' height='7' fill='url(%23e)'/><rect x='112.5' y='8.5' width='7' height='7' fill='url(%23f)'/><rect x='120.5' y='8.5' width='7' height='7' fill='url(%23b)'/><rect x='128.5' y='8.5' width='7' height='7' fill='url(%23a)'/><rect x='136.5' y='8.5' width='7' height='7' fill='url(%23a)'/><rect x='144.5' y='8.5' width='7' height='7' fill='url(%23f)'/><rect x='152.5' y='8.5' width='7' height='7' fill='url(%23c)'/><rect x='0.5' y='16.5' width='7' height='7' fill='url(%23a)'/><rect x='8.5' y='16.5' width='7' height='7' fill='url(%23d)'/><rect x='16.5' y='16.5' width='7' height='7' fill='url(%23a)'/><rect x='24.5' y='16.5' width='7' height='7' fill='url(%23w)'/><rect x='32.5' y='16.5' width='7' height='7' fill='url(%23a)'/><rect x='40.5' y='16.5' width='7' height='7' fill='url(%23b)'/><rect x='48.5' y='16.5' width='7' height='7' fill='url(%23b)'/><rect x='56.5' y='16.5' width='7' height='7' fill='url(%23a)'/><rect x='64.5' y='16.5' width='7' height='7' fill='url(%23d)'/><rect x='72.5' y='16.5' width='7' height='7' fill='url(%23c)'/><rect x='80.5' y='16.5' width='7' height='7' fill='url(%23w)'/><rect x='88.5' y='16.5' width='7' height='7' fill='url(%23d)'/><rect x='96.5' y='16.5' width='7' height='7' fill='url(%23a)'/><rect x='104.5' y='16.5' width='7' height='7' fill='url(%23e)'/><rect x='112.5' y='16.5' width='7' height='7' fill='url(%23d)'/><rect x='120.5' y='16.5' width='7' height='7' fill='url(%23b)'/><rect x='128.5' y='16.5' width='7' height='7' fill='url(%23r)'/><rect x='136.5' y='16.5' width='7' height='7' fill='url(%23a)'/><rect x='144.5' y='16.5' width='7' height='7' fill='url(%23e)'/><rect x='152.5' y='16.5' width='7' height='7' fill='url(%23b)'/><rect x='0.5' y='24.5' width='7' height='7' fill='url(%23d)'/><rect x='8.5' y='24.5' width='7' height='7' fill='url(%23a)'/><rect x='16.5' y='24.5' width='7' height='7' fill='url(%23c)'/><rect x='24.5' y='24.5' width='7' height='7' fill='url(%23d)'/><rect x='32.5' y='24.5' width='7' height='7' fill='url(%23e)'/><rect x='40.5' y='24.5' width='7' height='7' fill='url(%23d)'/><rect x='48.5' y='24.5' width='7' height='7' fill='url(%23w)'/><rect x='56.5' y='24.5' width='7' height='7' fill='url(%23a)'/><rect x='64.5' y='24.5' width='7' height='7' fill='url(%23e)'/><rect x='72.5' y='24.5' width='7' height='7' fill='url(%23d)'/><rect x='80.5' y='24.5' width='7' height='7' fill='url(%23f)'/><rect x='88.5' y='24.5' width='7' height='7' fill='url(%23e)'/><rect x='96.5' y='24.5' width='7' height='7' fill='url(%23w)'/><rect x='104.5' y='24.5' width='7' height='7' fill='url(%23a)'/><rect x='112.5' y='24.5' width='7' height='7' fill='url(%23c)'/><rect x='120.5' y='24.5' width='7' height='7' fill='url(%23a)'/><rect x='128.5' y='24.5' width='7' height='7' fill='url(%23b)'/><rect x='136.5' y='24.5' width='7' height='7' fill='url(%23a)'/><rect x='144.5' y='24.5' width='7' height='7' fill='url(%23w)'/><rect x='152.5' y='24.5' width='7' height='7' fill='url(%23e)'/><rect x='0.5' y='32.5' width='7' height='7' fill='url(%23r)'/><rect x='8.5' y='32.5' width='7' height='7' fill='url(%23d)'/><rect x='16.5' y='32.5' width='7' height='7' fill='url(%23a)'/><rect x='24.5' y='32.5' width='7' height='7' fill='url(%23c)'/><rect x='32.5' y='32.5' width='7' height='7' fill='url(%23f)'/><rect x='40.5' y='32.5' width='7' height='7' fill='url(%23a)'/><rect x='48.5' y='32.5' width='7' height='7' fill='url(%23b)'/><rect x='56.5' y='32.5' width='7' height='7' fill='url(%23a)'/><rect x='64.5' y='32.5' width='7' height='7' fill='url(%23d)'/><rect x='72.5' y='32.5' width='7' height='7' fill='url(%23a)'/><rect x='80.5' y='32.5' width='7' height='7' fill='url(%23c)'/><rect x='88.5' y='32.5' width='7' height='7' fill='url(%23a)'/><rect x='96.5' y='32.5' width='7' height='7' fill='url(%23a)'/><rect x='104.5' y='32.5' width='7' height='7' fill='url(%23e)'/><rect x='112.5' y='32.5' width='7' height='7' fill='url(%23c)'/><rect x='120.5' y='32.5' width='7' height='7' fill='url(%23a)'/><rect x='128.5' y='32.5' width='7' height='7' fill='url(%23a)'/><rect x='136.5' y='32.5' width='7' height='7' fill='url(%23d)'/><rect x='144.5' y='32.5' width='7' height='7' fill='url(%23a)'/><rect x='152.5' y='32.5' width='7' height='7' fill='url(%23e)'/></svg>"); }
+.btn-globo {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    linear-gradient(110deg, transparent 38%, rgba(255, 255, 255, 0.9) 47%, rgba(255, 255, 255, 0.35) 52%, transparent 60%) 120% 0 / 250% 100% no-repeat,
+    radial-gradient(ellipse 50% 58% at 50% 52%, rgba(255, 255, 255, 0.86) 0%, rgba(255, 255, 255, 0.55) 50%, rgba(255, 255, 255, 0) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.18) 34%, rgba(255, 255, 255, 0) 36%, rgba(29, 22, 22, 0) 62%, rgba(29, 22, 22, 0.28) 100%),
+    var(--globo-mosaico) 0 0 / 160px 40px repeat,
+    #DCDFE4;
+  border-color: rgba(255, 255, 255, 0.7);
+  color: #140E0E;
+  font-weight: 800;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.95), 0 0 2px rgba(255, 255, 255, 0.9);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 -2px 4px rgba(29, 22, 22, 0.18),
+    0 0 18px rgba(255, 255, 255, 0.18),
+    0 4px 14px rgba(0, 0, 0, 0.35);
+  animation: r2g-globo-luz 4.5s ease-in-out infinite;
+}
+.btn-globo::before,
+.btn-globo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  mix-blend-mode: screen;
+  animation: r2g-globo-pisca 2.6s ease-in-out infinite;
+}
+.btn-globo::before {
+  background:
+    radial-gradient(circle at 6% 30%, #fff 0 1.6px, rgba(255,255,255,.6) 3px, transparent 12.0px),
+    radial-gradient(ellipse 1px 24px at 6% 30%, rgba(255,255,255,.95), transparent),
+    radial-gradient(ellipse 24px 1px at 6% 30%, rgba(255,255,255,.95), transparent),
+    radial-gradient(circle at 94% 70%, #fff 0 1.6px, rgba(255,255,255,.6) 3px, transparent 10.0px),
+    radial-gradient(ellipse 1px 20px at 94% 70%, rgba(255,255,255,.95), transparent),
+    radial-gradient(ellipse 20px 1px at 94% 70%, rgba(255,255,255,.95), transparent);
+}
+.btn-globo::after {
+  background:
+    radial-gradient(circle at 19% 76%, #fff 0 1.6px, rgba(255,255,255,.6) 3px, transparent 8.0px),
+    radial-gradient(ellipse 1px 16px at 19% 76%, rgba(255,255,255,.95), transparent),
+    radial-gradient(ellipse 16px 1px at 19% 76%, rgba(255,255,255,.95), transparent),
+    radial-gradient(circle at 81% 26%, #fff 0 1.6px, rgba(255,255,255,.6) 3px, transparent 11.0px),
+    radial-gradient(ellipse 1px 22px at 81% 26%, rgba(255,255,255,.95), transparent),
+    radial-gradient(ellipse 22px 1px at 81% 26%, rgba(255,255,255,.95), transparent);
+  animation-delay: -1.3s;
+  animation-duration: 3.1s;
+}
+.btn-globo:hover { animation: r2g-globo-luz 1.1s ease-out 1; }
+@keyframes r2g-globo-luz {
+  0%   { background-position: 120% 0, 0 0, 0 0, 0 0, 0 0; }
+  45%  { background-position: -20% 0, 0 0, 0 0, 0 0, 0 0; }
+  100% { background-position: -20% 0, 0 0, 0 0, 0 0, 0 0; }
+}
+@keyframes r2g-globo-pisca {
+  0%, 100% { opacity: 0.25; transform: scale(0.85); }
+  50%      { opacity: 1;    transform: scale(1); }
+}
+.btn-globo:focus-visible {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 0 0 3px rgba(216, 64, 64, 0.45);
+}
+/* Enviando (o JS põe disabled): brilho parado e mais apagado, pra a pessoa
+   ver que o clique foi aceito e não clicar de novo. */
+.btn-globo:disabled,
+.btn-globo:disabled:hover { animation: none; opacity: 0.75; cursor: progress; }
+.btn-globo:disabled::before,
+.btn-globo:disabled::after { animation: none; opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .btn-globo, .btn-globo:hover { animation: none; }
+  .btn-globo::before, .btn-globo::after { animation: none; opacity: 0.75; }
+}
+
 .btn-secondary {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.14);
@@ -687,6 +778,59 @@ a { color: inherit; text-decoration: none; }
   transition: transform 0.25s ease;
 }
 .event-poster:hover .event-poster__cta svg { transform: translateX(3px); }
+
+/* 16/11/2026: testados um card holográfico e um refletivo (inspirados no
+   React Bits); o João preferiu sem efeito. Ficou só o texto mais forte. */
+/* Texto do card mais forte (mesma estrutura de HTML do cadastro). */
+.event-poster__title {
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+  background: linear-gradient(180deg, #FFFFFF 35%, #D5D9E0 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.75)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9));
+}
+.event-poster__meta {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #FF9A9A;
+}
+.event-poster__foot {
+  padding-top: 14px;
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.35) 20%, rgba(255, 255, 255, 0.35) 80%, rgba(255, 255, 255, 0)) 1;
+}
+.event-poster__price {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+/* CTA em pílula vermelha da marca (16/11/2026: o João testou a de globo e
+   preferiu vermelho). O texto continua solto dentro do span (o
+   event-schedule.js troca o primeiro nó de texto por "Lista encerrada"). */
+.event-poster__cta {
+  padding: 10px 14px 10px 16px;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 0.74rem;
+  text-shadow: none;
+  background: var(--accent);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+.event-poster.is-closed .event-poster__cta {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: var(--paper);
+  text-shadow: none;
+  box-shadow: none;
+}
 
 /* 09/09/2026: existiu aqui um `.is-next` que dava CTA em pílula vermelha só
    pro primeiro card. O João pediu pra tirar — quer os cards idênticos entre

@@ -79,10 +79,21 @@ Passos:
 
 4. **Cache-bust** → se mexeu no `css/style.css` **ou em qualquer arquivo de
    `assets/js/`**, subir o `?v=N` em `index.html`, em todas as páginas de
-   evento e no `_MODELO.html`. Hoje em `?v=75`. O JS passou a ter `?v=` em
+   evento e no `_MODELO.html`. Hoje o `style.css` está em `?v=76` (os JS seguem em `?v=75`). O JS passou a ter `?v=` em
    09/09/2026: sem isso o navegador servia o script velho junto com o HTML
    novo, e recurso novo (destaque da próxima festa, urgência) simplesmente
    não aparecia pra quem já tinha visitado o site.
+
+## Botões e card da festa (16/11/2026)
+
+- **Botão de globo de espelho só na home:** classe `btn-globo` nos 2 botões
+  do `index.html` (Entrar no Grupo e Quero fazer parte). Mosaico em
+  `--globo-mosaico` no `style.css`. Nas páginas de festa, no `_MODELO.html` e
+  no Squad o botão principal continua o `.btn-primary` vermelho: não pôr
+  `btn-globo` em festa nova.
+- **Card da festa (home):** sem efeito por cima do flyer (holográfico e
+  refletivo foram testados e recusados). Título maior em prata, preço maior
+  e "Garantir Meu Desconto" em pílula vermelha. O HTML do card não mudou.
 
 ## Camarote em toda festa (16/10/2026)
 
