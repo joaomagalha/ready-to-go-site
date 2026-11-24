@@ -118,7 +118,7 @@ Pedido da promoter (precisa vender mais camarote). Toda festa nova leva os dois:
   (mesmo molde `.camarote-card`) vai **acima** do camarote, com botão `btn-primary`; o
   camarote fica `btn-secondary` embaixo (visual prata desde 16/11/2026). O Ticpass não aplica cupom pelo link (o `?c=` é
   código de afiliado, sem desconto): o botão copia o cupom no clique, mostra o aviso e
-  abre o Ticpass (script no fim de `eventos/nostalgic-19-11.html`, copiar de lá). A
+  abre o Ticpass (script no fim de `eventos/nostalgic-19-11.html`, página apagada em 24/11/2026; copiar de `git show 7575d0f:eventos/nostalgic-19-11.html`). A
   métrica do camarote pega só `.camarote-card a[href*="wa.me"]`.
 
 ## Extras da festa (16/10/2026)
